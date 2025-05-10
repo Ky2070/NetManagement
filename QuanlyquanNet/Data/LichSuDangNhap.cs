@@ -11,9 +11,9 @@ public partial class LichSuDangNhap
 
     public string HoTen { get; set; } = null!;
 
-    public string VaiTro { get; set; } = null!;
+    public int MaNguoiDung { get; set; }
 
     public DateTime? ThoiGianDangNhap { get; set; }
 
-    public virtual NguoiDung TenDangNhapNavigation { get; set; } = null!;
+    public virtual NguoiDung MaNguoiDungNavigation { get; set; } = null!;
 }

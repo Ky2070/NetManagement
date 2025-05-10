@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QuanlyquanNet.Data;
+using QuanlyquanNet.Data;   
 
 var builder = WebApplication.CreateBuilder(args);
 
