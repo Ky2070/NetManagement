@@ -9,20 +9,12 @@
     <!-- Bootstrap core CSS -->
     <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="~/assets/css/fontawesome.css">
     <link rel="stylesheet" href="~/assets/css/templatemo-cyborg-gaming.css">
     <link rel="stylesheet" href="~/assets/css/owl.css">
     <link rel="stylesheet" href="~/assets/css/animate.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-    <!--
-
-    TemplateMo 579 Cyborg Gaming
-
-    https://templatemo.com/tm-579-cyborg-gaming
-
-    -->
 </head>
 <body>
     <div>
@@ -37,7 +29,6 @@
                                 <img src="assets/images/logo.png" alt="">
                             </a>
                             <!-- ***** Logo End ***** -->
-                            <!-- ***** Search End ***** -->
                             <div class="search-input">
                                 <form id="search" action="#">
                                     <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
@@ -45,7 +36,6 @@
                                 </form>
                             </div>
                             <!-- ***** Search End ***** -->
-                            <!-- ***** Menu Start ***** -->
                             <ul class="nav">
                                 <li><a href="index.html" class="active">Home</a></li>
                                 <li><a href="browse.html">Browse</a></li>
@@ -56,22 +46,21 @@
                             <a class='menu-trigger'>
                                 <span>Menu</span>
                             </a>
-                            <!-- ***** Menu End ***** -->
                         </nav>
                     </div>
                 </div>
             </div>
         </header>
+
+        <!-- Content Body -->
         <div style="min-height:400px;" class="hero-header">
-            @RenderBody()
+            @RenderBody() <!-- Render the content of the page here -->
         </div>
 
         @await Html.PartialAsync("_Footer")
     </div>
 
-
     <!-- Scripts -->
-    <!-- Bootstrap core JavaScript -->
     <script src="~/vendor/jquery/jquery.min.js"></script>
     <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -80,5 +69,8 @@
     <script src="~/assets/js/tabs.js"></script>
     <script src="~/assets/js/popup.js"></script>
     <script src="~/assets/js/custom.js"></script>
+
+    <!-- Add this line to render Scripts section if it exists in the view -->
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

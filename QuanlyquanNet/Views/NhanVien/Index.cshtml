@@ -1,0 +1,57 @@
+﻿@model IEnumerable<QuanlyquanNet.Data.NhanVien>
+
+@{
+    ViewData["Title"] = "Employee Management";
+}
+
+<div class="container py-5">
+    <div class="most-popular">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="heading-section">
+                    <h4><em>Danh sách</em> Nhân viên</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover text-white">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.MaNhanVien)</th>
+                                <th>@Html.DisplayNameFor(model => model.HoTen)</th>
+                                <th>@Html.DisplayNameFor(model => model.SoDienThoai)</th>
+                                <th>@Html.DisplayNameFor(model => model.GioiTinh)</th>
+                                <th>@Html.DisplayNameFor(model => model.ChucVu)</th>
+                                <th>@Html.DisplayNameFor(model => model.Luong)</th>
+                                <th>@Html.DisplayNameFor(model => model.CaLamViec)</th>
+                                <th>@Html.DisplayNameFor(model => model.NgayTao)</th>
+                                <th>Tên đăng nhập</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.MaNhanVien)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.GioiTinh)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ChucVu)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Luong)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CaLamViec)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NgayTao)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.TenDangNhap)</td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.MaNhanVien" class="text-warning">Sửa</a> |
+                                        <a asp-action="Details" asp-route-id="@item.MaNhanVien" class="text-info">Chi tiết</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.MaNhanVien" class="text-danger">Xóa</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <a asp-action="Create" class="btn btn-success mt-3">+ Thêm nhân viên mới</a>
+            </div>
+        </div>
+    </div>
+</div>
