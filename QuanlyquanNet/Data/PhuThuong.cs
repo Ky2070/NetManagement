@@ -9,11 +9,17 @@ public partial class PhuThuong
 
     public string TenPhuThuong { get; set; } = null!;
 
+    public string? LoaiPhuThuong { get; set; }
+
+    public decimal? GiaTri { get; set; }
+
     public int DiemCanDoi { get; set; }
+
+    public int? MaVatPham { get; set; }
 
     public DateTime? NgayTao { get; set; }
 
-    public virtual ICollection<NhiemVu> NhiemVus { get; set; } = new List<NhiemVu>();
+    public virtual VatPham? MaVatPhamNavigation { get; set; }
 
     public virtual ICollection<PhanThuongDaNhan> PhanThuongDaNhans { get; set; } = new List<PhanThuongDaNhan>();
 }

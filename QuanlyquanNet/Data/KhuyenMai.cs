@@ -9,13 +9,15 @@ public partial class KhuyenMai
 
     public string TenKhuyenMai { get; set; } = null!;
 
-    public decimal? PhanTramGiamGia { get; set; }
+    public decimal? PhanTramTang { get; set; }
 
     public DateTime? NgayBatDau { get; set; }
 
     public DateTime? NgayKetThuc { get; set; }
 
+    public string? HinhAnh { get; set; }
+
     public DateTime? NgayTao { get; set; }
 
-    public virtual ICollection<DonHang> DonHangs { get; set; } = new List<DonHang>();
+    public virtual ICollection<GoiNap> GoiNaps { get; set; } = new List<GoiNap>();
 }
