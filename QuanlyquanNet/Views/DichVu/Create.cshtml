@@ -1,0 +1,35 @@
+﻿@model QuanlyquanNet.Data.DichVu
+
+@{
+    ViewData["Title"] = "Thêm dịch vụ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Thêm dịch vụ mới</h4>
+<hr />
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="TenDichVu">Tên dịch vụ</label>
+        <input type="text" class="form-control" id="TenDichVu" name="TenDichVu" required />
+    </div>
+    <div class="form-group">
+        <label for="Gia">Giá dịch vụ</label>
+        <input type="number" class="form-control" id="Gia" name="Gia" step="0.01" required />
+    </div>
+    <div class="form-group">
+        <label for="LoaiDichVu">Loại dịch vụ</label>
+        <input type="text" class="form-control" id="LoaiDichVu" name="LoaiDichVu" />
+    </div>
+    <div class="form-group">
+        <label for="HinhAnh">Hình ảnh</label>
+        <input type="file" class="form-control" id="HinhAnh" name="HinhAnh" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Thêm dịch vụ</button>
+    </div>
+</form>
+
+<a href="@Url.Action("Index")">Quay lại danh sách dịch vụ</a>

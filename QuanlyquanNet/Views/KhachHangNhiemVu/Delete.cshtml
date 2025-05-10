@@ -1,0 +1,40 @@
+﻿@model QuanlyquanNet.Data.KhachHangNhiemVu
+
+@{
+    ViewData["Title"] = "Xóa Khách Hàng Nhiệm Vụ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Bạn có chắc muốn xóa bản ghi này?</h3>
+<div>
+    <h4>Thông tin Khách Hàng Nhiệm Vụ</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MaKhachHang)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaKhachHang)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MaNhiemVu)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaNhiemVu)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TrangThai)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TrangThai)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MaKhachHang" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

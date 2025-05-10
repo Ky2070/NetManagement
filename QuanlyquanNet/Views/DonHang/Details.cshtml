@@ -1,0 +1,51 @@
+﻿@model QuanlyquanNet.Data.DonHang
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Chi tiết đơn hàng</h3>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.MaDonHang)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.MaDonHang)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.MaKhachHangNavigation.HoTen)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.MaKhachHangNavigation.HoTen)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.MaDichVuNavigation.TenDichVu)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.MaDichVuNavigation.TenDichVu)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.SoLuong)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.SoLuong)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.TongTien)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.TongTien)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.NgayDat)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.NgayDat)
+    </dd>
+</dl>
+
+<a asp-action="Index">Back to List</a>
