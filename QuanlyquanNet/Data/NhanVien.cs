@@ -7,7 +7,7 @@ public partial class NhanVien
 {
     public int MaNhanVien { get; set; }
 
-    public int MaNguoiDung { get; set; }
+    public int? MaNguoiDung { get; set; }
 
     public string HoTen { get; set; } = null!;
 
@@ -15,7 +15,7 @@ public partial class NhanVien
 
     public DateTime? NgayTao { get; set; }
 
-    public virtual NguoiDung MaNguoiDungNavigation { get; set; } = null!;
+    public virtual NguoiDung? MaNguoiDungNavigation { get; set; }
 
     public virtual ICollection<ThongBao> ThongBaos { get; set; } = new List<ThongBao>();
 }

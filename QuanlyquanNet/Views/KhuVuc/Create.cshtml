@@ -1,0 +1,46 @@
+﻿@model QuanlyquanNet.Data.KhuVuc
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Thêm khu vực mới</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="TenKhuVuc" class="control-label"></label>
+                <input asp-for="TenKhuVuc" class="form-control" />
+                <span asp-validation-for="TenKhuVuc" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MoTa" class="control-label"></label>
+                <input asp-for="MoTa" class="form-control" />
+                <span asp-validation-for="MoTa" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Hình ảnh</label>
+                <input type="file" name="hinhAnh" class="form-control" accept=".jpg,.png" />
+                <span class="text-danger" asp-validation-for="HinhAnh"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Thêm" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">⬅️ Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

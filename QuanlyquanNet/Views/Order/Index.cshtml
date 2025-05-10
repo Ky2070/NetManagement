@@ -1,5 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<QuanlyquanNet.Data.PhuThuong>
+
 @{
+    ViewData["Title"] = "Danh sách phần thưởng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-controller="PhuThuong" asp-action="Add" class="btn btn-primary">➕ Thêm phần thưởng</a>
+</p>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Mã</th>
+            <th>Tên phần thưởng</th>
+            <th>Điểm cần đổi</th>
+            <th>Ngày tạo</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MaPhuThuong</td>
+                <td>@item.TenPhuThuong</td>
+                <td>@item.DiemCanDoi</td>
+                <td>@(item.NgayTao?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
+                <td>
+                    <a asp-action="Detail" asp-route-id="@item.MaPhuThuong">🔍 Xem</a> |
+                    <a asp-action="Update" asp-route-id="@item.MaPhuThuong">✏️ Sửa</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MaPhuThuong">🗑️ Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

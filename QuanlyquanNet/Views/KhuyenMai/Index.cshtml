@@ -1,0 +1,40 @@
+﻿@model IEnumerable<QuanlyquanNet.Data.KhuyenMai>
+
+@{
+    ViewData["Title"] = "Danh sách khuyến mãi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="mb-4">🎁 Danh sách khuyến mãi hiện có</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success mb-3">
+        ➕ Thêm khuyến mãi mới
+    </a>
+</p>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card border-warning shadow-sm h-100">
+                <div class="card-header bg-warning text-dark fw-bold">
+                    🎉 @item.TenKhuyenMai
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Giảm giá:</strong> @item.PhanTramGiamGia% <br />
+                        <strong>Bắt đầu:</strong> @item.NgayBatDau?.ToString("dd/MM/yyyy") <br />
+                        <strong>Kết thúc:</strong> @item.NgayKetThuc?.ToString("dd/MM/yyyy") <br />
+                        <strong>Ngày tạo:</strong> @item.NgayTao?.ToString("dd/MM/yyyy")
+                    </p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Edit" asp-route-id="@item.MaKhuyenMai" class="btn btn-sm btn-primary">✏️ Sửa</a>
+                    <a asp-action="Details" asp-route-id="@item.MaKhuyenMai" class="btn btn-sm btn-info text-white">🔍 Xem</a>
+                    <a asp-action="Delete" asp-route-id="@item.MaKhuyenMai" class="btn btn-sm btn-danger">🗑️ Xóa</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
