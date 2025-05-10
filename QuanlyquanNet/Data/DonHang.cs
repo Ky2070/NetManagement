@@ -11,7 +11,11 @@ public partial class DonHang
 
     public int MaDichVu { get; set; }
 
-    public int? MaKhuyenMai { get; set; }
+    public int SoLuong { get; set; }
+
+    public int MaMayTinh { get; set; }
+
+    public string ThongTinViTri { get; set; } = null!;
 
     public decimal TongTien { get; set; }
 
@@ -23,5 +27,5 @@ public partial class DonHang
 
     public virtual KhachHang MaKhachHangNavigation { get; set; } = null!;
 
-    public virtual KhuyenMai? MaKhuyenMaiNavigation { get; set; }
+    public virtual MayTinh MaMayTinhNavigation { get; set; } = null!;
 }

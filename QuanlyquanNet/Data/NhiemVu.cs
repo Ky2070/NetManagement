@@ -11,11 +11,15 @@ public partial class NhiemVu
 
     public string? MoTa { get; set; }
 
-    public int? MaPhuThuong { get; set; }
+    public string? DieuKien { get; set; }
+
+    public int DiemThuong { get; set; }
 
     public int? DoKho { get; set; }
 
+    public string? HinhAnh { get; set; }
+
     public DateTime? NgayTao { get; set; }
 
-    public virtual PhuThuong? MaPhuThuongNavigation { get; set; }
+    public virtual ICollection<KhachHangNhiemVu> KhachHangNhiemVus { get; set; } = new List<KhachHangNhiemVu>();
 }

@@ -11,7 +11,11 @@ public partial class KhuVuc
 
     public string? MoTa { get; set; }
 
+    public decimal GiaMoiGio { get; set; }
+
     public string? HinhAnh { get; set; }
+
+    public DateTime? NgayTao { get; set; }
 
     public virtual ICollection<MayTinh> MayTinhs { get; set; } = new List<MayTinh>();
 }
