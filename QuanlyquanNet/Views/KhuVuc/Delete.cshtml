@@ -1,0 +1,46 @@
+﻿@model QuanlyquanNet.Data.KhuVuc
+
+@{
+    ViewData["Title"] = "Xoá khu vực";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Xoá khu vực</h1>
+
+<h3>Bạn có chắc chắn muốn xoá khu vực này không?</h3>
+
+<div>
+    <h4>Thông tin khu vực</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TenKhuVuc)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TenKhuVuc)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MoTa)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MoTa)
+        </dd>
+
+        <dt class="col-sm-2">
+            Hình ảnh
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.HinhAnh"
+                 alt="Ảnh khu vực"
+                 style="max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px;"
+                 onerror="this.src='/images/placeholder.jpg'" />
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MaKhuVuc" />
+        <input type="submit" value="🗑️ Xoá" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">⬅️ Quay lại danh sách</a>
+    </form>
+</div>

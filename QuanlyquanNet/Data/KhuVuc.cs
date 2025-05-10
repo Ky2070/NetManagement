@@ -11,5 +11,7 @@ public partial class KhuVuc
 
     public string? MoTa { get; set; }
 
+    public string? HinhAnh { get; set; }
+
     public virtual ICollection<MayTinh> MayTinhs { get; set; } = new List<MayTinh>();
 }
