@@ -29,7 +29,7 @@
                         <td>@(item.MaKhuVucNavigation?.TenKhuVuc ?? "Không có")</td>
                         <td>@item.Stt</td>
                         <td>@item.TenMayTinh</td>
-                        <td>@(item.TrangThai ?? "Tốt")</td>
+                        <td>@(item.TrangThai ?? "Tắt")</td>
                         <td>@(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
                         <td>
                             <a asp-action="Details" asp-route-id="@item.MaMayTinh" class="btn btn-info btn-sm">Chi tiết</a>

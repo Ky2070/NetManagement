@@ -1,0 +1,43 @@
+﻿@model QuanlyquanNet.Data.NhiemVu
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chi tiết nhiệm vụ";
+}
+
+<div class="container mt-4">
+    <h2>Chi tiết nhiệm vụ</h2>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">Mã nhiệm vụ</dt>
+            <dd class="col-sm-10">@Model.MaNhiemVu</dd>
+            <dt class="col-sm-2">Tên nhiệm vụ</dt>
+            <dd class="col-sm-10">@Model.TenNhiemVu</dd>
+            <dt class="col-sm-2">Mô tả</dt>
+            <dd class="col-sm-10">@Model.MoTa</dd>
+            <dt class="col-sm-2">Điều kiện</dt>
+            <dd class="col-sm-10">@Model.DieuKien</dd>
+            <dt class="col-sm-2">Điểm thưởng</dt>
+            <dd class="col-sm-10">@Model.DiemThuong</dd>
+            <dt class="col-sm-2">Độ khó</dt>
+            <dd class="col-sm-10">@Model.DoKho</dd>
+            <dt class="col-sm-2">Hình ảnh</dt>
+            <dd class="col-sm-10">
+                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                {
+                    <img src="@Model.HinhAnh" alt="@Model.TenNhiemVu" style="max-width: 200px;" />
+                }
+                else
+                {
+                    <span>Không có</span>
+                }
+            </dd>
+            <dt class="col-sm-2">Ngày tạo</dt>
+            <dd class="col-sm-10">@Model.NgayTao</dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        <a asp-action="Edit" asp-route-id="@Model.MaNhiemVu" class="btn btn-warning">Sửa</a>
+    </div>
+</div>
