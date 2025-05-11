@@ -1,0 +1,58 @@
+﻿@model IEnumerable<QuanlyquanNet.Data.NhiemVu>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách nhiệm vụ";
+}
+
+<div class="container mt-4">
+    <h2>Danh sách nhiệm vụ</h2>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+    </p>
+    @if (Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Mã nhiệm vụ</th>
+                    <th>Tên nhiệm vụ</th>
+                    <th>Điểm thưởng</th>
+                    <th>Độ khó</th>
+                    <th>Hình ảnh</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaNhiemVu</td>
+                        <td>@item.TenNhiemVu</td>
+                        <td>@item.DiemThuong</td>
+                        <td>@item.DoKho</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.HinhAnh))
+                            {
+                                <img src="@item.HinhAnh" alt="@item.TenNhiemVu" style="max-width: 100px;" />
+                            }
+                            else
+                            {
+                                <span>Không có</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.MaNhiemVu" class="btn btn-info btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaNhiemVu" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaNhiemVu" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Không có nhiệm vụ nào.</p>
+    }
+</div>

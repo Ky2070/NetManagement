@@ -1,0 +1,39 @@
+﻿@model QuanlyquanNet.Data.NhiemVu
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Xóa nhiệm vụ";
+}
+
+<div class="container mt-4">
+    <h2>Xóa nhiệm vụ</h2>
+    <h3>Bạn có chắc chắn muốn xóa nhiệm vụ này?</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">Mã nhiệm vụ</dt>
+            <dd class="col-sm-10">@Model.MaNhiemVu</dd>
+            <dt class="col-sm-2">Tên nhiệm vụ</dt>
+            <dd class="col-sm-10">@Model.TenNhiemVu</dd>
+            <dt class="col-sm-2">Điểm thưởng</dt>
+            <dd class="col-sm-10">@Model.DiemThuong</dd>
+            <dt class="col-sm-2">Độ khó</dt>
+            <dd class="col-sm-10">@Model.DoKho</dd>
+            <dt class="col-sm-2">Hình ảnh</dt>
+            <dd class="col-sm-10">
+                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                {
+                    <img src="@Model.HinhAnh" alt="@Model.TenNhiemVu" style="max-width: 200px;" />
+                }
+                else
+                {
+                    <span>Không có</span>
+                }
+            </dd>
+        </dl>
+        <form asp-action="DeleteConfirmed" method="post">
+            <input type="hidden" asp-for="MaNhiemVu" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+        </form>
+    </div>
+</div>

@@ -18,7 +18,7 @@
             <dt class="col-sm-3">Tên máy tính</dt>
             <dd class="col-sm-9">@Model.TenMayTinh</dd>
             <dt class="col-sm-3">Trạng thái</dt>
-            <dd class="col-sm-9">@(Model.TrangThai ?? "Tốt")</dd>
+            <dd class="col-sm-9">@(Model.TrangThai ?? "Tắt")</dd>
             <dt class="col-sm-3">Ngày tạo</dt>
             <dd class="col-sm-9">@(Model.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
         </dl>
