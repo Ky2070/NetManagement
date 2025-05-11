@@ -1,0 +1,89 @@
+﻿@model QuanlyquanNet.Data.PhanThuongDaNhan
+@inject QuanlyquanNet.Data.QuanLyNetContext _context
+
+@{
+    ViewData["Title"] = "Thêm Phần Thưởng";
+}
+
+<style>
+       h1, label, select, input, button {
+           color: white;
+       }
+       .form-group {
+           background-color: #333;
+           padding: 10px;
+           border: 1px solid #555;
+           margin-bottom: 15px;
+           border-radius: 5px;
+           margin-top: 40px;
+       }
+       h1 {
+           margin-top: 40px;
+       }
+       select, input::placeholder {
+           color: #ccc;
+       }
+       button.btn {
+           background-color: #007bff;
+           border: 1px solid #0056b3;
+           padding: 5px 15px;
+           border-radius: 5px;
+           margin-top: 40px;
+       }
+    causalitybutton.btn:hover {
+           background-color: #0056b3;
+       }
+       body {
+           background-color: #1a1a1a;
+           margin: 0;
+           padding: 20px;
+       }
+       .validation-message, .validation-summary {
+           color: #ff5555;
+           font-size: 0.9em;
+       }
+</style>
+
+<h1>Thêm Phần Thưởng</h1>
+
+<form asp-controller="PhanThuongDaNhans" asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="validation-summary"></div>
+
+    <div class="form-group">
+        <label asp-for="MaKhachHang" class="control-label">Khách Hàng</label>
+        <select asp-for="MaKhachHang" class="form-control">
+            <option value="">-- Chọn khách hàng --</option>
+            @foreach (var khachHang in _context.KhachHangs)
+            {
+                <option value="@khachHang.MaKhachHang">@khachHang.HoTen (@khachHang.MaKhachHang)</option>
+            }
+        </select>
+        <span asp-validation-for="MaKhachHang" class="validation-message"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MaPhuThuong" class="control-label">Phần Thưởng</label>
+        <select asp-for="MaPhuThuong" class="form-control">
+            <option value="">-- Chọn phần thưởng --</option>
+            @foreach (var phuThuong in _context.PhuThuongs)
+            {
+                <option value="@phuThuong.MaPhuThuong">@phuThuong.TenPhuThuong (@phuThuong.MaPhuThuong)</option>
+            }
+        </select>
+        <span asp-validation-for="MaPhuThuong" class="validation-message"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NgayNhan" class="control-label">Ngày Nhận</label>
+        <input asp-for="NgayNhan" type="date" class="form-control" />
+        <span asp-validation-for="NgayNhan" class="validation-message"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Thêm Phần Thưởng</button>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}

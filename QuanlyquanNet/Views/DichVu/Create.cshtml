@@ -1,35 +1,38 @@
 ﻿@model QuanlyquanNet.Data.DichVu
 
 @{
-    ViewData["Title"] = "Thêm dịch vụ";
+    ViewData["Title"] = "Thêm Dịch Vụ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>Thêm dịch vụ mới</h4>
-<hr />
+<!-- Form có enctype="multipart/form-data" để gửi tệp -->
+<form asp-action="Create" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="TenDichVu" class="control-label"></label>
+        <input asp-for="TenDichVu" class="form-control" />
+    </div>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="TenDichVu">Tên dịch vụ</label>
-        <input type="text" class="form-control" id="TenDichVu" name="TenDichVu" required />
+        <label asp-for="Gia" class="control-label"></label>
+        <input asp-for="Gia" class="form-control" />
     </div>
+
     <div class="form-group">
-        <label for="Gia">Giá dịch vụ</label>
-        <input type="number" class="form-control" id="Gia" name="Gia" step="0.01" required />
+        <label asp-for="LoaiDichVu" class="control-label"></label>
+        <input asp-for="LoaiDichVu" class="form-control" />
     </div>
+
+    <!-- Thêm phần input để chọn ảnh -->
     <div class="form-group">
-        <label for="LoaiDichVu">Loại dịch vụ</label>
-        <input type="text" class="form-control" id="LoaiDichVu" name="LoaiDichVu" />
+        <label asp-for="HinhAnh" class="control-label">Chọn ảnh</label>
+        <input type="file" name="HinhAnhFile" class="form-control" />
     </div>
+
     <div class="form-group">
-        <label for="HinhAnh">Hình ảnh</label>
-        <input type="file" class="form-control" id="HinhAnh" name="HinhAnh" />
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Thêm dịch vụ</button>
+        <button type="submit" class="btn btn-primary">Thêm Dịch Vụ</button>
     </div>
 </form>
 
-<a href="@Url.Action("Index")">Quay lại danh sách dịch vụ</a>
+<a asp-action="Index">Back to List</a>

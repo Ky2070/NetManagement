@@ -1,0 +1,40 @@
+﻿@model IEnumerable<QuanlyquanNet.Data.VatPham>
+
+@{
+    ViewData["Title"] = "Danh sách Vật Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">➕ Thêm Vật Phẩm</a>
+</p>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.MaVatPham)</th>
+            <th>@Html.DisplayNameFor(model => model.TenVatPham)</th>
+            <th>@Html.DisplayNameFor(model => model.GiaMua)</th>
+            <th>@Html.DisplayNameFor(model => model.SoLuongTon)</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MaVatPham</td>
+                <td>@item.TenVatPham</td>
+                <td>@item.GiaMua</td>
+                <td>@item.SoLuongTon</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.MaVatPham">🔍 Xem</a> |
+                    <a asp-action="Edit" asp-route-id="@item.MaVatPham">✏️ Sửa</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MaVatPham">🗑️ Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,231 @@
+﻿@model QuanlyquanNet.Controllers.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard Thống Kê";
+}
+
+<style>
+    h2, h5, p, .card-title, .card-text {
+        color: white;
+    }
+    /* Nền và viền card */
+    .card {
+        background-color: #2c2f33; /* Nền card tối hơn, tương tự nền đen trong ảnh */
+        border: 1px solid #40444b; /* Viền xám nhạt để phân biệt */
+    }
+
+    .card-header {
+        background-color: #23272a; /* Nền đậm hơn cho tiêu đề */
+        color: white;
+    }
+    /* Nền chung */
+    body {
+        background-color: #1a1a1a; /* Nền đen toàn trang, giống ảnh */
+        margin: 0;
+        padding: 20px;
+    }
+    /* Đảm bảo nút nổi bật */
+    a.btn {
+        color: white;
+        background-color: #7289da; /* Màu xanh dương nhạt, hài hòa với giao diện */
+        border: 1px solid #5d6cc9;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        a.btn:hover {
+            background-color: #5d6cc9;
+        }
+    /* Tùy chỉnh màu cho biểu đồ */
+    .chart-container {
+        position: relative;
+        margin: auto;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+
+<h2>Dashboard Thống Kê</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Tổng Doanh Thu</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.TotalRevenue.ToString("N0") VNĐ</h5>
+                <p class="card-text">
+                    Doanh thu phiên: @Model.TotalRevenuePhien.ToString("N0") VNĐ<br />
+                    Doanh thu đơn hàng: @Model.TotalRevenueDonHang.ToString("N0") VNĐ
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Doanh Thu Theo Loại</div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="revenueByTypeChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Tăng Trưởng Doanh Thu</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.RevenueGrowth.ToString("F2")%</h5>
+                <p class="card-text">ROS: @Model.ROS.ToString("F2")%</p>
+                <div class="chart-container">
+                    <canvas id="rosChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Doanh Thu Theo Tháng</div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="monthlyRevenueChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Tăng Trưởng Doanh Thu Theo Tháng</div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="revenueGrowthChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Quay lại Thống kê</a>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Dữ liệu từ model
+        const monthlyRevenueData = @Html.Raw(Json.Serialize(Model.MonthlyRevenueData));
+        const monthlyRevenueLabels = @Html.Raw(Json.Serialize(Model.MonthlyRevenueLabels));
+
+        // Revenue by Type (Bar Chart)
+        const revenueByTypeCtx = document.getElementById('revenueByTypeChart').getContext('2d');
+        new Chart(revenueByTypeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Phiên', 'Đơn Hàng'],
+                datasets: [{
+                    label: 'Doanh Thu',
+                    data: [@Model.TotalRevenuePhien, @Model.TotalRevenueDonHang],
+                    backgroundColor: ['#43b581', '#f04747'] // Xanh lá và đỏ, tương tự ảnh
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: 'white' } }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // ROS (Doughnut Chart)
+        const rosCtx = document.getElementById('rosChart').getContext('2d');
+        new Chart(rosCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['ROS', 'Còn lại'],
+                datasets: [{
+                    data: [@Model.ROS, 100 - @Model.ROS],
+                    backgroundColor: ['#7289da', '#99aab5'] // Xanh dương và xám nhạt, giống ảnh
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // Monthly Revenue (Bar Chart)
+        const monthlyRevenueCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
+        new Chart(monthlyRevenueCtx, {
+            type: 'bar',
+            data: {
+                labels: monthlyRevenueLabels,
+                datasets: [
+                    {
+                        label: 'Tổng Doanh Thu',
+                        data: monthlyRevenueData,
+                        backgroundColor: '#faa61a' // Cam nhạt, tương tự ảnh
+                    },
+                    {
+                        label: 'Doanh Thu Phiên',
+                        data: @Html.Raw(Json.Serialize(Model.MonthlyRevenuePhienData)),
+                        backgroundColor: '#43b581' // Xanh lá
+                    },
+                    {
+                        label: 'Doanh Thu Đơn Hàng',
+                        data: @Html.Raw(Json.Serialize(Model.MonthlyRevenueDonHangData)),
+                        backgroundColor: '#f04747' // Đỏ
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: 'white' } }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // Revenue Growth (Line Chart)
+        const revenueGrowthCtx = document.getElementById('revenueGrowthChart').getContext('2d');
+        const monthlyGrowth = [];
+        for (let i = 1; i < monthlyRevenueData.length; i++) {
+            const prev = monthlyRevenueData[i - 1];
+            const curr = monthlyRevenueData[i];
+            monthlyGrowth.push(prev !== 0 ? ((curr - prev) / prev * 100) : 0);
+        }
+        new Chart(revenueGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: monthlyRevenueLabels.slice(1),
+                datasets: [{
+                    label: 'Tăng Trưởng (%)',
+                    data: monthlyGrowth,
+                    borderColor: '#f04747', // Đỏ, giống ảnh
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: 'white' } }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+    </script>
+}

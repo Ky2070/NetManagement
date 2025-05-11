@@ -1,0 +1,53 @@
+﻿@model QuanlyquanNet.Data.VatPham
+
+@{
+    ViewData["Title"] = "Thêm Vật Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="TenVatPham" class="control-label"></label>
+        <input asp-for="TenVatPham" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MoTa" class="control-label"></label>
+        <input asp-for="MoTa" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DiemCanDoi" class="control-label"></label>
+        <input asp-for="DiemCanDoi" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GiaMua" class="control-label"></label>
+        <input asp-for="GiaMua" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SoLuongTon" class="control-label"></label>
+        <input asp-for="SoLuongTon" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Thêm Vật Phẩm</button>
+    </div>
+    public async Task<IActionResult>
+        Create([Bind("TenVatPham,MoTa,DiemCanDoi,GiaMua,SoLuongTon")] VatPham vatPham)
+        {
+        if (ModelState.IsValid)
+        {
+        vatPham.NgayTao = DateTime.Now; // Gán ngày tạo
+        _context.Add(vatPham);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+        }
+        return View(vatPham);
+        }
+</form>
+
+<a asp-action="Index">Back to List</a>

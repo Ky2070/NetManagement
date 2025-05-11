@@ -1,0 +1,98 @@
+﻿@model IEnumerable<QuanlyquanNet.Data.PhanThuongDaNhan>
+
+@{
+    ViewData["Title"] = "Danh Sách Phần Thưởng Đã Nhận";
+}
+
+<style>
+    /* Đặt màu chữ trắng cho tất cả các thành phần */
+    h1, th, td, a {
+        color: white;
+    }
+
+    /* Nhích tiêu đề xuống */
+    h1 {
+        margin-top: 75px; /* Nhích tiêu đề xuống 40px */
+    }
+
+    /* Thêm nền và viền cho bảng để chữ nổi bật */
+    table {
+        background-color: #333; /* Nền tối cho bảng */
+        border: 1px solid #555; /* Viền để phân biệt */
+        margin-top: 75px; /* Nhích bảng xuống 40px */
+    }
+
+    th {
+        background-color: #222; /* Nền đậm hơn cho tiêu đề cột */
+    }
+
+    td {
+        border: 1px solid #555; /* Viền cho ô dữ liệu */
+    }
+
+    /* Thiết kế nút */
+    a.btn {
+        background-color: #007bff; /* Màu xanh dương cho nút */
+        border: 1px solid #0056b3;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
+
+        a.btn:hover {
+            background-color: #0056b3;
+        }
+
+    /* Nút Thêm Phần Thưởng */
+    a.btn-primary {
+        background-color: #007bff;
+        border: 1px solid #0056b3;
+        padding: 5px 15px;
+        border-radius: 5px;
+        margin-top: 20px; /* Nhích nút xuống một chút để không sát bảng */
+    }
+
+        a.btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    /* Nền chung để chữ trắng nổi bật */
+    body {
+        background-color: #1a1a1a; /* Nền đen tối */
+        margin: 0;
+        padding: 20px;
+    }
+</style>
+
+<h1>Danh Sách Phần Thưởng Đã Nhận</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Phần Thưởng</th>
+            <th>Khách Hàng</th>
+            <th>Phần Thưởng</th>
+            <th>Ngày Nhận</th>
+            <th>Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MaPhanThuong</td>
+                <td>@item.MaKhachHangNavigation.HoTen</td>
+                <td>@item.MaPhuThuongNavigation.TenPhuThuong</td>
+                <td>@item.NgayNhan?.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.MaPhanThuong" class="btn">🔍 Xem</a> |
+                    <a asp-action="Edit" asp-route-id="@item.MaPhanThuong" class="btn">✏️ Sửa</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MaPhanThuong" class="btn">🗑️ Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">➕ Thêm Phần Thưởng</a>
