@@ -1,0 +1,25 @@
+﻿@model QuanlyquanNet.Data.NguoiDung
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chi tiết người dùng";
+}
+
+<div class="container mt-4">
+    <h2>Chi tiết người dùng</h2>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Tên đăng nhập</dt>
+            <dd class="col-sm-9">@Model.TenDangNhap</dd>
+            <dt class="col-sm-3">Mật khẩu</dt>
+            <dd class="col-sm-9">@Model.MatKhau</dd>
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.HoTen</dd>
+            <dt class="col-sm-3">Ngày tạo</dt>
+            <dd class="col-sm-9">@(Model.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
+            <dt class="col-sm-3">Vai trò</dt>
+            <dd class="col-sm-9">@(Model.MaVaiTroNavigation?.TenVaiTro ?? "Không có")</dd>
+        </dl>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</div>

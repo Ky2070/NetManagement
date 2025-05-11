@@ -1,0 +1,30 @@
+﻿@model QuanlyquanNet.Data.NguoiDung
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Xóa người dùng";
+}
+
+<div class="container mt-4">
+    <h2>Xóa người dùng</h2>
+    <h3>Bạn có chắc chắn muốn xóa người dùng này?</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Tên đăng nhập</dt>
+            <dd class="col-sm-9">@Model.TenDangNhap</dd>
+            <dt class="col-sm-3">Mật khẩu</dt>
+            <dd class="col-sm-9">@Model.MatKhau</dd>
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.HoTen</dd>
+            <dt class="col-sm-3">Ngày tạo</dt>
+            <dd class="col-sm-9">@(Model.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
+            <dt class="col-sm-3">Vai trò</dt>
+            <dd class="col-sm-9">@(Model.MaVaiTroNavigation?.TenVaiTro ?? "Không có")</dd>
+        </dl>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="MaNguoiDung" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

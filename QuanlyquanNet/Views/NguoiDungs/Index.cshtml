@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách người dùng";
+}
+
+<div class="container mt-4">
+    <h2>Danh sách người dùng</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Thêm người dùng mới</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Tên đăng nhập</th>
+                <th>Mật khẩu</th>
+                <th>Họ tên</th>
+                <th>Ngày tạo</th>
+                <th>Vai trò</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @model IEnumerable<QuanlyquanNet.Data.NguoiDung>
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TenDangNhap</td>
+                        <td>@item.MatKhau</td>
+                        <td>@item.HoTen</td>
+                        <td>@(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                        <td>@(item.MaVaiTroNavigation?.TenVaiTro ?? "Không có")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.MaNguoiDung" class="btn btn-info btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaNguoiDung" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaNguoiDung" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">Không có người dùng nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

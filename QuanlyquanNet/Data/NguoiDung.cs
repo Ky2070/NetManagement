@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
 
 namespace QuanlyquanNet.Data;
@@ -21,6 +22,7 @@ public partial class NguoiDung
 
     public virtual ICollection<LichSuDangNhap> LichSuDangNhaps { get; set; } = new List<LichSuDangNhap>();
 
+    [BindNever]
     public virtual VaiTro MaVaiTroNavigation { get; set; } = null!;
 
     public virtual ICollection<NhanVien> NhanViens { get; set; } = new List<NhanVien>();
