@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace QuanlyquanNet.Controllers
 {
     [Route("[controller]")]
-    public class GoiNapController : Controller
+    public class MayTinhController : Controller
     {
         private readonly QuanLyNetContext _context;
 
-        public GoiNapController(QuanLyNetContext context)
+        public MayTinhController(QuanLyNetContext context)
         {
             _context = context;
         }
@@ -21,44 +21,49 @@ namespace QuanlyquanNet.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var goiNaps = await _context.GoiNaps
-                .Include(g => g.MaKhuyenMaiNavigation)
+            var mayTinhs = await _context.MayTinhs
+                .Include(m => m.MaKhuVucNavigation)
                 .ToListAsync();
-            return View(goiNaps);
+            return View(mayTinhs);
         }
 
         [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
-            var goiNap = await _context.GoiNaps
-                .Include(g => g.MaKhuyenMaiNavigation)
-                .FirstOrDefaultAsync(g => g.MaGoiNap == id);
-            if (goiNap == null)
+            var mayTinh = await _context.MayTinhs
+                .Include(m => m.MaKhuVucNavigation)
+                .FirstOrDefaultAsync(m => m.MaMayTinh == id);
+            if (mayTinh == null)
             {
                 return NotFound();
             }
-            return View(goiNap);
+            return View(mayTinh);
         }
 
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            ViewData["MaKhuyenMai"] = new SelectList(_context.KhuyenMais, "MaKhuyenMai", "TenKhuyenMai");
+            var khuVucs = _context.KhuVucs.ToList();
+            if (!khuVucs.Any())
+            {
+                ModelState.AddModelError("", "Không có khu vực nào trong cơ sở dữ liệu. Vui lòng thêm khu vực trước.");
+            }
+            ViewData["MaKhuVuc"] = new SelectList(khuVucs, "MaKhuVuc", "TenKhuVuc");
             return View();
         }
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TenGoi,SoTien,MaKhuyenMai")] GoiNap goiNap)
+        public async Task<IActionResult> Create([Bind("MaKhuVuc,Stt,TenMayTinh,TrangThai")] MayTinh mayTinh)
         {
-            ModelState.Remove("MaKhuyenMaiNavigation");
+            ModelState.Remove("MaKhuVucNavigation");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    goiNap.NgayTao = DateTime.Now;
-                    _context.Add(goiNap);
+                    mayTinh.NgayTao = DateTime.Now;
+                    _context.Add(mayTinh);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -72,43 +77,43 @@ namespace QuanlyquanNet.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
                 ModelState.AddModelError("", "Dữ liệu không hợp lệ: " + string.Join("; ", errors));
             }
-            ViewData["MaKhuyenMai"] = new SelectList(_context.KhuyenMais, "MaKhuyenMai", "TenKhuyenMai", goiNap.MaKhuyenMai);
-            return View(goiNap);
+            ViewData["MaKhuVuc"] = new SelectList(_context.KhuVucs, "MaKhuVuc", "TenKhuVuc", mayTinh.MaKhuVuc);
+            return View(mayTinh);
         }
 
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
-            var goiNap = await _context.GoiNaps.FindAsync(id);
-            if (goiNap == null)
+            var mayTinh = await _context.MayTinhs.FindAsync(id);
+            if (mayTinh == null)
             {
                 return NotFound();
             }
-            ViewData["MaKhuyenMai"] = new SelectList(_context.KhuyenMais, "MaKhuyenMai", "TenKhuyenMai", goiNap.MaKhuyenMai);
-            return View(goiNap);
+            ViewData["MaKhuVuc"] = new SelectList(_context.KhuVucs, "MaKhuVuc", "TenKhuVuc", mayTinh.MaKhuVuc);
+            return View(mayTinh);
         }
 
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaGoiNap,TenGoi,SoTien,MaKhuyenMai,NgayTao")] GoiNap goiNap)
+        public async Task<IActionResult> Edit(int id, [Bind("MaMayTinh,MaKhuVuc,Stt,TenMayTinh,TrangThai,NgayTao")] MayTinh mayTinh)
         {
-            if (id != goiNap.MaGoiNap)
+            if (id != mayTinh.MaMayTinh)
             {
                 return NotFound();
             }
 
-            ModelState.Remove("MaKhuyenMaiNavigation");
+            ModelState.Remove("MaKhuVucNavigation");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(goiNap);
+                    _context.Update(mayTinh);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GoiNapExists(goiNap.MaGoiNap))
+                    if (!MayTinhExists(mayTinh.MaMayTinh))
                     {
                         return NotFound();
                     }
@@ -119,39 +124,39 @@ namespace QuanlyquanNet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaKhuyenMai"] = new SelectList(_context.KhuyenMais, "MaKhuyenMai", "TenKhuyenMai", goiNap.MaKhuyenMai);
-            return View(goiNap);
+            ViewData["MaKhuVuc"] = new SelectList(_context.KhuVucs, "MaKhuVuc", "TenKhuVuc", mayTinh.MaKhuVuc);
+            return View(mayTinh);
         }
 
         [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var goiNap = await _context.GoiNaps
-                .Include(g => g.MaKhuyenMaiNavigation)
-                .FirstOrDefaultAsync(g => g.MaGoiNap == id);
-            if (goiNap == null)
+            var mayTinh = await _context.MayTinhs
+                .Include(m => m.MaKhuVucNavigation)
+                .FirstOrDefaultAsync(m => m.MaMayTinh == id);
+            if (mayTinh == null)
             {
                 return NotFound();
             }
-            return View(goiNap);
+            return View(mayTinh);
         }
 
         [HttpPost("Delete/{id}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var goiNap = await _context.GoiNaps.FindAsync(id);
-            if (goiNap != null)
+            var mayTinh = await _context.MayTinhs.FindAsync(id);
+            if (mayTinh != null)
             {
-                _context.GoiNaps.Remove(goiNap);
+                _context.MayTinhs.Remove(mayTinh);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GoiNapExists(int id)
+        private bool MayTinhExists(int id)
         {
-            return _context.GoiNaps.Any(e => e.MaGoiNap == id);
+            return _context.MayTinhs.Any(e => e.MaMayTinh == id);
         }
     }
 }
