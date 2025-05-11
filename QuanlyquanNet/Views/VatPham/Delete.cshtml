@@ -1,0 +1,49 @@
+﻿@model QuanlyquanNet.Data.VatPham
+
+@{
+    ViewData["Title"] = "Xóa Vật Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Bạn có chắc chắn muốn xóa vật phẩm này không?</h3>
+<div>
+    <h4>Vật Phẩm</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TenVatPham)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TenVatPham)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GiaMua)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GiaMua)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SoLuongTon)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SoLuongTon)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MoTa)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MoTa)
+        </dd>
+        <dt class="col-sm-2">
+           
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MaVatPham" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Quay lại danh sách</a>
+    </form>
+</div>

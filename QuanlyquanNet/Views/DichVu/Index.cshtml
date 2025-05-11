@@ -1,5 +1,4 @@
-﻿@using System.Collections.Generic
-@model IEnumerable<QuanlyquanNet.Data.DichVu>
+﻿@model IEnumerable<QuanlyquanNet.Data.DichVu>
 
 @{
     ViewData["Title"] = "Danh sách dịch vụ";
@@ -9,7 +8,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-controller="DichVu" asp-action="Create" class="btn btn-primary">➕ Thêm dịch vụ</a>
+    <a asp-action="Create" class="btn btn-primary">➕ Thêm dịch vụ</a>
 </p>
 
 <table class="table table-bordered table-hover">
@@ -18,26 +17,33 @@
             <th>@Html.DisplayNameFor(model => model.MaDichVu)</th>
             <th>@Html.DisplayNameFor(model => model.TenDichVu)</th>
             <th>@Html.DisplayNameFor(model => model.Gia)</th>
-            <th>@Html.DisplayNameFor(model => model.LoaiDichVu)</th>
-            <th>@Html.DisplayNameFor(model => model.NgayTao)</th>
+            <th>@Html.DisplayNameFor(model => model.HinhAnh)</th>
             <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-                <tr>
-                    <td>@item.MaDichVu</td>
-                    <td>@item.TenDichVu</td>
-                    <td>@item.Gia.ToString("C")</td>
-                    <td>@(string.IsNullOrEmpty(item.LoaiDichVu) ? "Chưa có" : item.LoaiDichVu)</td>
-                    <td>@(item.NgayTao.HasValue ? item.NgayTao.Value.ToString("dd/MM/yyyy") : "Chưa có")</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.MaDichVu">🔍 Xem</a> |
-                        <a asp-action="Edit" asp-route-id="@item.MaDichVu">✏️ Sửa</a> |
-                        <a asp-action="Delete" asp-route-id="@item.MaDichVu">🗑️ Xóa</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>@item.MaDichVu</td>
+                <td>@item.TenDichVu</td>
+                <td>@item.Gia</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.HinhAnh))
+                    {
+                        <img src="@item.HinhAnh" alt="@item.TenDichVu" width="100" height="100" />
+                    }
+                    else
+                    {
+                        <span>Chưa có ảnh</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.MaDichVu">🔍 Xem</a> |
+                    <a asp-action="Edit" asp-route-id="@item.MaDichVu">✏️ Sửa</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MaDichVu">🗑️ Xóa</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

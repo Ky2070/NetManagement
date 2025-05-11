@@ -1,0 +1,89 @@
+﻿<style>
+    /* Đặt màu chữ trắng và thêm nền cho bảng */
+    table, th, td {
+        color: white;
+        background-color: #333; /* Nền tối cho bảng */
+        border: 1px solid #555; /* Viền để phân biệt ô */
+    }
+
+    th {
+        background-color: #222; /* Nền đậm hơn cho tiêu đề */
+    }
+
+    /* Điều chỉnh chiều cao cho các ô để không bị cắt chữ */
+    td, th {
+        padding: 10px 15px; /* Thêm khoảng cách trong các ô */
+        vertical-align: middle; /* Căn giữa nội dung theo chiều dọc */
+    }
+
+    /* Đảm bảo nút nổi bật */
+    a.btn {
+        color: white;
+        background-color: #007bff; /* Màu xanh dương cho nút */
+        border: 1px solid #0056b3;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        a.btn:hover {
+            background-color: #0056b3;
+        }
+
+    /* Nền chung để chữ nổi bật */
+    body {
+        background-color: #1a1a1a; /* Nền tối toàn trang */
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        color: white;
+    }
+
+    /* Đảm bảo chiều cao bảng luôn hợp lý và không bị tràn */
+    .table {
+        width: 100%;
+        table-layout: auto;
+        overflow: hidden;
+        margin-top: 40px;
+    }
+</style>
+
+<h2>Thống kê</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Thống Kê</th>
+            <th>Ngày Thống Kê</th>
+            <th>Tổng Doanh Thu</th>
+            <th>Tổng Doanh Thu Phiên</th>
+            <th>Tổng Doanh Thu Đơn Hàng</th>
+            <th>Số Máy Hoạt Động</th>
+            <th>Tổng Số Phiên</th>
+            <th>Tổng Số Đơn Hàng</th>
+            <th>Số Khách Hàng</th>
+            <th>Ngày Tạo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MaThongKe</td>
+                <td>@item.NgayThongKe.ToString("dd/MM/yyyy")</td>
+                <td>@item.TongDoanhThu?.ToString("N0") ?? "0"</td>
+                <td>@item.TongDoanhThuPhien?.ToString("N0") ?? "0"</td>
+                <td>@item.TongDoanhThuDonHang?.ToString("N0") ?? "0"</td>
+                <td>@item.SoMayHoatDong</td>
+                <td>@item.TongSoPhien</td>
+                <td>@item.TongSoDonHang</td>
+                <td>@item.SoKhachHang</td>
+                <td>@item.NgayTao?.ToString("dd/MM/yyyy HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Dashboard" class="btn btn-primary">Xem Dashboard</a>

@@ -1,57 +1,62 @@
 ﻿@model QuanlyquanNet.Data.DichVu
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa Dịch Vụ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h4>Dịch vụ</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="MaDichVu" />
+<!-- Hiển thị lỗi tổng quát -->
+<div asp-validation-summary="All" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="TenDichVu" class="control-label"></label>
-                <input asp-for="TenDichVu" class="form-control" />
-                <span asp-validation-for="TenDichVu" class="text-danger"></span>
-            </div>
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="MaDichVu" />
+    <input type="hidden" asp-for="NgayTao" />
 
-            <div class="form-group">
-                <label asp-for="Gia" class="control-label"></label>
-                <input asp-for="Gia" class="form-control" />
-                <span asp-validation-for="Gia" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="LoaiDichVu" class="control-label"></label>
-                <input asp-for="LoaiDichVu" class="form-control" />
-                <span asp-validation-for="LoaiDichVu" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="HinhAnh" class="control-label"></label>
-                <input asp-for="HinhAnh" class="form-control" />
-                <span asp-validation-for="HinhAnh" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NgayTao" class="control-label"></label>
-                <input asp-for="NgayTao" class="form-control" />
-                <span asp-validation-for="NgayTao" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="form-group">
+        <label asp-for="TenDichVu" class="control-label"></label>
+        <input asp-for="TenDichVu" class="form-control" />
+        <span asp-validation-for="TenDichVu" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div
+    <div class="form-group">
+        <label asp-for="Gia" class="control-label"></label>
+        <input asp-for="Gia" class="form-control" />
+        <span asp-validation-for="Gia" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LoaiDichVu" class="control-label"></label>
+        <input asp-for="LoaiDichVu" class="form-control" />
+        <span asp-validation-for="LoaiDichVu" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Hình ảnh hiện tại</label>
+        @if (!string.IsNullOrEmpty(Model.HinhAnh))
+        {
+            <img src="@Model.HinhAnh" alt="@Model.TenDichVu" style="max-width: 100px;" />
+        }
+        else
+        {
+            <span>Không có ảnh</span>
+        }
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Chọn ảnh mới</label>
+        <input type="file" name="hinhAnhFile" class="form-control" />
+        <span asp-validation-for="HinhAnh" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    </div>
+</form>
+
+<a asp-action="Index">Quay lại danh sách</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
