@@ -1,0 +1,69 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách khách hàng";
+}
+
+<div class="container mt-4">
+    <h2>Danh sách khách hàng</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <a asp-action="Create" class="btn btn-primary mb-3">Thêm khách hàng mới</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Số điện thoại</th>
+                <th>Mật khẩu</th>
+                <th>Họ tên</th>
+                <th>Loại tài khoản</th>
+                <th>Số dư</th>
+                <th>Ngày tạo</th>
+                <th>Tên đăng nhập</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @model IEnumerable<QuanlyquanNet.Data.KhachHang>
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.SoDienThoai</td>
+                        <td>@item.MatKhau</td>
+                        <td>@item.HoTen</td>
+                        <td>@(item.LoaiTaiKhoan ?? "")</td>
+                        <td>@(item.SoDu ?? 0)</td>
+                        <td>@(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                        <td>@(item.TenDangNhapNavigation?.TenDangNhap ?? "Không có")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.MaKhachHang" class="btn btn-info btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaKhachHang" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaKhachHang" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center">Không có khách hàng nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,45 @@
+﻿@model QuanlyquanNet.Data.NguoiDung
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Thêm người dùng mới";
+}
+
+<div class="container mt-4">
+    <h2>Thêm người dùng mới</h2>
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="TenDangNhap" class="control-label"></label>
+            <input asp-for="TenDangNhap" class="form-control" required />
+            <span asp-validation-for="TenDangNhap" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MatKhau" class="control-label"></label>
+            <input asp-for="MatKhau" class="form-control" required />
+            <span asp-validation-for="MatKhau" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaVaiTro" class="control-label"></label>
+            <select asp-for="MaVaiTro" class="form-control" asp-items="ViewBag.MaVaiTro" required>
+                <option value="">Chọn vai trò</option>
+            </select>
+            <span asp-validation-for="MaVaiTro" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="HoTen" class="control-label"></label>
+            <input asp-for="HoTen" class="form-control" required />
+            <span asp-validation-for="HoTen" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3">
+            <input type="submit" value="Thêm" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
