@@ -1,0 +1,50 @@
+﻿@model QuanlyquanNet.Data.KhuVuc
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Sửa khu vực";
+}
+
+<div class="container mt-4">
+    <h2>Sửa khu vực</h2>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="MaKhuVuc" />
+        <div class="form-group">
+            <label asp-for="TenKhuVuc" class="control-label"></label>
+            <input asp-for="TenKhuVuc" class="form-control" required />
+            <span asp-validation-for="TenKhuVuc" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MoTa" class="control-label"></label>
+            <input asp-for="MoTa" class="form-control" />
+            <span asp-validation-for="MoTa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GiaMoiGio" class="control-label"></label>
+            <input asp-for="GiaMoiGio" class="form-control" type="number" step="0.01" min="0" required />
+            <span asp-validation-for="GiaMoiGio" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="HinhAnh" class="control-label">Hình ảnh</label>
+            @if (!string.IsNullOrEmpty(Model.HinhAnh))
+            {
+                <div class="mb-2">
+                    <img src="@Model.HinhAnh" alt="Hình ảnh khu vực" style="max-width: 200px; max-height: 200px;" />
+                </div>
+            }
+            <input type="file" name="HinhAnh" class="form-control" accept=".jpg,.jpeg,.png" />
+            <span class="text-danger" asp-validation-for="HinhAnh"></span>
+        </div>
+        <div class="form-group mt-3">
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

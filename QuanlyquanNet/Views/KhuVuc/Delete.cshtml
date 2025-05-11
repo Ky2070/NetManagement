@@ -1,0 +1,41 @@
+﻿@model QuanlyquanNet.Data.KhuVuc
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Xóa khu vực";
+}
+
+<div class="container mt-4">
+    <h2>Xóa khu vực</h2>
+    <h3>Bạn có chắc chắn muốn xóa khu vực này?</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Mã khu vực</dt>
+            <dd class="col-sm-9">@Model.MaKhuVuc</dd>
+            <dt class="col-sm-3">Tên khu vực</dt>
+            <dd class="col-sm-9">@Model.TenKhuVuc</dd>
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">@(Model.MoTa ?? "Không có")</dd>
+            <dt class="col-sm-3">Giá mỗi giờ</dt>
+            <dd class="col-sm-9">@Model.GiaMoiGio.ToString("N0") VNĐ</dd>
+            <dt class="col-sm-3">Hình ảnh</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                {
+                    <img src="@Model.HinhAnh" alt="@Model.TenKhuVuc" style="max-width: 200px; max-height: 200px;" />
+                }
+                else
+                {
+                    <span>Không có</span>
+                }
+            </dd>
+            <dt class="col-sm-3">Ngày tạo</dt>
+            <dd class="col-sm-9">@(Model.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
+        </dl>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="MaKhuVuc" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>

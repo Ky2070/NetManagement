@@ -1,0 +1,43 @@
+﻿@model QuanlyquanNet.Data.KhuyenMai
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Xóa khuyến mãi";
+}
+
+<div class="container mt-4">
+    <h2>Xóa khuyến mãi</h2>
+    <h3>Bạn có chắc chắn muốn xóa khuyến mãi này?</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Mã khuyến mãi</dt>
+            <dd class="col-sm-9">@Model.MaKhuyenMai</dd>
+            <dt class="col-sm-3">Tên khuyến mãi</dt>
+            <dd class="col-sm-9">@Model.TenKhuyenMai</dd>
+            <dt class="col-sm-3">Phần trăm tăng</dt>
+            <dd class="col-sm-9">@(Model.PhanTramTang.HasValue ? Model.PhanTramTang.Value.ToString("N2") : "0.00") %</dd>
+            <dt class="col-sm-3">Ngày bắt đầu</dt>
+            <dd class="col-sm-9">@(Model.NgayBatDau?.ToString("dd/MM/yyyy") ?? "")</dd>
+            <dt class="col-sm-3">Ngày kết thúc</dt>
+            <dd class="col-sm-9">@(Model.NgayKetThuc?.ToString("dd/MM/yyyy") ?? "")</dd>
+            <dt class="col-sm-3">Hình ảnh</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                {
+                    <img src="@Model.HinhAnh" alt="@Model.TenKhuyenMai" style="max-width: 200px; max-height: 200px;" />
+                }
+                else
+                {
+                    <span>Không có</span>
+                }
+            </dd>
+            <dt class="col-sm-3">Ngày tạo</dt>
+            <dd class="col-sm-9">@(Model.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
+        </dl>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="MaKhuyenMai" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>
