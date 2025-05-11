@@ -2,12 +2,11 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Xóa gói nạp";
+    ViewData["Title"] = "Chi tiết gói nạp";
 }
 
 <div class="container mt-4">
-    <h2>Xóa gói nạp</h2>
-    <h3>Bạn có chắc chắn muốn xóa gói nạp này?</h3>
+    <h2>Chi tiết gói nạp</h2>
     <div>
         <dl class="row">
             <dt class="col-sm-3">Mã gói nạp</dt>
@@ -21,10 +20,6 @@
             <dt class="col-sm-3">Ngày tạo</dt>
             <dd class="col-sm-9">@(Model.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
         </dl>
-        <form asp-action="Delete" method="post">
-            <input type="hidden" asp-for="MaGoiNap" />
-            <input type="submit" value="Xóa" class="btn btn-danger" />
-            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-        </form>
     </div>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
 </div>

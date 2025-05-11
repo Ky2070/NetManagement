@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách máy tính";
+}
+
+<div class="container mt-4">
+    <h2>Danh sách máy tính</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Thêm máy tính mới</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã máy tính</th>
+                <th>Khu vực</th>
+                <th>Stt</th>
+                <th>Tên máy tính</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @model IEnumerable<QuanlyquanNet.Data.MayTinh>
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaMayTinh</td>
+                        <td>@(item.MaKhuVucNavigation?.TenKhuVuc ?? "Không có")</td>
+                        <td>@item.Stt</td>
+                        <td>@item.TenMayTinh</td>
+                        <td>@(item.TrangThai ?? "Tốt")</td>
+                        <td>@(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.MaMayTinh" class="btn btn-info btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaMayTinh" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaMayTinh" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">Không có máy tính nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

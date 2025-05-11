@@ -1,0 +1,32 @@
+﻿@model QuanlyquanNet.Data.MayTinh
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Xóa máy tính";
+}
+
+<div class="container mt-4">
+    <h2>Xóa máy tính</h2>
+    <h3>Bạn có chắc chắn muốn xóa máy tính này?</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Mã máy tính</dt>
+            <dd class="col-sm-9">@Model.MaMayTinh</dd>
+            <dt class="col-sm-3">Khu vực</dt>
+            <dd class="col-sm-9">@(Model.MaKhuVucNavigation?.TenKhuVuc ?? "Không có")</dd>
+            <dt class="col-sm-3">Stt</dt>
+            <dd class="col-sm-9">@Model.Stt</dd>
+            <dt class="col-sm-3">Tên máy tính</dt>
+            <dd class="col-sm-9">@Model.TenMayTinh</dd>
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">@(Model.TrangThai ?? "Tốt")</dd>
+            <dt class="col-sm-3">Ngày tạo</dt>
+            <dd class="col-sm-9">@(Model.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
+        </dl>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="MaMayTinh" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>
