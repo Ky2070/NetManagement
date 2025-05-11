@@ -1,0 +1,61 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách khuyến mãi";
+}
+
+<div class="container mt-4">
+    <h2>Danh sách khuyến mãi</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Thêm khuyến mãi mới</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã khuyến mãi</th>
+                <th>Tên khuyến mãi</th>
+                <th>Phần trăm tăng</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Hình ảnh</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @model IEnumerable<QuanlyquanNet.Data.KhuyenMai>
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaKhuyenMai</td>
+                        <td>@item.TenKhuyenMai</td>
+                        <td>@(item.PhanTramTang.HasValue ? item.PhanTramTang.Value.ToString("N2") : "0.00") %</td>
+                        <td>@(item.NgayBatDau?.ToString("dd/MM/yyyy") ?? "")</td>
+                        <td>@(item.NgayKetThuc?.ToString("dd/MM/yyyy") ?? "")</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.HinhAnh))
+                            {
+                                <img src="@item.HinhAnh" alt="@item.TenKhuyenMai" style="max-width: 100px; max-height: 100px;" />
+                            }
+                            else
+                            {
+                                <span>Không có</span>
+                            }
+                        </td>
+                        <td>@(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.MaKhuyenMai" class="btn btn-info btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaKhuyenMai" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaKhuyenMai" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center">Không có khuyến mãi nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

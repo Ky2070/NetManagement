@@ -1,0 +1,55 @@
+﻿@model QuanlyquanNet.Data.KhuyenMai
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Sửa khuyến mãi";
+}
+
+<div class="container mt-4">
+    <h2>Sửa khuyến mãi</h2>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="MaKhuyenMai" />
+        <div class="form-group">
+            <label asp-for="TenKhuyenMai" class="control-label"></label>
+            <input asp-for="TenKhuyenMai" class="form-control" required />
+            <span asp-validation-for="TenKhuyenMai" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhanTramTang" class="control-label"></label>
+            <input asp-for="PhanTramTang" class="form-control" type="number" step="0.01" min="0" max="100" required />
+            <span asp-validation-for="PhanTramTang" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NgayBatDau" class="control-label"></label>
+            <input asp-for="NgayBatDau" class="form-control" type="date" required />
+            <span asp-validation-for="NgayBatDau" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NgayKetThuc" class="control-label"></label>
+            <input asp-for="NgayKetThuc" class="form-control" type="date" required />
+            <span asp-validation-for="NgayKetThuc" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="HinhAnh" class="control-label">Hình ảnh</label>
+            @if (!string.IsNullOrEmpty(Model.HinhAnh))
+            {
+                <div class="mb-2">
+                    <img src="@Model.HinhAnh" alt="@Model.TenKhuyenMai" style="max-width: 200px; max-height: 200px;" />
+                </div>
+            }
+            <input type="file" name="HinhAnh" class="form-control" accept=".jpg,.jpeg,.png" />
+            <span class="text-danger" asp-validation-for="HinhAnh"></span>
+        </div>
+        <div class="form-group mt-3">
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
