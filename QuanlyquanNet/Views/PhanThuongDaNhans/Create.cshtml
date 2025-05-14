@@ -1,0 +1,42 @@
+﻿@model PhanThuongDaNhan
+
+@{
+    ViewData["Title"] = "Tạo phần thưởng đã nhận";
+}
+
+<h1 class="text-primary mb-4">Tạo phần thưởng đã nhận</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="MaKhachHang" class="form-label">Khách hàng</label>
+                <select asp-for="MaKhachHang" class="form-select" asp-items="ViewBag.MaKhachHang">
+                    <option value="">-- Chọn khách hàng --</option>
+                </select>
+                <span asp-validation-for="MaKhachHang" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MaPhuThuong" class="form-label">Phần thưởng</label>
+                <select asp-for="MaPhuThuong" class="form-select" asp-items="ViewBag.MaPhuThuong">
+                    <option value="">-- Chọn phần thưởng --</option>
+                </select>
+                <span asp-validation-for="MaPhuThuong" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+                <button type="submit" class="btn btn-success">Tạo mới</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
