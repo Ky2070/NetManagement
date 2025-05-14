@@ -1,0 +1,55 @@
+﻿@model IEnumerable<QuanlyquanNet.Data.PhienChoi>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách phiên chơi";
+}
+
+<div class="container mt-4">
+    <h2>Danh sách phiên chơi</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Thêm phiên chơi mới</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã phiên chơi</th>
+                <th>Khách hàng</th>
+                <th>Máy tính</th>
+                <th>Vị trí</th>
+                <th>Thời gian bắt đầu</th>
+                <th>Thời gian kết thúc</th>
+                <th>Tổng chi phí</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaPhienChoi</td>
+                        <td>@(item.MaKhachHangNavigation?.HoTen ?? "Không có")</td>
+                        <td>@(item.MaMayTinhNavigation?.TenMayTinh ?? "Không có")</td>
+                        <td>@item.ThongTinViTri</td>
+                        <td>@(item.ThoiGianBatDau?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                        <td>@(item.ThoiGianKetThuc?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                        <td>@(item.TongChiPhi?.ToString("N0") ?? "0") VNĐ</td>
+                        <td>@item.TrangThai</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.MaPhienChoi" class="btn btn-info btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaPhienChoi" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaPhienChoi" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="text-center">Không có phiên chơi nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
