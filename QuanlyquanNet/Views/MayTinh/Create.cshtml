@@ -1,44 +1,41 @@
-﻿@model QuanlyquanNet.Data.NhiemVu
+﻿@model QuanlyquanNet.Data.MayTinh
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Thêm nhiệm vụ mới";
+    ViewData["Title"] = "Thêm máy tính";
 }
 
 <div class="container mt-4">
-    <h2>Thêm nhiệm vụ mới</h2>
-    <form asp-action="Create" method="post" enctype="multipart/form-data">
+    <h2>Thêm máy tính</h2>
+    <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
         <div class="form-group">
-            <label asp-for="TenNhiemVu" class="control-label">Tên nhiệm vụ</label>
-            <input asp-for="TenNhiemVu" class="form-control" required maxlength="100" />
-            <span asp-validation-for="TenNhiemVu" class="text-danger"></span>
+            <label asp-for="TenMayTinh" class="control-label">Tên máy tính</label>
+            <input asp-for="TenMayTinh" class="form-control" required />
+            <span asp-validation-for="TenMayTinh" class="text-danger"></span>
         </div>
+
         <div class="form-group">
-            <label asp-for="MoTa" class="control-label">Mô tả</label>
-            <textarea asp-for="MoTa" class="form-control" maxlength="255"></textarea>
-            <span asp-validation-for="MoTa" class="text-danger"></span>
+            <label asp-for="Stt" class="control-label">STT</label>
+            <input asp-for="Stt" class="form-control" type="number" required />
+            <span asp-validation-for="Stt" class="text-danger"></span>
         </div>
+
         <div class="form-group">
-            <label asp-for="DieuKien" class="control-label">Điều kiện</label>
-            <input asp-for="DieuKien" class="form-control" maxlength="255" />
-            <span asp-validation-for="DieuKien" class="text-danger"></span>
+            <label asp-for="TrangThai" class="control-label">Trạng thái</label>
+            <input asp-for="TrangThai" class="form-control" />
+            <span asp-validation-for="TrangThai" class="text-danger"></span>
         </div>
+
         <div class="form-group">
-            <label asp-for="DiemThuong" class="control-label">Điểm thưởng</label>
-            <input asp-for="DiemThuong" class="form-control" type="number" min="0" required />
-            <span asp-validation-for="DiemThuong" class="text-danger"></span>
+            <label asp-for="MaKhuVuc" class="control-label">Khu vực</label>
+            <select asp-for="MaKhuVuc" class="form-control" asp-items="ViewBag.MaKhuVuc">
+                <option value="">-- Chọn khu vực --</option>
+            </select>
+            <span asp-validation-for="MaKhuVuc" class="text-danger"></span>
         </div>
-        <div class="form-group">
-            <label asp-for="DoKho" class="control-label">Độ khó (1-5)</label>
-            <input asp-for="DoKho" class="form-control" type="number" min="1" max="5" value="1" />
-            <span asp-validation-for="DoKho" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label class="control-label">Hình ảnh</label>
-            <input type="file" name="HinhAnh" class="form-control" accept=".jpg,.jpeg,.png" />
-            <span class="text-danger">@Html.ValidationMessage("HinhAnh")</span>
-        </div>
+
         <div class="form-group mt-3">
             <input type="submit" value="Thêm" class="btn btn-primary" />
             <a asp-action="Index" class="btn btn-secondary">Quay lại</a>

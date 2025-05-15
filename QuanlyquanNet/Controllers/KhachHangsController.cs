@@ -147,7 +147,6 @@ namespace QuanlyquanNet.Controllers
                         _context.Update(khachHang);
                         await _context.SaveChangesAsync();
                     }
-
                     _context.Update(khachHang);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Cập nhật khách hàng thành công!";
