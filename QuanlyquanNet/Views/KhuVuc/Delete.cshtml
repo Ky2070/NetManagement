@@ -4,7 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Xóa khu vực";
 }
-
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
 <div class="container mt-4">
     <h2>Xóa khu vực</h2>
     <h3>Bạn có chắc chắn muốn xóa khu vực này?</h3>
@@ -32,8 +40,8 @@
             <dt class="col-sm-3">Ngày tạo</dt>
             <dd class="col-sm-9">@(Model.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
         </dl>
-        <form asp-action="Delete" method="post">
-            <input type="hidden" asp-for="MaKhuVuc" />
+        <form asp-action="Delete" asp-route-id="@Model.MaKhuVuc" method="post">
+            <input type="hidden" asp-for="MaKhuVuc"/>
             <input type="submit" value="Xóa" class="btn btn-danger" />
             <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
         </form>

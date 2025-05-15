@@ -163,14 +163,36 @@ namespace QuanlyquanNet.Controllers
             return View(khuVuc);
         }
 
+        [HttpGet("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var khuVuc = await _context.KhuVucs.FindAsync(id);
+            if (khuVuc == null)
+            {
+                return NotFound();
+            }
+            return View(khuVuc); // View hiển thị xác nhận
+        }
 
         [HttpPost("Delete/{id}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var khuVuc = await _context.KhuVucs.FindAsync(id);
-            if (khuVuc != null)
+
+            // Kiểm tra xem có máy tính nào đang thuộc khu vực này không
+            var mayTinhTonTai = _context.MayTinhs.Any(mt => mt.MaKhuVuc == id);
+            if (mayTinhTonTai)
             {
+                ModelState.AddModelError("", "Không thể xóa khu vực vì còn máy tính thuộc khu vực này.");
+                return View("Delete", khuVuc);
+            }
+
+            if (khuVuc == null)
+            {
+                return NotFound();
+            }
+            else {
                 // Xóa hình ảnh nếu có
                 if (!string.IsNullOrEmpty(khuVuc.HinhAnh))
                 {
