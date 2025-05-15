@@ -1,0 +1,47 @@
+﻿@model IEnumerable<QuanlyquanNet.Data.PhanThuongDaNhan>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách phần thưởng đã nhận";
+}
+
+<div class="container mt-4">
+    <h2>Danh sách phần thưởng đã nhận</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Thêm phần thưởng mới</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã phần thưởng</th>
+                <th>Khách hàng</th>
+                <th>Phần thưởng</th>
+                <th>Ngày nhận</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaPhanThuong</td>
+                        <td>@(item.MaKhachHangNavigation?.HoTen ?? "Không có")</td>
+                        <td>@(item.MaPhuThuongNavigation?.TenPhuThuong ?? "Không có")</td>
+                        <td>@(item.NgayNhan?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.MaPhanThuong" class="btn btn-info btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaPhanThuong" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaPhanThuong" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">Không có phần thưởng nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
