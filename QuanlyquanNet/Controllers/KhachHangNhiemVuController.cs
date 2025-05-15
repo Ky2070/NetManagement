@@ -48,7 +48,7 @@ namespace QuanlyquanNet.Controllers
         // GET: KhachHangNhiemVu/Create
         public IActionResult Create()
         {
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "TenKhachHang");
+            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "Hoten");
             ViewData["MaNhiemVu"] = new SelectList(_context.NhiemVus, "MaNhiemVu", "TenNhiemVu");
             return View();
         }
@@ -64,7 +64,7 @@ namespace QuanlyquanNet.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "TenKhachHang", khachHangNhiemVu.MaKhachHang);
+            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", khachHangNhiemVu.MaKhachHang);
             ViewData["MaNhiemVu"] = new SelectList(_context.NhiemVus, "MaNhiemVu", "TenNhiemVu", khachHangNhiemVu.MaNhiemVu);
             return View(khachHangNhiemVu);
         }
@@ -82,7 +82,7 @@ namespace QuanlyquanNet.Controllers
             {
                 return NotFound();
             }
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "TenKhachHang", khachHangNhiemVu.MaKhachHang);
+            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", khachHangNhiemVu.MaKhachHang);
             ViewData["MaNhiemVu"] = new SelectList(_context.NhiemVus, "MaNhiemVu", "TenNhiemVu", khachHangNhiemVu.MaNhiemVu);
             return View(khachHangNhiemVu);
         }
@@ -117,7 +117,7 @@ namespace QuanlyquanNet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "TenKhachHang", khachHangNhiemVu.MaKhachHang);
+            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", khachHangNhiemVu.MaKhachHang);
             ViewData["MaNhiemVu"] = new SelectList(_context.NhiemVus, "MaNhiemVu", "TenNhiemVu", khachHangNhiemVu.MaNhiemVu);
             return View(khachHangNhiemVu);
         }

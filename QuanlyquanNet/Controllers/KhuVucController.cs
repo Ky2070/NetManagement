@@ -93,7 +93,7 @@ namespace QuanlyquanNet.Controllers
 
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaKhuVuc,TenKhuVuc,MoTa,GiaMoiGio,HinhAnh,NgayTao")] KhuVuc khuVuc, IFormFile HinhAnh)
+        public async Task<IActionResult> Edit(int id, [Bind("MaKhuVuc,TenKhuVuc,MoTa,GiaMoiGio,NgayTao")] KhuVuc khuVuc, IFormFile HinhAnh)
         {
             if (id != khuVuc.MaKhuVuc)
             {
@@ -104,7 +104,16 @@ namespace QuanlyquanNet.Controllers
             {
                 try
                 {
-                    // Xử lý tải lên hình ảnh mới (nếu có)
+                    var khuVucCu = await _context.KhuVucs.FindAsync(id);
+                    if (khuVucCu == null) return NotFound();
+
+                    // Cập nhật các trường
+                    khuVucCu.TenKhuVuc = khuVuc.TenKhuVuc;
+                    khuVucCu.MoTa = khuVuc.MoTa;
+                    khuVucCu.GiaMoiGio = khuVuc.GiaMoiGio;
+                    khuVucCu.NgayTao = DateTime.Now;
+
+                    // Xử lý hình ảnh
                     if (HinhAnh != null && HinhAnh.Length > 0)
                     {
                         var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
@@ -115,27 +124,26 @@ namespace QuanlyquanNet.Controllers
                             return View(khuVuc);
                         }
 
-                        // Xóa hình ảnh cũ nếu có
-                        if (!string.IsNullOrEmpty(khuVuc.HinhAnh))
+                        if (!string.IsNullOrEmpty(khuVucCu.HinhAnh))
                         {
-                            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, khuVuc.HinhAnh.TrimStart('/'));
+                            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, khuVucCu.HinhAnh.TrimStart('/'));
                             if (System.IO.File.Exists(oldImagePath))
                             {
                                 System.IO.File.Delete(oldImagePath);
                             }
                         }
 
-                        // Lưu hình ảnh mới
                         var fileName = Guid.NewGuid().ToString() + fileExtension;
                         var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
                             await HinhAnh.CopyToAsync(stream);
                         }
-                        khuVuc.HinhAnh = "/images/" + fileName;
+
+                        khuVucCu.HinhAnh = "/images/" + fileName;
                     }
 
-                    _context.Update(khuVuc);
+                    _context.Update(khuVucCu);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -151,20 +159,10 @@ namespace QuanlyquanNet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View(khuVuc);
         }
 
-        [HttpGet("Delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var khuVuc = await _context.KhuVucs
-                .FirstOrDefaultAsync(kv => kv.MaKhuVuc == id);
-            if (khuVuc == null)
-            {
-                return NotFound();
-            }
-            return View(khuVuc);
-        }
 
         [HttpPost("Delete/{id}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
