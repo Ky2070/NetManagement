@@ -1,42 +1,51 @@
 ﻿@model IEnumerable<QuanlyquanNet.Data.KhachHangNhiemVu>
 
 @{
-    ViewData["Title"] = "Danh sách Khách Hàng Nhiệm Vụ";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách khách hàng - nhiệm vụ";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">➕ Thêm Khách Hàng Nhiệm Vụ</a>
-</p>
-
-<table class="table table-bordered table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.MaKhachHang)</th>
-            <th>@Html.DisplayNameFor(model => model.MaKhachHangNavigation.HoTen)</th>
-            <th>@Html.DisplayNameFor(model => model.MaNhiemVuNavigation.TenNhiemVu)</th>
-            <th>@Html.DisplayNameFor(model => model.TrangThai)</th>
-            <th>@Html.DisplayNameFor(model => model.NgayThamGia)</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="container mt-4">
+    <h2>Danh sách khách hàng - nhiệm vụ</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">Thêm mới</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
             <tr>
-                <td>@item.MaKhachHang</td>
-                <td>@item.MaKhachHangNavigation.HoTen</td>
-                <td>@item.MaNhiemVuNavigation.TenNhiemVu</td>
-                <td>@item.TrangThai</td>
-                <td>@item.NgayThamGia?.ToString("dd/MM/yyyy")</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.MaKhachHang">🔍 Xem</a> |
-                    <a asp-action="Edit" asp-route-id="@item.MaKhachHang">✏️ Sửa</a> |
-                    <a asp-action="Delete" asp-route-id="@item.MaKhachHang">🗑️ Xóa</a>
-                </td>
+                <th>Khách hàng</th>
+                <th>Nhiệm vụ</th>
+                <th>Trạng thái</th>
+                <th>Thời gian hoàn thành</th>
+                <th>Điểm nhận được</th>
+                <th>Ngày tham gia</th>
+                <th>Hành động</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(item.MaKhachHangNavigation?.HoTen ?? "Không có")</td>
+                        <td>@(item.MaNhiemVuNavigation?.TenNhiemVu ?? "Không có")</td>
+                        <td>@(item.TrangThai ?? "Chưa hoàn thành")</td>
+                        <td>@(item.ThoiGianHoanThanh?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa có")</td>
+                        <td>@(item.DiemNhanDuoc?.ToString() ?? "0")</td>
+                        <td>@(item.NgayThamGia?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa có")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-maKhachHang="@item.MaKhachHang" asp-route-maNhiemVu="@item.MaNhiemVu" class="btn btn-info btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-maKhachHang="@item.MaKhachHang" asp-route-maNhiemVu="@item.MaNhiemVu" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-maKhachHang="@item.MaKhachHang" asp-route-maNhiemVu="@item.MaNhiemVu" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-info">Không có bản ghi nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
