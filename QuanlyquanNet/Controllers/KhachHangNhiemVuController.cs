@@ -95,7 +95,6 @@ namespace QuanlyquanNet.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
                 ModelState.AddModelError("", "Dữ liệu không hợp lệ: " + string.Join("; ", errors));
             }
-
             ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", khachHangNhiemVu.MaKhachHang);
             ViewData["MaNhiemVu"] = new SelectList(_context.NhiemVus, "MaNhiemVu", "TenNhiemVu", khachHangNhiemVu.MaNhiemVu);
             return View(khachHangNhiemVu);
@@ -162,7 +161,6 @@ namespace QuanlyquanNet.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
                 ModelState.AddModelError("", "Dữ liệu không hợp lệ: " + string.Join("; ", errors));
             }
-
             ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", khachHangNhiemVu.MaKhachHang);
             ViewData["MaNhiemVu"] = new SelectList(_context.NhiemVus, "MaNhiemVu", "TenNhiemVu", khachHangNhiemVu.MaNhiemVu);
             return View(khachHangNhiemVu);
