@@ -1,0 +1,28 @@
+﻿@model QuanlyquanNet.Data.PhanThuongDaNhan
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Xóa phần thưởng đã nhận";
+}
+
+<div class="container mt-4">
+    <h2>Xóa phần thưởng đã nhận</h2>
+    <h3>Bạn có chắc chắn muốn xóa phần thưởng này?</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Mã phần thưởng</dt>
+            <dd class="col-sm-9">@Model.MaPhanThuong</dd>
+            <dt class="col-sm-3">Khách hàng</dt>
+            <dd class="col-sm-9">@(Model.MaKhachHangNavigation?.HoTen ?? "Không có")</dd>
+            <dt class="col-sm-3">Phần thưởng</dt>
+            <dd class="col-sm-9">@(Model.MaPhuThuongNavigation?.TenPhuThuong ?? "Không có")</dd>
+            <dt class="col-sm-3">Ngày nhận</dt>
+            <dd class="col-sm-9">@(Model.NgayNhan?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
+        </dl>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="MaPhanThuong" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>
