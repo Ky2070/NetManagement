@@ -51,7 +51,7 @@ namespace QuanlyquanNet.Controllers
         public IActionResult Create()
         {
             ViewData["MaDichVu"] = new SelectList(_context.DichVus, "MaDichVu", "TenDichVu");
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "TenKhachHang");
+            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen");
             ViewData["MaMayTinh"] = new SelectList(_context.MayTinhs, "MaMayTinh", "TenMayTinh");
             return View();
         }
@@ -68,29 +68,42 @@ namespace QuanlyquanNet.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MaDichVu"] = new SelectList(_context.DichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "TenKhachHang", donHang.MaKhachHang);
+            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
             ViewData["MaMayTinh"] = new SelectList(_context.MayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
             return View(donHang);
         }
 
         // GET: DonHang/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+public async Task<IActionResult> Edit(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
 
-            var donHang = await _context.DonHangs.FindAsync(id);
-            if (donHang == null)
-            {
-                return NotFound();
-            }
-            ViewData["MaDichVu"] = new SelectList(_context.DichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "TenKhachHang", donHang.MaKhachHang);
-            ViewData["MaMayTinh"] = new SelectList(_context.MayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
-            return View(donHang);
-        }
+    var donHang = await _context.DonHangs.FindAsync(id);
+    if (donHang == null)
+    {
+        return NotFound();
+    }
+
+    // Kiểm tra dữ liệu trước khi gán ViewData
+    var dichVus = await _context.DichVus.ToListAsync();
+    var khachHangs = await _context.KhachHangs.ToListAsync();
+    var mayTinhs = await _context.MayTinhs.ToListAsync();
+
+    if (!dichVus.Any() || !khachHangs.Any())
+    {
+        // Nếu không có dữ liệu, trả về thông báo lỗi
+        TempData["ErrorMessage"] = "Không có dữ liệu dịch vụ hoặc khách hàng để chỉnh sửa đơn hàng.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    ViewData["MaDichVu"] = new SelectList(dichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
+    ViewData["MaMayTinh"] = new SelectList(mayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
+    ViewData["MaKhachHang"] = new SelectList(khachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
+        return View(donHang);
+}
 
         // POST: DonHang/Edit/5
         [HttpPost]
@@ -123,8 +136,10 @@ namespace QuanlyquanNet.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MaDichVu"] = new SelectList(_context.DichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "TenKhachHang", donHang.MaKhachHang);
             ViewData["MaMayTinh"] = new SelectList(_context.MayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
+            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
+
+
             return View(donHang);
         }
 

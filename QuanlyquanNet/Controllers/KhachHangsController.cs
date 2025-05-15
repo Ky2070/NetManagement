@@ -143,10 +143,10 @@ namespace QuanlyquanNet.Controllers
                         // Cập nhật thông tin NguoiDung nếu cần
                         nguoiDung.MatKhau = khachHang.MatKhau;
                         nguoiDung.HoTen = khachHang.HoTen;
-                        _context.Update(nguoiDung);
+                        khachHang.NgayTao = DateTime.Now;      
+                        _context.Update(khachHang);
                         await _context.SaveChangesAsync();
                     }
-
                     _context.Update(khachHang);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Cập nhật khách hàng thành công!";

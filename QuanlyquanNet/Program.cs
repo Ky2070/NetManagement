@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QuanlyquanNet.Data;   
+using QuanlyquanNet.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<QuanLyNetContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("QuanNet")); //Can change connect-string
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Net")); //Can change connect-string
 });
 
 var app = builder.Build();
