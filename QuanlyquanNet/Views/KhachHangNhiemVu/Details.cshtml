@@ -1,0 +1,30 @@
+﻿@model QuanlyquanNet.Data.KhachHangNhiemVu
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chi tiết khách hàng - nhiệm vụ";
+}
+
+<div class="container mt-4">
+    <h2>Chi tiết khách hàng - nhiệm vụ</h2>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Khách hàng</dt>
+            <dd class="col-sm-9">@(Model?.MaKhachHangNavigation?.HoTen ?? "Không có")</dd>
+            <dt class="col-sm-3">Nhiệm vụ</dt>
+            <dd class="col-sm-9">@(Model?.MaNhiemVuNavigation?.TenNhiemVu ?? "Không có")</dd>
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">@(Model?.TrangThai ?? "Chưa hoàn thành")</dd>
+            <dt class="col-sm-3">Thời gian hoàn thành</dt>
+            <dd class="col-sm-9">@(Model?.ThoiGianHoanThanh?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa có")</dd>
+            <dt class="col-sm-3">Điểm nhận được</dt>
+            <dd class="col-sm-9">@(Model?.DiemNhanDuoc?.ToString() ?? "0")</dd>
+            <dt class="col-sm-3">Ngày tham gia</dt>
+            <dd class="col-sm-9">@(Model?.NgayThamGia?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa có")</dd>
+        </dl>
+    </div>
+    <div class="mt-3">
+        <a asp-action="Edit" asp-route-maKhachHang="@Model?.MaKhachHang" asp-route-maNhiemVu="@Model?.MaNhiemVu" class="btn btn-warning">Sửa</a>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </div>
+</div>

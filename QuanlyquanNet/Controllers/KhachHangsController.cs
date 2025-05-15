@@ -143,7 +143,7 @@ namespace QuanlyquanNet.Controllers
                         // Cập nhật thông tin NguoiDung nếu cần
                         nguoiDung.MatKhau = khachHang.MatKhau;
                         nguoiDung.HoTen = khachHang.HoTen;
-                        khachHang.NgayTao = DateTime.Now;      
+                        khachHang.NgayTao = DateTime.Now;
                         _context.Update(khachHang);
                         await _context.SaveChangesAsync();
                     }

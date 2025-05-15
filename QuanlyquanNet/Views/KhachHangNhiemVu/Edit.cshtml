@@ -1,31 +1,64 @@
 ﻿@model QuanlyquanNet.Data.KhachHangNhiemVu
 
 @{
-    ViewData["Title"] = "Chỉnh sửa Khách Hàng Nhiệm Vụ";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Sửa khách hàng - nhiệm vụ";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container mt-4">
+    <h2>Sửa khách hàng - nhiệm vụ</h2>
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <input type="hidden" asp-for="MaKhachHang" />
+        <input type="hidden" asp-for="MaNhiemVu" />
+        <div class="form-group mb-3">
+            <label asp-for="MaKhachHang" class="control-label"></label>
+            <select asp-for="MaKhachHang" class="form-control" asp-items="ViewBag.MaKhachHang" disabled>
+                <option value="">Chọn khách hàng</option>
+            </select>
+            <span asp-validation-for="MaKhachHang" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="MaNhiemVu" class="control-label"></label>
+            <select asp-for="MaNhiemVu" class="form-control" asp-items="ViewBag.MaNhiemVu" disabled>
+                <option value="">Chọn nhiệm vụ</option>
+            </select>
+            <span asp-validation-for="MaNhiemVu" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="TrangThai" class="control-label"></label>
+            <select asp-for="TrangThai" class="form-control">
+                <option value="">Chọn trạng thái</option>
+                <option value="Chưa hoàn thành">Chưa hoàn thành</option>
+                <option value="Hoàn thành">Hoàn thành</option>
+                <option value="Hủy">Hủy</option>
+            </select>
+            <span asp-validation-for="TrangThai" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="ThoiGianHoanThanh" class="control-label"></label>
+            <input asp-for="ThoiGianHoanThanh" class="form-control" type="datetime-local" />
+            <span asp-validation-for="ThoiGianHoanThanh" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="DiemNhanDuoc" class="control-label"></label>
+            <input asp-for="DiemNhanDuoc" class="form-control" type="number" min="0" value="@(Model?.DiemNhanDuoc ?? 0)" />
+            <span asp-validation-for="DiemNhanDuoc" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="NgayThamGia" class="control-label"></label>
+            <input asp-for="NgayThamGia" class="form-control" type="datetime-local" readonly />
+            <span asp-validation-for="NgayThamGia" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3">
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </form>
+</div>
 
-<form asp-action="Edit">
-    <div class="form-group">
-        <label asp-for="MaKhachHang" class="control-label"></label>
-        <select asp-for="MaKhachHang" class="form-control" asp-items="ViewBag.MaKhachHang"></select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="MaNhiemVu" class="control-label"></label>
-        <select asp-for="MaNhiemVu" class="form-control" asp-items="ViewBag.MaNhiemVu"></select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="TrangThai" class="control-label"></label>
-        <input asp-for="TrangThai" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-    </div>
-</form>
-
-<a asp-action="Index">Back to List</a>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
