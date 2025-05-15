@@ -1,151 +1,77 @@
-﻿/* Global HTML and Body Styles */
-html {
-    font-size: 14px;
-    position: relative;
-    min-height: 100%;
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
-body {
+﻿* {
     margin: 0;
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f8f9fa; /* Nhẹ nhàng */
-    color: #212529;
-    min-height: 100vh;
-    overflow-x: hidden;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-/* Container Styling */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    height: 100vh;
     padding: 20px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Title Styling */
-.title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #343a40;
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-/* Table Container */
-.table-container {
-    overflow-x: auto;
-}
-
-/* Table Styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    border: 1px solid #dee2e6;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    font-size: 1rem;
-    border-bottom: 1px solid #dee2e6;
-}
-
-th {
-    background: #e9ecef;
-    color: #495057;
-    font-weight: 600;
-}
-
-tr:nth-child(even) {
-    background: #f8f9fa;
-}
-
-tr:hover {
-    background: #e2e6ea;
-}
-
-/* Revenue Highlight */
-.revenue {
-    color: #d63384;
-    font-weight: 600;
-}
-
-/* Export Button */
-.export-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #0d6efd;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 600;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-}
-
-    .export-btn:hover {
-        background-color: #0b5ed7;
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 20px;
     }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .title {
-        font-size: 1.5rem;
+    .sidebar ul {
+        list-style: none;
     }
 
-    th, td {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-
-    .container {
-        padding: 12px;
-    }
-
-    .export-btn {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-    }
-
-    table {
-        display: block;
-        overflow-x: auto;
-    }
-
-    thead {
-        display: none;
-    }
-
-    tr {
-        display: block;
-        margin-bottom: 12px;
-        border-bottom: 1px solid #dee2e6;
-    }
-
-    td {
-        display: block;
-        text-align: right;
-        position: relative;
-        padding-left: 50%;
-        border: none;
-    }
-
-        td::before {
-            content: attr(data-label);
-            position: absolute;
-            left: 10px;
-            width: 45%;
-            font-weight: 600;
-            color: #495057;
+        .sidebar ul li {
+            margin: 10px 0;
         }
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                padding: 10px;
+                display: block;
+                border-radius: 5px;
+            }
+
+                .sidebar ul li a:hover,
+                .sidebar ul li a.active {
+                    background-color: #3498db;
+                }
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
 }
+
+    .main-content h1 {
+        margin-bottom: 20px;
+    }
+
+.overview {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    text-align: center;
+}
+
+    .card h3 {
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        font-size: 1.2em;
+        color: #2c3e50;
+    }

@@ -1,0 +1,31 @@
+﻿@model QuanlyquanNet.Data.PhienChoi
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chi tiết phiên chơi";
+}
+
+<div class="container mt-4">
+    <h2>Chi tiết phiên chơi</h2>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">Mã phiên chơi</dt>
+            <dd class="col-sm-9">@Model.MaPhienChoi</dd>
+            <dt class="col-sm-3">Khách hàng</dt>
+            <dd class="col-sm-9">@(Model.MaKhachHangNavigation?.HoTen ?? "Không có")</dd>
+            <dt class="col-sm-3">Máy tính</dt>
+            <dd class="col-sm-9">@(Model.MaMayTinhNavigation?.TenMayTinh ?? "Không có")</dd>
+            <dt class="col-sm-3">Vị trí</dt>
+            <dd class="col-sm-9">@Model.ThongTinViTri</dd>
+            <dt class="col-sm-3">Thời gian bắt đầu</dt>
+            <dd class="col-sm-9">@(Model.ThoiGianBatDau?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
+            <dt class="col-sm-3">Thời gian kết thúc</dt>
+            <dd class="col-sm-9">@(Model.ThoiGianKetThuc?.ToString("dd/MM/yyyy HH:mm") ?? "")</dd>
+            <dt class="col-sm-3">Tổng chi phí</dt>
+            <dd class="col-sm-9">@(Model.TongChiPhi?.ToString("N0") ?? "0") VNĐ</dd>
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">@Model.TrangThai</dd>
+        </dl>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</div>
