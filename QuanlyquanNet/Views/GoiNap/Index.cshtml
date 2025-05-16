@@ -4,45 +4,44 @@
 }
 
 <div class="container mt-4">
-    <h2>Danh sách gói nạp</h2>
-    <a asp-action="Create" class="btn btn-primary mb-3">Thêm gói nạp mới</a>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Mã gói nạp</th>
-                <th>Tên gói</th>
-                <th>Số tiền</th>
-                <th>Khuyến mãi</th>
-                <th>Ngày tạo</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @model IEnumerable<QuanlyquanNet.Data.GoiNap>
-            @if (Model.Any())
+    <h2 class="mb-3">Danh sách gói nạp</h2>
+    <a asp-action="Create" class="btn btn-primary mb-4">+ Thêm gói nạp mới</a>
+
+    @model IEnumerable<QuanlyquanNet.Data.GoiNap>
+    @if (Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
             {
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.MaGoiNap</td>
-                        <td>@item.TenGoi</td>
-                        <td>@item.SoTien.ToString("N0") VNĐ</td>
-                        <td>@(item.MaKhuyenMaiNavigation?.TenKhuyenMai ?? "Không có")</td>
-                        <td>@(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
-                        <td>
+                <div class="col">
+                    <div class="card h-100 shadow-sm border border-success">
+                        <img src="https://cdn.pixabay.com/photo/2016/11/24/20/44/coins-1857222_1280.png"
+                             class="card-img-top" alt="Gói nạp" style="height: 180px; object-fit: contain; background-color: #f9f9f9;" />
+
+                        <div class="card-body">
+                            <h5 class="card-title text-success">@item.TenGoi</h5>
+                            <p class="card-text"><strong>Mã gói:</strong> @item.MaGoiNap</p>
+                            <p class="card-text"><strong>Số tiền:</strong> @item.SoTien.ToString("N0") VNĐ</p>
+                            <p class="card-text">
+                                <strong>Khuyến mãi:</strong>
+                                @(item.MaKhuyenMaiNavigation?.TenKhuyenMai ?? "Không có")
+                            </p>
+                            <p class="card-text text-muted">
+                                <small>Ngày tạo: @(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa rõ")</small>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex justify-content-between">
                             <a asp-action="Details" asp-route-id="@item.MaGoiNap" class="btn btn-info btn-sm">Chi tiết</a>
                             <a asp-action="Edit" asp-route-id="@item.MaGoiNap" class="btn btn-warning btn-sm">Sửa</a>
                             <a asp-action="Delete" asp-route-id="@item.MaGoiNap" class="btn btn-danger btn-sm">Xóa</a>
-                        </td>
-                    </tr>
-                }
+                        </div>
+                    </div>
+                </div>
             }
-            else
-            {
-                <tr>
-                    <td colspan="6" class="text-center">Không có gói nạp nào.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">Hiện chưa có gói nạp nào được thêm.</div>
+    }
 </div>

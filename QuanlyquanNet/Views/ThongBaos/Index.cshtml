@@ -1,69 +1,47 @@
 ﻿@model IEnumerable<QuanlyquanNet.Data.ThongBao>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Thông báo";
 }
 
-<h1>Notifications</h1>
+<div class="container mt-4">
+    <h2 class="mb-4">📢 Danh sách Thông Báo</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ThongTinViTri)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NoiDung)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrangThai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayTao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaKhachHangNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaMayTinhNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaNhanVienNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ThongTinViTri)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NoiDung)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrangThai)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NgayTao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaKhachHangNavigation.TenDangNhap)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaMayTinhNavigation.MaMayTinh)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaNhanVienNavigation.MaNhanVien)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.MaThongBao">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.MaThongBao">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.MaThongBao">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Hiện chưa có thông báo nào.</div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            @foreach (var item in Model.OrderByDescending(t => t.NgayTao))
+            {
+                <div class="col">
+                    <div class="card border-@((item.TrangThai == "Chưa đọc") ? "warning" : "success") shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.ThongTinViTri</h5>
+                            <p class="card-text">@item.NoiDung</p>
+
+                            <p class="mb-1">
+                                <span class="badge bg-@((item.TrangThai == "Chưa đọc") ? "warning text-dark" : "success")">
+                                    @item.TrangThai
+                                </span>
+                            </p>
+
+                            <small class="text-muted">🕒 @item.NgayTao?.ToString("dd/MM/yyyy HH:mm")</small>
+                            <hr />
+                            <p class="card-text">
+                                👤 KH: <strong>@item.MaKhachHangNavigation?.TenDangNhap</strong><br />
+                                💻 Máy: <strong>@item.MaMayTinhNavigation?.MaMayTinh</strong><br />
+                                👨‍🔧 NV: <strong>@item.MaNhanVienNavigation?.MaNhanVien</strong>
+                            </p>
+                            <a asp-action="Details" asp-route-id="@item.MaThongBao" class="btn btn-primary btn-sm">Chi tiết</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaThongBao" class="btn btn-warning btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaThongBao" class="btn btn-danger btn-sm">Xoá</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

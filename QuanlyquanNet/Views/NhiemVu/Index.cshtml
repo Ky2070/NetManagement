@@ -6,53 +6,46 @@
 }
 
 <div class="container mt-4">
-    <h2>Danh sách nhiệm vụ</h2>
-    <p>
-        <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
-    </p>
+    <h2 class="mb-4">🎯 Danh sách nhiệm vụ</h2>
+    <a asp-action="Create" class="btn btn-success mb-4">+ Thêm nhiệm vụ mới</a>
+
     @if (Model.Any())
     {
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Mã nhiệm vụ</th>
-                    <th>Tên nhiệm vụ</th>
-                    <th>Điểm thưởng</th>
-                    <th>Độ khó</th>
-                    <th>Hình ảnh</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.MaNhiemVu</td>
-                        <td>@item.TenNhiemVu</td>
-                        <td>@item.DiemThuong</td>
-                        <td>@item.DoKho</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(item.HinhAnh))
-                            {
-                                <img src="@item.HinhAnh" alt="@item.TenNhiemVu" style="max-width: 100px;" />
-                            }
-                            else
-                            {
-                                <span>Không có</span>
-                            }
-                        </td>
-                        <td>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm border border-primary">
+                        @if (!string.IsNullOrEmpty(item.HinhAnh))
+                        {
+                            <img src="@item.HinhAnh" class="card-img-top" style="height: 180px; object-fit: cover;" alt="@item.TenNhiemVu" />
+                        }
+                        else
+                        {
+                            <div class="bg-secondary text-white text-center py-5">
+                                <span>Không có hình ảnh</span>
+                            </div>
+                        }
+
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">@item.TenNhiemVu</h5>
+                            <p class="card-text">
+                                <strong>Điểm thưởng:</strong> <span class="text-success">@item.DiemThuong</span><br />
+                                <strong>Độ khó:</strong> @item.DoKho
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex justify-content-between">
                             <a asp-action="Details" asp-route-id="@item.MaNhiemVu" class="btn btn-info btn-sm">Chi tiết</a>
                             <a asp-action="Edit" asp-route-id="@item.MaNhiemVu" class="btn btn-warning btn-sm">Sửa</a>
                             <a asp-action="Delete" asp-route-id="@item.MaNhiemVu" class="btn btn-danger btn-sm">Xóa</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     }
     else
     {
-        <p>Không có nhiệm vụ nào.</p>
+        <div class="alert alert-info">Hiện chưa có nhiệm vụ nào.</div>
     }
 </div>

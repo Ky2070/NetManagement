@@ -3,42 +3,45 @@
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
     ViewData["Title"] = "Danh sách phần thưởng";
+    var defaultImage = "https://img.freepik.com/vector-gratis/caja-regalo-fondo-blanco_1308-135727.jpg";
 }
 
-<h1>Danh sách phần thưởng</h1>
+<div class="container mt-4">
+    <h2 class="mb-4">🎁 Danh sách phần thưởng</h2>
+    <div class="mb-3 text-end">
+        <a class="btn btn-success" asp-action="Create">+ Thêm phần thưởng</a>
+    </div>
 
-
-<table class="table table-bordered">
-    <thead class="table-light">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.TenPhuThuong)</th>
-            <th>@Html.DisplayNameFor(model => model.LoaiPhuThuong)</th>
-            <th>@Html.DisplayNameFor(model => model.GiaTri)</th>
-            <th>@Html.DisplayNameFor(model => model.DiemCanDoi)</th>
-            <th>@Html.DisplayNameFor(model => model.NgayTao)</th>
-            <th>@Html.DisplayNameFor(model => model.MaVatPhamNavigation)</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.TenPhuThuong)</td>
-                <td>@Html.DisplayFor(modelItem => item.LoaiPhuThuong)</td>
-                <td>@Html.DisplayFor(modelItem => item.GiaTri)</td>
-                <td>@Html.DisplayFor(modelItem => item.DiemCanDoi)</td>
-                <td>@Html.DisplayFor(modelItem => item.NgayTao)</td>
-                <td>@Html.DisplayFor(modelItem => item.MaVatPhamNavigation.MaVatPham)</td>
-                <td>
-                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.MaPhuThuong">Sửa</a>
-                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.MaPhuThuong">Chi tiết</a>
-                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.MaPhuThuong">Xoá</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<div class="mb-3 text-end">
-    <a class="btn btn-success" asp-action="Create">+ Thêm phần thưởng</a>
+    @if (Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow border-success" style="min-width: 250px;">
+                        <img src="@defaultImage" alt="Phần thưởng" class="card-img-top" style="height: 220px; object-fit: cover;" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-primary fw-bold">@item.TenPhuThuong</h5>
+                            <p class="card-text mb-2">
+                                <strong>Loại:</strong> @item.LoaiPhuThuong <br />
+                                <strong>Giá trị:</strong> @item.GiaTri <br />
+                                <strong>Điểm cần đổi:</strong> <span class="text-danger fw-bold">@item.DiemCanDoi</span><br />
+                                <strong>Ngày tạo:</strong> @item.NgayTao?.ToString("dd/MM/yyyy") <br />
+                                <strong>Mã vật phẩm:</strong> @item.MaVatPhamNavigation?.MaVatPham
+                            </p>
+                            <div class="mt-auto d-flex justify-content-between gap-1">
+                                <a class="btn btn-info btn-sm w-100" asp-action="Details" asp-route-id="@item.MaPhuThuong">Chi tiết</a>
+                                <a class="btn btn-warning btn-sm w-100" asp-action="Edit" asp-route-id="@item.MaPhuThuong">Sửa</a>
+                                <a class="btn btn-danger btn-sm w-100" asp-action="Delete" asp-route-id="@item.MaPhuThuong">Xoá</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">Chưa có phần thưởng nào.</div>
+    }
 </div>
