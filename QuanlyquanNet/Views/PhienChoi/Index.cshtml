@@ -5,51 +5,94 @@
     ViewData["Title"] = "Danh sách phiên chơi";
 }
 
+<!-- Link Bootstrap Icons (nếu chưa thêm vào Layout) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 <div class="container mt-4">
-    <h2>Danh sách phiên chơi</h2>
-    <a asp-action="Create" class="btn btn-primary mb-3">Thêm phiên chơi mới</a>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Mã phiên chơi</th>
-                <th>Khách hàng</th>
-                <th>Máy tính</th>
-                <th>Vị trí</th>
-                <th>Thời gian bắt đầu</th>
-                <th>Thời gian kết thúc</th>
-                <th>Tổng chi phí</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Any())
-            {
-                @foreach (var item in Model)
+    <h2 class="mb-4">Danh sách phiên chơi</h2>
+    <a asp-action="Create" class="btn btn-primary mb-3">
+        <i class="bi bi-plus-circle"></i> Thêm phiên chơi mới
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Mã phiên chơi</th>
+                    <th>Khách hàng</th>
+                    <th>Máy tính</th>
+                    <th>Vị trí</th>
+                    <th>Thời gian bắt đầu</th>
+                    <th>Thời gian kết thúc</th>
+                    <th>Tổng chi phí</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.MaPhienChoi</td>
+                            <td>@(item.MaKhachHangNavigation?.HoTen ?? "Không có")</td>
+                            <td>@(item.MaMayTinhNavigation?.TenMayTinh ?? "Không có")</td>
+                            <td>@item.ThongTinViTri</td>
+                            <td>@(item.ThoiGianBatDau?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                            <td>@(item.ThoiGianKetThuc?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                            <td>@(item.TongChiPhi?.ToString("N0") ?? "0") VNĐ</td>
+                            <td>
+                                @if (item.TrangThai == "Đang chơi")
+                                {
+                                    <span class="badge bg-success">Đang chơi</span>
+                                }
+                                else if (item.TrangThai == "Hoàn tất")
+                                {
+                                    <span class="badge bg-secondary">Hoàn tất</span>
+                                }
+                                else if (item.TrangThai == "Đã huỷ")
+                                {
+                                    <span class="badge bg-danger">Đã huỷ</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-dark">@item.TrangThai</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.MaPhienChoi" class="btn btn-info btn-sm mb-1">
+                                    <i class="bi bi-eye"></i> Chi tiết
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.MaPhienChoi" class="btn btn-warning btn-sm mb-1">
+                                    <i class="bi bi-pencil-square"></i> Sửa
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.MaPhienChoi" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@item.MaPhienChoi</td>
-                        <td>@(item.MaKhachHangNavigation?.HoTen ?? "Không có")</td>
-                        <td>@(item.MaMayTinhNavigation?.TenMayTinh ?? "Không có")</td>
-                        <td>@item.ThongTinViTri</td>
-                        <td>@(item.ThoiGianBatDau?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
-                        <td>@(item.ThoiGianKetThuc?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
-                        <td>@(item.TongChiPhi?.ToString("N0") ?? "0") VNĐ</td>
-                        <td>@item.TrangThai</td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.MaPhienChoi" class="btn btn-info btn-sm">Chi tiết</a>
-                            <a asp-action="Edit" asp-route-id="@item.MaPhienChoi" class="btn btn-warning btn-sm">Sửa</a>
-                            <a asp-action="Delete" asp-route-id="@item.MaPhienChoi" class="btn btn-danger btn-sm">Xóa</a>
-                        </td>
+                        <td colspan="9" class="text-center text-muted">Không có phiên chơi nào.</td>
                     </tr>
                 }
-            }
-            else
+            </tbody>
+            @if (Model.Any())
             {
-                <tr>
-                    <td colspan="9" class="text-center">Không có phiên chơi nào.</td>
-                </tr>
+                <tfoot>
+                    <tr>
+                        <td colspan="6" class="text-end fw-bold">Tổng chi phí:</td>
+                        <td class="fw-bold">
+                            @Model.Sum(p => p.TongChiPhi ?? 0).ToString("N0") VNĐ
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
             }
-        </tbody>
-    </table>
+        </table>
+    </div>
 </div>

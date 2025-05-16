@@ -9,57 +9,48 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
+
 <div class="container mt-4">
-    <h2>Danh sách khu vực</h2>
-    <a asp-action="Create" class="btn btn-primary mb-3">Thêm khu vực mới</a>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Mã khu vực</th>
-                <th>Tên khu vực</th>
-                <th>Mô tả</th>
-                <th>Giá mỗi giờ</th>
-                <th>Hình ảnh</th>
-                <th>Ngày tạo/sửa</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @model IEnumerable<QuanlyquanNet.Data.KhuVuc>
-            @if (Model.Any())
+    <h2 class="mb-3">Danh sách khu vực</h2>
+    <a asp-action="Create" class="btn btn-primary mb-4">+ Thêm khu vực mới</a>
+
+    @model IEnumerable<QuanlyquanNet.Data.KhuVuc>
+    @if (Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
             {
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.MaKhuVuc</td>
-                        <td>@item.TenKhuVuc</td>
-                        <td>@(item.MoTa ?? "Không có")</td>
-                        <td>@item.GiaMoiGio.ToString("N0") VNĐ</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(item.HinhAnh))
-                            {
-                                <img src="@item.HinhAnh" alt="@item.TenKhuVuc" style="max-width: 100px; max-height: 100px;" />
-                            }
-                            else
-                            {
-                                <span>Không có</span>
-                            }
-                        </td>
-                        <td>@(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
-                        <td>
+                <div class="col">
+                    <div class="card h-100 shadow-sm border border-primary">
+                        @if (!string.IsNullOrEmpty(item.HinhAnh))
+                        {
+                            <img src="@item.HinhAnh" class="card-img-top" alt="@item.TenKhuVuc" style="height: 180px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top d-flex align-items-center justify-content-center bg-secondary text-white" style="height: 180px;">
+                                Không có hình ảnh
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">@item.TenKhuVuc</h5>
+                            <p class="card-text"><strong>Mã:</strong> @item.MaKhuVuc</p>
+                            <p class="card-text"><strong>Mô tả:</strong> @(item.MoTa ?? "Không có")</p>
+                            <p class="card-text"><strong>Giá mỗi giờ:</strong> @item.GiaMoiGio.ToString("N0") VNĐ</p>
+                            <p class="card-text text-muted"><small>Ngày tạo/sửa: @(item.NgayTao?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa rõ")</small></p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between">
                             <a asp-action="Details" asp-route-id="@item.MaKhuVuc" class="btn btn-info btn-sm">Chi tiết</a>
                             <a asp-action="Edit" asp-route-id="@item.MaKhuVuc" class="btn btn-warning btn-sm">Sửa</a>
                             <a asp-action="Delete" asp-route-id="@item.MaKhuVuc" class="btn btn-danger btn-sm">Xóa</a>
-                        </td>
-                    </tr>
-                }
+                        </div>
+                    </div>
+                </div>
             }
-            else
-            {
-                <tr>
-                    <td colspan="7" class="text-center">Không có khu vực nào.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">Hiện chưa có khu vực nào được thêm.</div>
+    }
 </div>
