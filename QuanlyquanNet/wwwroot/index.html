@@ -1,10 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>@ViewBag.Title</title>
   <title>Index - Dewi Bootstrap Template</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -24,9 +23,9 @@
   <link href="~/resource/vendor/aos/aos.css" rel="stylesheet">
   <link href="~/resource/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="~/resource/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    @RenderSection("Styles", required: false)
+
   <!-- Main CSS File -->
-  <link href="~/resource/css/main.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: Dewi
@@ -42,7 +41,7 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-      <a href="/" class="logo d-flex align-items-center me-auto">
+      <a href="index.html" class="logo d-flex align-items-center me-auto">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
         <h1 class="sitename">Dewi</h1>
@@ -77,15 +76,29 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="cta-btn" href="/#about">Get Started</a>
+      <a class="cta-btn" href="index.html#about">Get Started</a>
 
     </div>
   </header>
-    <div>
-        @RenderBody()
-    </div>
+
   <main class="main">
-        @await Html.PartialAsync("_Banner")
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in">
+
+      <div class="container d-flex flex-column align-items-center">
+        <h2 data-aos="fade-up" data-aos-delay="100">PLAN. LAUNCH. GROW.</h2>
+        <p data-aos="fade-up" data-aos-delay="200">We are team of talented designers making websites with Bootstrap</p>
+        <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
+          <a href="#about" class="btn-get-started">Get Started</a>
+          <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+        </div>
+      </div>
+
+    </section><!-- /Hero Section -->
+
     <!-- About Section -->
     <section id="about" class="about section">
 
@@ -94,7 +107,7 @@
         <div class="row gy-4">
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
             <h3>Voluptatem dignissimos provident laboris nisi ut aliquip ex ea commodo</h3>
-            <img src="~/resource/img/about.jpg" class="img-fluid rounded-4 mb-4" alt="">
+            <img src="assets/img/about.jpg" class="img-fluid rounded-4 mb-4" alt="">
             <p>Ut fugiat ut sunt quia veniam. Voluptate perferendis perspiciatis quod nisi et. Placeat debitis quia recusandae odit et consequatur voluptatem. Dignissimos pariatur consectetur fugiat voluptas ea.</p>
             <p>Temporibus nihil enim deserunt sed ea. Provident sit expedita aut cupiditate nihil vitae quo officia vel. Blanditiis eligendi possimus et in cum. Quidem eos ut sint rem veniam qui. Ut ut repellendus nobis tempore doloribus debitis explicabo similique sit. Accusantium sed ut omnis beatae neque deleniti repellendus.</p>
           </div>
@@ -115,7 +128,7 @@
               </p>
 
               <div class="position-relative mt-4">
-                <img src="~/resource/img/about-2.jpg" class="img-fluid rounded-4" alt="">
+                <img src="assets/img/about-2.jpg" class="img-fluid rounded-4" alt="">
                 <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
               </div>
             </div>
@@ -176,8 +189,79 @@
         </div>
 
       </div>
-            @await Html.PartialAsync("_Services")
+
     </section><!-- /Stats Section -->
+
+    <!-- Services Section -->
+    <section id="services" class="services section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Services</h2>
+        <p>Featured Srvices<br></p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-5">
+
+          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+            <div class="service-item">
+              <div class="img">
+                <img src="assets/img/services-1.jpg" class="img-fluid" alt="">
+              </div>
+              <div class="details position-relative">
+                <div class="icon">
+                  <i class="bi bi-activity"></i>
+                </div>
+                <a href="service-details.html" class="stretched-link">
+                  <h3>Nesciunt Mete</h3>
+                </a>
+                <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+            <div class="service-item">
+              <div class="img">
+                <img src="assets/img/services-2.jpg" class="img-fluid" alt="">
+              </div>
+              <div class="details position-relative">
+                <div class="icon">
+                  <i class="bi bi-broadcast"></i>
+                </div>
+                <a href="service-details.html" class="stretched-link">
+                  <h3>Eosle Commodi</h3>
+                </a>
+                <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+            <div class="service-item">
+              <div class="img">
+                <img src="assets/img/services-3.jpg" class="img-fluid" alt="">
+              </div>
+              <div class="details position-relative">
+                <div class="icon">
+                  <i class="bi bi-easel"></i>
+                </div>
+                <a href="service-details.html" class="stretched-link">
+                  <h3>Ledo Markt</h3>
+                </a>
+                <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Services Section -->
+
     <!-- Clients Section -->
     <section id="clients" class="clients section light-background">
 
@@ -186,27 +270,27 @@
         <div class="row gy-4">
 
           <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="~/resource/img/clients/client-1.png" class="img-fluid" alt="">
+            <img src="assets/img/clients/client-1.png" class="img-fluid" alt="">
           </div><!-- End Client Item -->
 
           <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="~/resource/img/clients/client-2.png" class="img-fluid" alt="">
+            <img src="assets/img/clients/client-2.png" class="img-fluid" alt="">
           </div><!-- End Client Item -->
 
           <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="~/resource/img/clients/client-3.png" class="img-fluid" alt="">
+            <img src="assets/img/clients/client-3.png" class="img-fluid" alt="">
           </div><!-- End Client Item -->
 
           <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="~/resource/img/clients/client-4.png" class="img-fluid" alt="">
+            <img src="assets/img/clients/client-4.png" class="img-fluid" alt="">
           </div><!-- End Client Item -->
 
           <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="~/resource/img/clients/client-5.png" class="img-fluid" alt="">
+            <img src="assets/img/clients/client-5.png" class="img-fluid" alt="">
           </div><!-- End Client Item -->
 
           <div class="col-xl-2 col-md-3 col-6 client-logo">
-                        <img src="~/resource/img/clients/client-6.png" class="img-fluid" alt="">
+            <img src="assets/img/clients/client-6.png" class="img-fluid" alt="">
           </div><!-- End Client Item -->
 
         </div>
@@ -271,7 +355,7 @@
                 </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                                <img src="~/resource/img/working-1.jpg" alt="" class="img-fluid">
+                <img src="assets/img/working-1.jpg" alt="" class="img-fluid">
               </div>
             </div>
           </div><!-- End Tab Content Item -->
@@ -297,7 +381,7 @@
                 </ul>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                                <img src="~/resource/img/working-2.jpg" alt="" class="img-fluid">
+                <img src="assets/img/working-2.jpg" alt="" class="img-fluid">
               </div>
             </div>
           </div><!-- End Tab Content Item -->
@@ -322,7 +406,7 @@
                 </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                                <img src="~/resource/img/working-3.jpg" alt="" class="img-fluid">
+                <img src="assets/img/working-3.jpg" alt="" class="img-fluid">
               </div>
             </div>
           </div><!-- End Tab Content Item -->
@@ -347,7 +431,7 @@
                 </ul>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                                <img src="~/resource/img/working-4.jpg" alt="" class="img-fluid">
+                <img src="assets/img/working-4.jpg" alt="" class="img-fluid">
               </div>
             </div>
           </div><!-- End Tab Content Item -->
@@ -440,7 +524,7 @@
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section dark-background">
 
-            <img src="~/resource/img/testimonials-bg.jpg" class="testimonials-bg" alt="">
+      <img src="assets/img/testimonials-bg.jpg" class="testimonials-bg" alt="">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -464,7 +548,7 @@
 
             <div class="swiper-slide">
               <div class="testimonial-item">
-                                <img src="~/resource/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
                 <h3>Saul Goodman</h3>
                 <h4>Ceo &amp; Founder</h4>
                 <div class="stars">
@@ -480,7 +564,7 @@
 
             <div class="swiper-slide">
               <div class="testimonial-item">
-                                <img src="~/resource/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
                 <h3>Sara Wilsson</h3>
                 <h4>Designer</h4>
                 <div class="stars">
@@ -496,7 +580,7 @@
 
             <div class="swiper-slide">
               <div class="testimonial-item">
-                                <img src="~/resource/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
                 <h3>Jena Karlis</h3>
                 <h4>Store Owner</h4>
                 <div class="stars">
@@ -512,7 +596,7 @@
 
             <div class="swiper-slide">
               <div class="testimonial-item">
-                                <img src="~/resource/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
                 <h3>Matt Brandon</h3>
                 <h4>Freelancer</h4>
                 <div class="stars">
@@ -528,7 +612,7 @@
 
             <div class="swiper-slide">
               <div class="testimonial-item">
-                                <img src="~/resource/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
                 <h3>John Larson</h3>
                 <h4>Entrepreneur</h4>
                 <div class="stars">
@@ -575,11 +659,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/app-1.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/app-1.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>App 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -587,11 +671,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/product-1.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/product-1.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Product 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -599,11 +683,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Branding 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/branding-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/branding-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -611,11 +695,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/books-1.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/books-1.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Books 1</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/books-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/books-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -623,11 +707,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/app-2.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/app-2.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>App 2</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/app-2.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/app-2.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -635,11 +719,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/product-2.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/product-2.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Product 2</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/product-2.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/product-2.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -647,11 +731,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/branding-2.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/branding-2.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Branding 2</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/branding-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/branding-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -659,11 +743,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/books-2.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/books-2.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Books 2</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/books-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/books-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -671,11 +755,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/app-3.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/app-3.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>App 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/app-3.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/app-3.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -683,11 +767,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/product-3.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/product-3.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Product 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/product-3.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/product-3.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -695,11 +779,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/branding-3.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/branding-3.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Branding 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/branding-3.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/branding-3.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -707,11 +791,11 @@
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
               <div class="portfolio-content h-100">
-                                <img src="~/resource/img/portfolio/books-3.jpg" class="img-fluid" alt="">
+                <img src="assets/img/portfolio/books-3.jpg" class="img-fluid" alt="">
                 <div class="portfolio-info">
                   <h4>Books 3</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="~/resource/img/portfolio/books-3.jpg" title="Branding 3" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="assets/img/portfolio/books-3.jpg" title="Branding 3" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
@@ -740,7 +824,7 @@
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
             <div class="member">
-                            <div class="pic"><img src="~/resource/img/team/team-1.jpg" class="img-fluid" alt=""></div>
+              <div class="pic"><img src="assets/img/team/team-1.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Walter White</h4>
                 <span>Chief Executive Officer</span>
@@ -756,7 +840,7 @@
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="member">
-                            <div class="pic"><img src="~/resource/img/team/team-2.jpg" class="img-fluid" alt=""></div>
+              <div class="pic"><img src="assets/img/team/team-2.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>Sarah Jhonson</h4>
                 <span>Product Manager</span>
@@ -772,7 +856,7 @@
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="member">
-                            <div class="pic"><img src="~/resource/img/team/team-3.jpg" class="img-fluid" alt=""></div>
+              <div class="pic"><img src="assets/img/team/team-3.jpg" class="img-fluid" alt=""></div>
               <div class="member-info">
                 <h4>William Anderson</h4>
                 <span>CTO</span>
@@ -963,7 +1047,7 @@
 
   <!-- Main JS File -->
   <script src="~/resource/js/main.js"></script>
-    @RenderSection("Scripts", required: false)
+
 </body>
 
 </html>
