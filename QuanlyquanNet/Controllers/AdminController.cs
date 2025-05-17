@@ -4,7 +4,7 @@ namespace QuanlyquanNet.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Admin()
+        public IActionResult Dashboard()
         {
             return View();
         }
