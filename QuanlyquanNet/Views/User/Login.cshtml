@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["BodyClass"] = "auth-page";
+}
+
+@section Styles {
+    <style>
+        /* Ẩn header khi body có class auth-page */
+        body.auth-page #header {
+            display: none !important;
+        }
+
+        /* Nền gradient và canh giữa card */
+        body.auth-page {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* Card đăng nhập */
+        .card-login {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            background: #fff;
+        }
+
+        /* Input group icon */
+        .input-group-text {
+            background-color: #667eea;
+            color: #fff;
+            border: none;
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        /* Input field */
+        .form-control {
+            border-radius: 0 0.5rem 0.5rem 0;
+            border-left: none;
+        }
+
+            /* Focus effect */
+            .form-control:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            }
+
+        /* Checkbox label */
+        .form-check-label {
+            user-select: none;
+        }
+
+        /* Button đăng nhập */
+        .btn-primary {
+            background-color: #667eea;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #5a67d8;
+            }
+
+        /* Footer text */
+        .login-footer {
+            margin-top: 1.25rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+            .login-footer a {
+                color: #667eea;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+                .login-footer a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+}
+
+<main role="main" class="d-flex justify-content-center align-items-center min-vh-100 auth-page">
+    <div class="card card-login">
+        <h2 class="text-center mb-4">Đăng nhập</h2>
+
+        <form method="post" asp-action="Login" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="username" name="Username" placeholder="Nhập tên đăng nhập" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="password" name="Password" placeholder="Nhập mật khẩu" required>
+                </div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe" name="RememberMe">
+                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+            </div>
+        </form>
+
+        <div class="login-footer">
+            <p>Bạn chưa có tài khoản? <a href="/User/Register">Đăng ký</a></p>
+            <p><a href="#">Quên mật khẩu?</a></p>
+        </div>
+    </div>
+</main>

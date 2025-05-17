@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["BodyClass"] = "auth-page";
+}
+
+@section Styles {
+    <style>
+        body.auth-page #header {
+            display: none !important;
+        }
+
+        body.auth-page {
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card-register {
+            width: 100%;
+            max-width: 480px;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            background: #fff;
+        }
+
+        .input-group-text {
+            background-color: #667eea;
+            color: #fff;
+            border: none;
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 0 0.5rem 0.5rem 0;
+            border-left: none;
+        }
+
+            .form-control:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            }
+
+        .btn-primary {
+            background-color: #667eea;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #5a67d8;
+            }
+
+        .register-footer {
+            margin-top: 1.25rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+            .register-footer a {
+                color: #667eea;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+                .register-footer a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+}
+
+<main role="main" class="d-flex justify-content-center align-items-center min-vh-100 auth-page">
+    <div class="card card-register">
+        <h2 class="text-center mb-4">Tạo tài khoản</h2>
+
+        <form method="post" asp-action="Register" novalidate>
+            <div class="mb-3">
+                <label for="fullname" class="form-label">Họ và tên</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person-lines-fill"></i></span>
+                    <input type="text" class="form-control" id="fullname" name="FullName" placeholder="Nhập họ tên đầy đủ" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="username" name="Username" placeholder="Tên đăng nhập" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                    <input type="email" class="form-control" id="email" name="Email" placeholder="you@example.com" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="password" name="Password" placeholder="Nhập mật khẩu" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-shield-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" placeholder="Nhập lại mật khẩu" required>
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Đăng ký</button>
+            </div>
+        </form>
+
+        <div class="register-footer">
+            <p>Đã có tài khoản? <a href="/User/Login">Đăng nhập ngay</a></p>
+        </div>
+    </div>
+</main>
