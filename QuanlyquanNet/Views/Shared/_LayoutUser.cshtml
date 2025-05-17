@@ -72,12 +72,28 @@
               <li><a href="#">Dropdown 4</a></li>
             </ul>
           </li>
-                    <li><a asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
+       @{
+           var hoTen = Context.Session.GetString("HoTen");
+        }
+        @if (string.IsNullOrEmpty(hoTen))
+         {
+           <!-- Nếu chưa đăng nhập -->
+           <a class="cta-btn" asp-controller="User" asp-action="Login">Đăng nhập</a>
+         }
+         else
+          {
+             <!-- Nếu đã đăng nhập -->
+             <div class="d-flex align-items-center gap-2">
+                 <span class="text-white">Xin chào, @hoTen</span>
+                  <form method="post" asp-controller="User" asp-action="Logout" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-light">Đăng xuất</button>
+                  </form>
+             </div>
+          }
 
-      <a class="cta-btn" asp-controller="User" asp-action="Login">Đăng nhập</a>
 
     </div>
   </header>
