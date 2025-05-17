@@ -104,7 +104,14 @@
     <div class="card card-login">
         <h2 class="text-center">Đăng nhập</h2>
 
-        <form method="post" asp-action="Login" novalidate>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger text-center">
+                @ViewBag.Error
+            </div>
+        }
+
+        <form method="post" asp-controller="User" asp-action="Login" novalidate>
             <div class="mb-3">
                 <label for="username" class="form-label">Tên đăng nhập</label>
                 <div class="input-group">
