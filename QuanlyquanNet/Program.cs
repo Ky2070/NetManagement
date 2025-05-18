@@ -9,6 +9,21 @@ builder.Services.AddDbContext<QuanLyNetContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("QuanNet")); //Can change connect-string
 });
 
+// Add authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Employee", policy => policy.RequireRole("Employee"));
+});
+
+// ✅ Thêm session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +38,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession(); // ✅ Thêm middleware session ở đây
 
 app.UseAuthorization();
 

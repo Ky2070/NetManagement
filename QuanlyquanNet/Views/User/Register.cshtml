@@ -1,0 +1,156 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đăng ký</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #f1f1f1;
+        }
+
+        .card-register {
+            background-color: #ffffff;
+            color: #2f3542;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+            max-width: 500px;
+            width: 100%;
+        }
+
+            .card-register h2 {
+                font-weight: 600;
+                margin-bottom: 1.5rem;
+                text-align: center;
+            }
+
+        .input-group-text {
+            background-color: #6c5ce7;
+            color: #fff;
+            border: none;
+        }
+
+        .form-control {
+            border: none;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+            .form-control:focus {
+                box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+                border-color: #6c5ce7;
+            }
+
+        .btn-primary {
+            background-color: #6c5ce7;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #5a4dd9;
+            }
+
+        .register-footer {
+            margin-top: 1.25rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+            .register-footer a {
+                color: #6c5ce7;
+                font-weight: 500;
+                text-decoration: none;
+            }
+
+                .register-footer a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+    <!-- Icon ngôi nhà dẫn về trang chủ -->
+    <a href="/" class="position-absolute top-0 start-0 m-3 text-white fs-4" title="Về trang chủ">
+        <i class="bi bi-house-fill"></i>
+    </a>
+    <div class="card card-register">
+        <h2>Tạo tài khoản</h2>
+
+        <form method="post" asp-action="Register" novalidate>
+            <div class="mb-3">
+                <label for="fullname" class="form-label">Họ và tên</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person-lines-fill"></i></span>
+                    <input type="text" class="form-control" id="fullname" name="FullName" placeholder="Nhập họ tên đầy đủ" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="username" name="Username" placeholder="Tên đăng nhập" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                    <input type="email" class="form-control" id="email" name="Email" placeholder="you@example.com" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="password" name="Password" placeholder="Nhập mật khẩu" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-shield-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" placeholder="Nhập lại mật khẩu" required>
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Đăng ký</button>
+            </div>
+        </form>
+
+        <div class="register-footer">
+            <p>Đã có tài khoản? <a href="/User/Login">Đăng nhập ngay</a></p>
+        </div>
+    </div>
+</body>
+</html>
