@@ -4,6 +4,7 @@ using QuanlyquanNet.Data;
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace QuanlyquanNet.Controllers
@@ -73,6 +74,7 @@ namespace QuanlyquanNet.Controllers
                             await HinhAnh.CopyToAsync(stream);
                         }
                         nhiemVu.HinhAnh = $"/images/nhiemvu/{fileName}";
+                        
                     }
                     nhiemVu.NgayTao = DateTime.Now;
                     _context.Add(nhiemVu);

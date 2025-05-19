@@ -79,6 +79,7 @@ namespace QuanlyquanNet.Controllers
 
                 return new AssignedTaskViewModel
                 {
+                    Id = x.MaNhiemVu,
                     KhachHang = khachHang,
                     TenNhiemVu = nhiemVu?.TenNhiemVu,
                     MoTa = nhiemVu?.MoTa,
@@ -88,9 +89,10 @@ namespace QuanlyquanNet.Controllers
                     Game = game
                 };
             }).ToList();
-
+            int khachHangId = 1; // hoặc lấy từ biến, tham số, v.v.
             ViewBag.AssignedTasks = assignedTasks;
             ViewBag.Customers = _context.KhachHangs.ToList();
+            ViewBag.Tasks = _context.NhiemVus.ToList();
             return View();
         }
 
@@ -148,24 +150,32 @@ namespace QuanlyquanNet.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public IActionResult Complete(string customerName)
+        [HttpGet]
+        public JsonResult GetUncompletedTasks(int customerId)
         {
-            var customer = _context.KhachHangs.FirstOrDefault(x => x.HoTen == customerName);
-            if (customer != null)
-            {
-                var task = _context.KhachHangNhiemVus
-                    .Where(x => x.MaKhachHang == customer.MaKhachHang && x.TrangThai == "Chưa hoàn thành")
-                    .OrderByDescending(x => x.NgayThamGia)
-                    .FirstOrDefault();
+            var gameMissions = GetGameMissions();
+            var tasks = _context.KhachHangNhiemVus
+                .Where(x => x.MaKhachHang == customerId && x.TrangThai == "Chưa hoàn thành")
+                .Select(x => new {
+                    id = x.MaNhiemVu,
+                    tenNhiemVu = x.MaNhiemVuNavigation.TenNhiemVu,
+                    game = gameMissions
+        })
+                .ToList();
 
-                if (task != null)
-                {
-                    task.TrangThai = "Đã hoàn thành";
-                    task.ThoiGianHoanThanh = DateTime.Now;
-                    _context.SaveChanges();
-                    TempData["Success"] = $"Đã đánh dấu hoàn thành nhiệm vụ cho {customerName}.";
-                }
+            return Json(tasks);
+        }
+
+        [HttpPost]
+        public IActionResult Complete(int taskId)
+        {
+            var task = _context.KhachHangNhiemVus.FirstOrDefault(x => x.MaNhiemVu == taskId);
+            if (task != null)
+            {
+                task.TrangThai = "Đã hoàn thành";
+                task.ThoiGianHoanThanh = DateTime.Now;
+                _context.SaveChanges();
+                TempData["Success"] = $"Đã đánh dấu hoàn thành nhiệm vụ cho {task.MaKhachHangNavigation.HoTen}.";
             }
 
             return RedirectToAction("Index");

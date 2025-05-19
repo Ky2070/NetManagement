@@ -4,6 +4,7 @@
     ViewData["Title"] = "Quản lý nhiệm vụ";
     var assignedTasks = ViewBag.AssignedTasks as List<QuanlyquanNet.ViewModel.AssignedTaskViewModel>;
     var customers = ViewBag.Customers as List<QuanlyquanNet.Data.KhachHang>;
+    var tasks = ViewBag.Tasks as List<QuanlyquanNet.Data.NhiemVu>;
 }
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -57,21 +58,32 @@
                 <div class="card-body">
                     <form asp-action="Complete" method="post">
                         <div class="mb-3">
-                            <label for="customerName" class="form-label">Khách hàng</label>
-                            <select class="form-select" id="customerName" name="customerName" required>
+                            <label for="customerIdComplete" class="form-label">Khách hàng</label>
+                            <select class="form-select" id="customerIdComplete" name="customerId" required>
                                 <option value="">-- Chọn khách hàng --</option>
                                 @foreach (var c in customers)
                                 {
-                                    <option value="@c.HoTen">@c.HoTen</option>
+                                    <option value="@c.MaKhachHang">@c.HoTen</option>
                                 }
                             </select>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="taskId" class="form-label">Nhiệm vụ</label>
+                            <select class="form-select" id="taskId" name="taskId" required>
+                                <option value="">-- Chọn nhiệm vụ --</option>
+                                @foreach (var t in tasks)
+                                {
+                                    <option value="@t.MaNhiemVu">@t.TenNhiemVu</option>
+                                }
+                            </select>
+                        </div>
+
                         <button type="submit" class="btn btn-success w-100">🎉 Đánh dấu hoàn thành</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Bảng danh sách nhiệm vụ -->
     <div class="mt-5">
@@ -118,3 +130,23 @@
         </table>
     </div>
 </div>
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $('#customerIdComplete').on('change', function () {
+                var customerId = $(this).val();
+                $('#taskId').html('<option>Đang tải...</option>');
+                if (customerId) {
+                    $.get('/Task/GetUncompletedTasks?customerId=' + customerId, function (data) {
+                        var options = '<option value="">-- Chọn nhiệm vụ --</option>';
+                        data.forEach(function (task) {
+                            options += `<option value="${task.id}">${task.tenNhiemVu} (${task.game})</option>`;
+                        });
+                        $('#taskId').html(options);
+                    });
+                } else {
+                    $('#taskId').html('<option value="">-- Chọn nhiệm vụ --</option>');
+                }
+            });
+        </script>
+    }
