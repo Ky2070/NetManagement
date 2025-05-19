@@ -1,127 +1,120 @@
-﻿@{
+﻿@model dynamic
+@{
     Layout = null;
+    ViewData["Title"] = "Quản lý nhiệm vụ";
+    var assignedTasks = ViewBag.AssignedTasks as List<QuanlyquanNet.ViewModel.AssignedTaskViewModel>;
     var customers = ViewBag.Customers as List<QuanlyquanNet.Data.KhachHang>;
 }
-<section class="section bg-light py-5" id="create-task">
-    <div class="container">
-        <!-- Tiêu đề -->
-        <div class="row justify-content-center mb-4">
-            <div class="col-lg-8 text-center">
-                <h2 class="fw-bold mb-3">🎯 Tạo nhiệm vụ cho khách</h2>
-                <p class="text-muted fs-5">Chọn khách hàng và game để hệ thống tự tạo nhiệm vụ phù hợp.</p>
-            </div>
-        </div>
 
-        <!-- Form tạo nhiệm vụ -->
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card shadow rounded-4 border-0">
-                    <div class="card-body p-4">
-                        <form method="post" asp-controller="Task" asp-action="Create">
-                            <div class="mb-3">
-                                <label for="customerId" class="form-label fw-semibold">👤 Khách hàng</label>
-                                <select class="form-select rounded-pill px-3 py-2" id="customerId" name="customerId" required>
-                                    <option selected disabled>-- Chọn khách hàng --</option>
-                                    @foreach (var customer in customers)
-                                    {
-                                        <option value="@customer.MaKhachHang">@customer.HoTen</option>
-                                    }
-                                </select>
-                            </div>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-                            <div class="mb-3">
-                                <label for="gameName" class="form-label fw-semibold">🎮 Chọn game</label>
-                                <select class="form-select rounded-pill px-3 py-2" id="gameName" name="gameName" required>
-                                    <option selected disabled>-- Chọn game --</option>
-                                    <option value="Valorant">Valorant</option>
-                                    <option value="League of Legends">League of Legends</option>
-                                    <option value="CS:GO">CS:GO</option>
-                                    <option value="Dota 2">Dota 2</option>
-                                    <option value="PUBG">PUBG</option>
-                                </select>
-                            </div>
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">🎮 Quản Lý Nhiệm Vụ Game</h2>
 
-                            <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold">🚀 Tạo nhiệm vụ</button>
-                            </div>
-                        </form>
-                    </div>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="row">
+        <!-- Form giao nhiệm vụ -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">🎯 Giao Nhiệm Vụ Mới</div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="mb-3">
+                            <label for="customerId" class="form-label">Khách hàng</label>
+                            <select class="form-select" id="customerId" name="customerId" required>
+                                <option value="">-- Chọn khách hàng --</option>
+                                @foreach (var c in customers)
+                                {
+                                    <option value="@c.MaKhachHang">@c.HoTen</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gameName" class="form-label">Game</label>
+                            <select class="form-select" id="gameName" name="gameName" required>
+                                <option value="">-- Chọn game --</option>
+                                <option value="Valorant">Valorant</option>
+                                <option value="League of Legends">League of Legends</option>
+                                <option value="CS:GO">CS:GO</option>
+                                <option value="Dota 2">Dota 2</option>
+                                <option value="PUBG">PUBG</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">🚀 Giao nhiệm vụ</button>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <!-- Nhiệm vụ mới được tạo -->
-        @if (ViewBag.Mission != null)
-        {
-            <div class="row justify-content-center mt-5">
-                <div class="col-lg-8">
-                    <div class="card shadow-lg rounded-4">
-                        <div class="card-header bg-success text-white rounded-top-4">
-                            <h5 class="mb-0 fw-semibold">✅ Nhiệm vụ đã tạo</h5>
+        <!-- Form hoàn thành nhiệm vụ -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">✅ Hoàn Thành Nhiệm Vụ</div>
+                <div class="card-body">
+                    <form asp-action="Complete" method="post">
+                        <div class="mb-3">
+                            <label for="customerName" class="form-label">Khách hàng</label>
+                            <select class="form-select" id="customerName" name="customerName" required>
+                                <option value="">-- Chọn khách hàng --</option>
+                                @foreach (var c in customers)
+                                {
+                                    <option value="@c.HoTen">@c.HoTen</option>
+                                }
+                            </select>
                         </div>
-                        <div class="card-body p-4">
-                            <p><strong>👤 Khách:</strong> @ViewBag.Customer</p>
-                            <p><strong>🎮 Game:</strong> @ViewBag.Game</p>
-                            <p><strong>📝 Nhiệm vụ:</strong> @ViewBag.Mission</p>
-                            <p><strong>⭐ Điểm thưởng:</strong> @ViewBag.Points điểm</p>
-                            <div class="d-flex justify-content-end gap-2 mt-4">
-                                <form method="post" asp-controller="Task" asp-action="Complete">
-                                    <input type="hidden" name="customerId" value="@ViewBag.CustomerId" />
-                                    <button type="submit" class="btn btn-outline-success rounded-pill">✔ Hoàn thành</button>
-                                </form>
-                                <button class="btn btn-outline-secondary rounded-pill" onclick="window.print()">🖨 In nhiệm vụ</button>
-                            </div>
-                        </div>
-                    </div>
+                        <button type="submit" class="btn btn-success w-100">🎉 Đánh dấu hoàn thành</button>
+                    </form>
                 </div>
             </div>
-        }
-
-        <!-- Danh sách nhiệm vụ đã tạo -->
-        @if (ViewBag.AssignedTasks != null)
-        {
-            <div class="row justify-content-center mt-5">
-                <div class="col-lg-10">
-                    <div class="card border-0 shadow-sm rounded-4">
-                        <div class="card-header bg-primary text-white rounded-top-4">
-                            <h5 class="mb-0 fw-semibold">📋 Danh sách nhiệm vụ gần đây</h5>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-hover mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>👤 Khách hàng</th>
-                                            <th>📝 Nhiệm vụ</th>
-                                            <th>🎮 Game</th>
-                                            <th>⭐ Điểm</th>
-                                            <th>📅 Ngày giao</th>
-                                            <th>📌 Trạng thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in ViewBag.AssignedTasks)
-                                        {
-                                            <tr>
-                                                <td>@item.KhachHang</td>
-                                                <td>@item.TenNhiemVu</td>
-                                                <td>@item.Game</td>
-                                                <td>@item.DiemThuong</td>
-                                                <td>@item.NgayThamGia.ToString("dd/MM/yyyy HH:mm")</td>
-                                                <td>
-                                                    <span class="badge bg-@(item.TrangThai == "Hoàn thành" ? "success" : "warning") text-dark px-3 py-2 rounded-pill">
-                                                        @item.TrangThai
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+        </div>
     </div>
-</section>
+
+    <!-- Bảng danh sách nhiệm vụ -->
+    <div class="mt-5">
+        <h4 class="mb-3">📋 Nhiệm Vụ Gần Đây</h4>
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Khách Hàng</th>
+                    <th>Game</th>
+                    <th>Nhiệm Vụ</th>
+                    <th>Mô Tả</th>
+                    <th>Điểm Thưởng</th>
+                    <th>Ngày Giao</th>
+                    <th>Trạng Thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (assignedTasks != null && assignedTasks.Any())
+                {
+                    foreach (var task in assignedTasks)
+                    {
+                        <tr>
+                            <td>@task.KhachHang</td>
+                            <td>@task.Game</td>
+                            <td>@task.TenNhiemVu</td>
+                            <td>@task.MoTa</td>
+                            <td>@task.DiemThuong</td>
+                            <td>@(task.NgayThamGia?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</td>
+                            <td>
+                                <span class="badge @(task.TrangThai == "Đã hoàn thành" ? "bg-success" : "bg-warning text-dark")">
+                                    @task.TrangThai
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">Chưa có nhiệm vụ nào.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
