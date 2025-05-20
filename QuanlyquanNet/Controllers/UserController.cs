@@ -62,7 +62,7 @@ namespace QuanlyquanNet.Controllers
                     return RedirectToAction("Dashboard", "Admin");
 
                 case 2: // Nhân viên
-                    return RedirectToAction("Index", "NhanVien");
+                    return RedirectToAction("Index", "Task");
 
                 case 3: // Khách hàng
                     return RedirectToAction("Index", "Home");
