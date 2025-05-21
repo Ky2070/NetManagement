@@ -2,39 +2,49 @@
 
 @{
     ViewData["Title"] = "Danh sách Vật Phẩm";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">@ViewData["Title"]</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">➕ Thêm Vật Phẩm</a>
-</p>
 
-<table class="table table-bordered table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.MaVatPham)</th>
-            <th>@Html.DisplayNameFor(model => model.TenVatPham)</th>
-            <th>@Html.DisplayNameFor(model => model.GiaMua)</th>
-            <th>@Html.DisplayNameFor(model => model.SoLuongTon)</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
+    <div class="mb-3 text-end">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle-fill"></i> Thêm Vật Phẩm
+        </a>
+    </div>
+
+    <div class="row">
         @foreach (var item in Model)
         {
-            <tr>
-                <td>@item.MaVatPham</td>
-                <td>@item.TenVatPham</td>
-                <td>@item.GiaMua</td>
-                <td>@item.SoLuongTon</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.MaVatPham">🔍 Xem</a> |
-                    <a asp-action="Edit" asp-route-id="@item.MaVatPham">✏️ Sửa</a> |
-                    <a asp-action="Delete" asp-route-id="@item.MaVatPham">🗑️ Xóa</a>
-                </td>
-            </tr>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="https://png.pngtree.com/png-clipart/20191120/original/pngtree-gift-in-a-box-icon-cartoon-style-png-image_5080512.jpg"
+                         class="card-img-top"
+                         alt="Vật phẩm"
+                         style="max-height: 200px; object-fit: contain;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.TenVatPham</h5>
+                        <p class="card-text">
+                            <strong>Mã:</strong> @item.MaVatPham<br />
+                            <strong>Giá mua:</strong> @string.Format("{0:N0} VNĐ", item.GiaMua)<br />
+                            <strong>Số lượng tồn:</strong> @item.SoLuongTon
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                        <a asp-action="Details" asp-route-id="@item.MaVatPham" class="btn btn-sm btn-info">
+                            <i class="bi bi-eye-fill"></i> Xem
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@item.MaVatPham" class="btn btn-sm btn-warning">
+                            <i class="bi bi-pencil-fill"></i> Sửa
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.MaVatPham" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash-fill"></i> Xóa
+                        </a>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
