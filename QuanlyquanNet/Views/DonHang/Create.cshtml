@@ -2,38 +2,118 @@
 
 @{
     ViewData["Title"] = "Thêm đơn hàng";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+
+    var maKhachHangList = ViewData["MaKhachHang"] as SelectList;
+    var maDichVuList = ViewData["MaDichVu"] as SelectList;
+    var maMayTinhList = ViewData["MaMayTinh"] as SelectList;
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<form asp-action="Create">
-    <div class="form-group">
-        <label asp-for="MaKhachHang" class="control-label"></label>
-        <select asp-for="MaKhachHang" class="form-control" asp-items="ViewBag.MaKhachHang"></select>
-    </div>
+<h3>Thêm mới đơn hàng</h3>
+<hr />
 
-    <div class="form-group">
-        <label asp-for="MaDichVu" class="control-label"></label>
-        <select asp-for="MaDichVu" class="form-control" asp-items="ViewBag.MaDichVu"></select>
-    </div>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
-    <div class="form-group">
-        <label asp-for="SoLuong" class="control-label"></label>
-        <input asp-for="SoLuong" class="form-control" />
-    </div>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-group">
-        <label asp-for="ThongTinViTri" class="control-label"></label>
-        <input asp-for="ThongTinViTri" class="form-control" />
-    </div>
+            <div class="form-group">
+                <label asp-for="MaKhachHang" class="control-label"></label>
+                @if (maKhachHangList == null || !maKhachHangList.Any())
+                {
+                    <p class="text-danger">Không có khách hàng để chọn.</p>
+                    <select asp-for="MaKhachHang" class="form-control" disabled></select>
+                }
+                else
+                {
+                    <select asp-for="MaKhachHang" class="form-control" asp-items="maKhachHangList">
+                        <option value="">-- Chọn khách hàng --</option>
+                    </select>
+                }
+                <span asp-validation-for="MaKhachHang" class="text-danger"></span>
+            </div>
 
-    <div class="form-group">
-        <label asp-for="TongTien" class="control-label"></label>
-        <input asp-for="TongTien" class="form-control" />
-    </div>
+            <div class="form-group">
+                <label asp-for="MaDichVu" class="control-label"></label>
+                @if (maDichVuList == null || !maDichVuList.Any())
+                {
+                    <p class="text-danger">Không có dịch vụ để chọn.</p>
+                    <select asp-for="MaDichVu" class="form-control" disabled></select>
+                }
+                else
+                {
+                    <select asp-for="MaDichVu" class="form-control" asp-items="maDichVuList">
+                        <option value="">-- Chọn dịch vụ --</option>
+                    </select>
+                }
+                <span asp-validation-for="MaDichVu" class="text-danger"></span>
+            </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Thêm đơn hàng</button>
+            <div class="form-group">
+                <label asp-for="MaMayTinh" class="control-label"></label>
+                @if (maMayTinhList == null || !maMayTinhList.Any())
+                {
+                    <p class="text-danger">Không có máy tính để chọn.</p>
+                    <select asp-for="MaMayTinh" class="form-control" disabled></select>
+                }
+                else
+                {
+                    <select asp-for="MaMayTinh" class="form-control" asp-items="maMayTinhList">
+                        <option value="">-- Chọn máy tính --</option>
+                    </select>
+                }
+                <span asp-validation-for="MaMayTinh" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SoLuong" class="control-label"></label>
+                <input asp-for="SoLuong" class="form-control" type="number" min="1" />
+                <span asp-validation-for="SoLuong" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ThongTinViTri" class="control-label"></label>
+                <input asp-for="ThongTinViTri" class="form-control" />
+                <span asp-validation-for="ThongTinViTri" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TongTien" class="control-label"></label>
+                <input asp-for="TongTien" class="form-control" type="number" min="0" step="0.01" />
+                <span asp-validation-for="TongTien" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NgayDat" class="control-label"></label>
+                <input asp-for="NgayDat" class="form-control" type="datetime-local" />
+                <span asp-validation-for="NgayDat" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TrangThai" class="control-label"></label>
+                <select asp-for="TrangThai" class="form-control">
+                    <option value="Đang xử lý">Đang xử lý</option>
+                    <option value="Hoàn thành">Hoàn thành</option>
+                    <option value="Hủy">Hủy</option>
+                </select>
+                <span asp-validation-for="TrangThai" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Thêm đơn hàng</button>
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

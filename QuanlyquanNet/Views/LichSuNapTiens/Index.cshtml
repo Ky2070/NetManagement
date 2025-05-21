@@ -2,77 +2,56 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Transaction History";
 }
 
-<h1>Index</h1>
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Lịch Sử Nạp Tiền</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.HoTen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoTien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoTienThucNhan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayNap)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrangThai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaGoiNapNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaKhachHangNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TenDangNhapNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoTen)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoTien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoTienThucNhan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayNap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrangThai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaGoiNapNavigation.MaGoiNap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaKhachHangNavigation.TenDangNhap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenDangNhapNavigation.TenDangNhap)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaNapTien">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaNapTien">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaNapTien">Delete</a>
-            </td>
-        </tr>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.HoTen)</th>
+                            <th>@Html.DisplayNameFor(model => model.SoTien)</th>
+                            <th>@Html.DisplayNameFor(model => model.SoTienThucNhan)</th>
+                            <th>@Html.DisplayNameFor(model => model.NgayNap)</th>
+                            <th>@Html.DisplayNameFor(model => model.TrangThai)</th>
+                            <th>@Html.DisplayNameFor(model => model.MaGoiNapNavigation)</th>
+                            <th>@Html.DisplayNameFor(model => model.MaKhachHangNavigation)</th>
+                            <th>@Html.DisplayNameFor(model => model.TenDangNhapNavigation)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
+                                <td>@Html.DisplayFor(modelItem => item.SoTien)</td>
+                                <td>@Html.DisplayFor(modelItem => item.SoTienThucNhan)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NgayNap)</td>
+                                <td>
+                                    <span class="badge @((item.TrangThai == "Success" ? "bg-success" : item.TrangThai == "Pending" ? "bg-warning" : "bg-danger"))">
+                                        @Html.DisplayFor(modelItem => item.TrangThai)
+                                    </span>
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.MaGoiNapNavigation.MaGoiNap)</td>
+                                <td>@Html.DisplayFor(modelItem => item.MaKhachHangNavigation.TenDangNhap)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TenDangNhapNavigation.TenDangNhap)</td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.MaNapTien" class="btn btn-sm btn-info">Xem</a>
+                                    <a asp-action="Delete" asp-route-id="@item.MaNapTien" class="btn btn-sm btn-danger">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 }
-    </tbody>
-</table>

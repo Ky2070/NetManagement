@@ -2,60 +2,78 @@
 
 @{
     ViewData["Title"] = "Chỉnh sửa Dịch Vụ";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-4 p-5">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h2 class="mb-0 fs-1"><i class="fas fa-edit me-2"></i>Chỉnh sửa Dịch Vụ</h2>
+                </div>
 
-<!-- Hiển thị lỗi tổng quát -->
-<div asp-validation-summary="All" class="text-danger"></div>
+                <div class="card-body bg-light">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="MaDichVu" />
-    <input type="hidden" asp-for="NgayTao" />
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="MaDichVu" />
+                        <input type="hidden" asp-for="NgayTao" />
 
-    <div class="form-group">
-        <label asp-for="TenDichVu" class="control-label"></label>
-        <input asp-for="TenDichVu" class="form-control" />
-        <span asp-validation-for="TenDichVu" class="text-danger"></span>
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <label asp-for="TenDichVu" class="form-label fw-bold fs-5">Tên Dịch Vụ</label>
+                                <input asp-for="TenDichVu" class="form-control form-control-lg" />
+                                <span asp-validation-for="TenDichVu" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="Gia" class="form-label fw-bold fs-5">Giá (VNĐ)</label>
+                                <input asp-for="Gia" class="form-control form-control-lg" />
+                                <span asp-validation-for="Gia" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="LoaiDichVu" class="form-label fw-bold fs-5">Loại Dịch Vụ</label>
+                                <input asp-for="LoaiDichVu" class="form-control form-control-lg" />
+                                <span asp-validation-for="LoaiDichVu" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold fs-5">Hình ảnh hiện tại</label><br />
+                                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                                {
+                                    <img src="@Model.HinhAnh" alt="@Model.TenDichVu" class="img-thumbnail shadow" style="max-height: 250px;" />
+                                }
+                                else
+                                {
+                                    <div class="text-muted fst-italic">Không có ảnh</div>
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold fs-5">Chọn ảnh mới</label>
+                                <input type="file" name="hinhAnhFile" class="form-control form-control-lg" />
+                                <span asp-validation-for="HinhAnh" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary btn-lg px-4">
+                                <i class="fas fa-arrow-left me-2"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg px-4">
+                                <i class="fas fa-save me-2"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="Gia" class="control-label"></label>
-        <input asp-for="Gia" class="form-control" />
-        <span asp-validation-for="Gia" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="LoaiDichVu" class="control-label"></label>
-        <input asp-for="LoaiDichVu" class="form-control" />
-        <span asp-validation-for="LoaiDichVu" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label">Hình ảnh hiện tại</label>
-        @if (!string.IsNullOrEmpty(Model.HinhAnh))
-        {
-            <img src="@Model.HinhAnh" alt="@Model.TenDichVu" style="max-width: 100px;" />
-        }
-        else
-        {
-            <span>Không có ảnh</span>
-        }
-    </div>
-
-    <div class="form-group">
-        <label class="control-label">Chọn ảnh mới</label>
-        <input type="file" name="hinhAnhFile" class="form-control" />
-        <span asp-validation-for="HinhAnh" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-    </div>
-</form>
-
-<a asp-action="Index">Quay lại danh sách</a>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

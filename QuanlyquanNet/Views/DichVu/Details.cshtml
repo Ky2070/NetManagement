@@ -2,27 +2,44 @@
 
 @{
     ViewData["Title"] = "Chi tiết Dịch Vụ";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-6">
-        <h4>@Model.TenDichVu</h4>
-        <p><strong>Giá:</strong> @Model.Gia</p>
-        <p><strong>Loại dịch vụ:</strong> @Model.LoaiDichVu</p>
-
-        <p><strong>Ảnh:</strong></p>
-        @if (!string.IsNullOrEmpty(Model.HinhAnh))
-        {
-            <img src="@Model.HinhAnh" alt="@Model.TenDichVu" width="200" height="200" />
-        }
-        else
-        {
-            <p>Chưa có ảnh</p>
-        }
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            <!-- Khung rộng hơn, cân giữa -->
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <div class="card-header bg-dark text-white rounded-top-4">
+                    <h2 class="mb-0 fs-2"><i class="fas fa-info-circle me-2"></i>Chi Tiết Dịch Vụ</h2>
+                </div>
+                <div class="card-body bg-light">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <h3 class="fw-bold mb-3">@Model.TenDichVu</h3>
+                            <p class="fs-5"><strong>💰 Giá:</strong> @Model.Gia.ToString("N0") VNĐ</p>
+                            <p class="fs-5"><strong>📂 Loại dịch vụ:</strong> @Model.LoaiDichVu</p>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                            {
+                                <img src="@Model.HinhAnh" alt="@Model.TenDichVu"
+                                     class="img-fluid rounded shadow-lg"
+                                     style="max-height: 320px; width: auto;" />
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">Chưa có ảnh</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="mt-4 text-end">
+                        <a asp-action="Index" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-arrow-left me-1"></i> Quay lại
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<a asp-action="Index">Back to List</a>

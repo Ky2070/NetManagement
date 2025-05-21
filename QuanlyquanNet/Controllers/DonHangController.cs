@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanlyquanNet.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuanlyquanNet.Controllers
@@ -48,67 +49,88 @@ namespace QuanlyquanNet.Controllers
         }
 
         // GET: DonHang/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["MaDichVu"] = new SelectList(_context.DichVus, "MaDichVu", "TenDichVu");
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen");
-            ViewData["MaMayTinh"] = new SelectList(_context.MayTinhs, "MaMayTinh", "TenMayTinh");
+            var dichVus = await _context.DichVus.ToListAsync();
+            var khachHangs = await _context.KhachHangs.ToListAsync();
+            var mayTinhs = await _context.MayTinhs.ToListAsync();
+
+            if (!dichVus.Any() || !khachHangs.Any() || !mayTinhs.Any())
+            {
+                TempData["ErrorMessage"] = "Không có dữ liệu dịch vụ, khách hàng hoặc máy tính để tạo đơn hàng.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["MaDichVu"] = new SelectList(dichVus, "MaDichVu", "TenDichVu");
+            ViewData["MaKhachHang"] = new SelectList(khachHangs, "MaKhachHang", "HoTen");
+            ViewData["MaMayTinh"] = new SelectList(mayTinhs, "MaMayTinh", "TenMayTinh");
             return View();
         }
 
         // POST: DonHang/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaKhachHang,MaDichVu,SoLuong,MaMayTinh,ThongTinViTri,TongTien,NgayDat,TrangThai")] DonHang donHang)
+        public async Task<IActionResult> Create([Bind("MaKhachHang,MaDichVu,MaMayTinh,SoLuong,ThongTinViTri,TongTien,NgayDat,TrangThai")] DonHang donHang)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(donHang);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(donHang);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Đơn hàng đã được tạo thành công.";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    TempData["ErrorMessage"] = "Lỗi khi tạo đơn hàng. Vui lòng thử lại.";
+                }
             }
-            ViewData["MaDichVu"] = new SelectList(_context.DichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
-            ViewData["MaMayTinh"] = new SelectList(_context.MayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
+
+            var dichVus = await _context.DichVus.ToListAsync();
+            var khachHangs = await _context.KhachHangs.ToListAsync();
+            var mayTinhs = await _context.MayTinhs.ToListAsync();
+
+            ViewData["MaDichVu"] = new SelectList(dichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
+            ViewData["MaKhachHang"] = new SelectList(khachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
+            ViewData["MaMayTinh"] = new SelectList(mayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
             return View(donHang);
         }
 
         // GET: DonHang/Edit/5
-public async Task<IActionResult> Edit(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-    var donHang = await _context.DonHangs.FindAsync(id);
-    if (donHang == null)
-    {
-        return NotFound();
-    }
+            var donHang = await _context.DonHangs.FindAsync(id);
+            if (donHang == null)
+            {
+                return NotFound();
+            }
 
-    // Kiểm tra dữ liệu trước khi gán ViewData
-    var dichVus = await _context.DichVus.ToListAsync();
-    var khachHangs = await _context.KhachHangs.ToListAsync();
-    var mayTinhs = await _context.MayTinhs.ToListAsync();
+            var dichVus = await _context.DichVus.ToListAsync();
+            var khachHangs = await _context.KhachHangs.ToListAsync();
+            var mayTinhs = await _context.MayTinhs.ToListAsync();
 
-    if (!dichVus.Any() || !khachHangs.Any())
-    {
-        // Nếu không có dữ liệu, trả về thông báo lỗi
-        TempData["ErrorMessage"] = "Không có dữ liệu dịch vụ hoặc khách hàng để chỉnh sửa đơn hàng.";
-        return RedirectToAction(nameof(Index));
-    }
+            if (!dichVus.Any() || !khachHangs.Any() || !mayTinhs.Any())
+            {
+                TempData["ErrorMessage"] = "Không có dữ liệu dịch vụ, khách hàng hoặc máy tính để chỉnh sửa đơn hàng.";
+                return RedirectToAction(nameof(Index));
+            }
 
-    ViewData["MaDichVu"] = new SelectList(dichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
-    ViewData["MaMayTinh"] = new SelectList(mayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
-    ViewData["MaKhachHang"] = new SelectList(khachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
-        return View(donHang);
-}
+            ViewData["MaDichVu"] = new SelectList(dichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
+            ViewData["MaKhachHang"] = new SelectList(khachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
+            ViewData["MaMayTinh"] = new SelectList(mayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
+            return View(donHang);
+        }
 
         // POST: DonHang/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaDonHang,MaKhachHang,MaDichVu,SoLuong,MaMayTinh,ThongTinViTri,TongTien,NgayDat,TrangThai")] DonHang donHang)
+        public async Task<IActionResult> Edit(int id, [Bind("MaDonHang,MaKhachHang,MaDichVu,MaMayTinh,SoLuong,ThongTinViTri,TongTien,NgayDat,TrangThai")] DonHang donHang)
         {
             if (id != donHang.MaDonHang)
             {
@@ -121,6 +143,8 @@ public async Task<IActionResult> Edit(int? id)
                 {
                     _context.Update(donHang);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Đơn hàng đã được cập nhật thành công.";
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -128,18 +152,21 @@ public async Task<IActionResult> Edit(int? id)
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    TempData["ErrorMessage"] = "Lỗi đồng bộ hóa dữ liệu. Vui lòng thử lại.";
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException)
+                {
+                    TempData["ErrorMessage"] = "Lỗi khi cập nhật đơn hàng. Vui lòng thử lại.";
+                }
             }
-            ViewData["MaDichVu"] = new SelectList(_context.DichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
-            ViewData["MaMayTinh"] = new SelectList(_context.MayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
-            ViewData["MaKhachHang"] = new SelectList(_context.KhachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
 
+            var dichVus = await _context.DichVus.ToListAsync();
+            var khachHangs = await _context.KhachHangs.ToListAsync();
+            var mayTinhs = await _context.MayTinhs.ToListAsync();
 
+            ViewData["MaDichVu"] = new SelectList(dichVus, "MaDichVu", "TenDichVu", donHang.MaDichVu);
+            ViewData["MaKhachHang"] = new SelectList(khachHangs, "MaKhachHang", "HoTen", donHang.MaKhachHang);
+            ViewData["MaMayTinh"] = new SelectList(mayTinhs, "MaMayTinh", "TenMayTinh", donHang.MaMayTinh);
             return View(donHang);
         }
 
@@ -170,8 +197,22 @@ public async Task<IActionResult> Edit(int? id)
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var donHang = await _context.DonHangs.FindAsync(id);
-            _context.DonHangs.Remove(donHang);
-            await _context.SaveChangesAsync();
+            if (donHang == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.DonHangs.Remove(donHang);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Đơn hàng đã được xóa thành công.";
+            }
+            catch (DbUpdateException)
+            {
+                TempData["ErrorMessage"] = "Lỗi khi xóa đơn hàng. Vui lòng thử lại.";
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

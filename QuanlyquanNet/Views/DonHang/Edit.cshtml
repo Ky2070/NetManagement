@@ -1,11 +1,12 @@
 ﻿@model QuanlyquanNet.Data.DonHang
 
 @{
-    ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chỉnh sửa đơn hàng";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 
     var maKhachHangList = ViewData["MaKhachHang"] as SelectList;
     var maDichVuList = ViewData["MaDichVu"] as SelectList;
+    var maMayTinhList = ViewData["MaMayTinh"] as SelectList;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -34,7 +35,9 @@
                 }
                 else
                 {
-                    <select asp-for="MaKhachHang" class="form-control" asp-items="maKhachHangList"></select>
+                    <select asp-for="MaKhachHang" class="form-control" asp-items="maKhachHangList">
+                        <option value="">-- Chọn khách hàng --</option>
+                    </select>
                 }
                 <span asp-validation-for="MaKhachHang" class="text-danger"></span>
             </div>
@@ -48,9 +51,27 @@
                 }
                 else
                 {
-                    <select asp-for="MaDichVu" class="form-control" asp-items="maDichVuList"></select>
+                    <select asp-for="MaDichVu" class="form-control" asp-items="maDichVuList">
+                        <option value="">-- Chọn dịch vụ --</option>
+                    </select>
                 }
                 <span asp-validation-for="MaDichVu" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MaMayTinh" class="control-label"></label>
+                @if (maMayTinhList == null || !maMayTinhList.Any())
+                {
+                    <p class="text-danger">Không có máy tính để chọn.</p>
+                    <select asp-for="MaMayTinh" class="form-control" disabled></select>
+                }
+                else
+                {
+                    <select asp-for="MaMayTinh" class="form-control" asp-items="maMayTinhList">
+                        <option value="">-- Chọn máy tính --</option>
+                    </select>
+                }
+                <span asp-validation-for="MaMayTinh" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -69,6 +90,22 @@
                 <label asp-for="TongTien" class="control-label"></label>
                 <input asp-for="TongTien" class="form-control" type="number" min="0" step="0.01" />
                 <span asp-validation-for="TongTien" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NgayDat" class="control-label"></label>
+                <input asp-for="NgayDat" class="form-control" type="datetime-local" />
+                <span asp-validation-for="NgayDat" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TrangThai" class="control-label"></label>
+                <select asp-for="TrangThai" class="form-control">
+                    <option value="Đang xử lý">Đang xử lý</option>
+                    <option value="Hoàn thành">Hoàn thành</option>
+                    <option value="Hủy">Hủy</option>
+                </select>
+                <span asp-validation-for="TrangThai" class="text-danger"></span>
             </div>
 
             <div class="form-group">

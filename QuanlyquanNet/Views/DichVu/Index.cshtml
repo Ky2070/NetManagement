@@ -5,57 +5,50 @@
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
 
-<h1 class="mb-4 text-center">@ViewData["Title"]</h1>
+<div class="container mt-5">
+    <div class="d-flex align-items-center mb-4">
+        <!-- Decorative icon for the title -->
+        <span class="me-3" style="font-size: 2rem;">📋</span>
+        <h1 class="text-center flex-grow-1">@ViewData["Title"]</h1>
+    </div>
 
-<div class="mb-4 text-center">
-    <a asp-action="Create" class="btn btn-primary">
-        ➕ Thêm dịch vụ
-    </a>
-</div>
+    <div class="mb-4 text-center">
+        <a asp-action="Create" class="btn btn-primary btn-lg px-4">
+            ➕ Thêm dịch vụ
+        </a>
+    </div>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var item in Model)
-    {
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="position-relative overflow-hidden" style="height: 200px;">
-                    @if (!string.IsNullOrEmpty(item.HinhAnh))
-                    {
-                        <img src="@item.HinhAnh" class="card-img-top img-hover" alt="@item.TenDichVu" style="object-fit: cover; height: 100%; width: 100%;" />
-                    }
-                    else
-                    {
-                        <div class="d-flex align-items-center justify-content-center bg-light text-muted" style="height: 100%;">
-                            <span>Chưa có ảnh</span>
+    <!-- Add left margin to shift cards right -->
+    <div class="row justify-content-center g-4 ms-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch">
+                <div class="card shadow-sm w-100">
+                    <div class="position-relative overflow-hidden" style="height: 250px;">
+                        @if (!string.IsNullOrEmpty(item.HinhAnh))
+                        {
+                            <img src="@item.HinhAnh" class="card-img-top img-hover" alt="@item.TenDichVu" style="object-fit: cover; height: 100%; width: 100%;" />
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center justify-content-center bg-light text-muted" style="height: 100%;">
+                                <span>Chưa có ảnh</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">@item.TenDichVu</h5>
+                        <p class="card-text fw-bold text-danger">@string.Format("{0:N0} VND", item.Gia)</p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <div class="d-flex justify-content-around">
+                            <a asp-action="Details" asp-route-id="@item.MaDichVu" class="btn btn-outline-secondary btn-sm">🔍 Xem</a>
+                            <a asp-action="Edit" asp-route-id="@item.MaDichVu" class="btn btn-outline-warning btn-sm">✏️ Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaDichVu" class="btn btn-outline-danger btn-sm">🗑️ Xóa</a>
                         </div>
-                    }
-                </div>
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <h5 class="card-title">@item.TenDichVu</h5>
-                    <p class="card-text fw-bold text-danger">@string.Format("{0:N0} VND", item.Gia)</p>
-                </div>
-                <div class="card-footer bg-white border-top-0">
-                    <div class="d-flex justify-content-around">
-                        <a asp-action="Details" asp-route-id="@item.MaDichVu" class="btn btn-outline-secondary btn-sm">🔍 Xem</a>
-                        <a asp-action="Edit" asp-route-id="@item.MaDichVu" class="btn btn-outline-warning btn-sm">✏️ Sửa</a>
-                        <a asp-action="Delete" asp-route-id="@item.MaDichVu" class="btn btn-outline-danger btn-sm">🗑️ Xóa</a>
                     </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
-
-<style>
-    .img-hover {
-        transition: transform 0.3s ease;
-    }
-
-        .img-hover:hover {
-            transform: scale(1.05);
         }
-
-    .card {
-        border-radius: 12px;
-    }
-</style>
+    </div>
+</div>
