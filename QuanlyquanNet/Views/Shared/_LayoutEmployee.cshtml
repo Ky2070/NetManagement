@@ -90,10 +90,21 @@
         .main-content {
             flex: 1;
             padding: 30px;
-            background-color: #181818;
-            color: #e0e0e0;
-            min-height: 100vh;
+            position: relative;
+            z-index: 1;
         }
+
+            .main-content::before {
+                content: "";
+                background: url('https://wallpapercave.com/wp/wp7097408.jpg') no-repeat center center/cover;
+                opacity: 0.1;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: -1;
+            }
 
         .container-flex {
             display: flex;
