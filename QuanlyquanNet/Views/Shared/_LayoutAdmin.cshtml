@@ -95,6 +95,21 @@
                             <i class="bi bi-geo-alt me-1"></i> Khu vực
                         </a>
                     </li>
+                    @* Nếu đã đăng nhập *@
+                    @{
+                        var hoTen = Context.Session.GetString("HoTen");
+                        if (!string.IsNullOrEmpty(hoTen))
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-white">Xin chào, <strong>@hoTen</strong></span>
+                            </li>
+                            <li class="nav-item mt-1">
+                                <form method="post" asp-controller="User" asp-action="Logout" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-light ms-2">Đăng xuất</button>
+                                </form>
+                            </li>
+                        }
+                    }
                 </ul>
             </div>
         </div>
@@ -108,7 +123,7 @@
                 <li><a href="/GoiNap"><i class="bi bi-wallet2"></i> Gói Nạp</a></li>
                 <li><a href="/NhiemVu"><i class="bi bi-check2-square"></i> Nhiệm Vụ</a></li>
                 <li><a href="/LichSuNapTiens"><i class="bi bi-clock-history"></i> Lịch Sử Nạp Tiền</a></li>
-                <li><a href="/LichSuDangNhaps"><i class="bi bi-clock-history"></i> Lịch Sử Nạp Tiền</a></li>
+                <li><a href="/LichSuDangNhaps"><i class="bi bi-clock-history"></i> Lịch Sử Đăng Nhập</a></li>
                 <li><a href="/NguoiDungs"><i class="bi bi-people"></i> Người Dùng</a></li>
                 <li><a href="/NhanVien"><i class="bi bi-person-badge"></i> Nhân Viên</a></li>
                 <li><a href="/PhienChoi"><i class="bi bi-controller"></i> Phiên Chơi</a></li>
