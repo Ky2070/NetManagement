@@ -1,6 +1,19 @@
 ﻿@{
-    Layout = "_LayoutCustomer";
-}
-@{
-    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    var maVaiTro = Context.Session.GetInt32("MaVaiTro");
+
+    switch (maVaiTro)
+    {
+        case 1: // Admin
+            Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+            break;
+        case 2: // Nhân viên
+            Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
+            break;
+        case 3: // Khách hàng (hoặc layout mặc định)
+            Layout = "~/Views/Shared/_LayoutUser.cshtml";
+            break;
+        default:
+            Layout = "~/Views/Shared/_LayoutUser.cshtml"; // Hoặc chuyển hướng login
+            break;
+    }
 }
