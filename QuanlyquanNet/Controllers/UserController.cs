@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuanlyquanNet.Data;
-
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 namespace QuanlyquanNet.Controllers
 {
     public class UserController : Controller
@@ -28,7 +30,7 @@ namespace QuanlyquanNet.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public async Task<IActionResult> Login(string username, string password)
         {
             var user = _context.NguoiDungs.FirstOrDefault(u =>
             u.TenDangNhap == username && u.MatKhau == password);
@@ -55,6 +57,19 @@ namespace QuanlyquanNet.Controllers
             HttpContext.Session.SetString("HoTen", user.HoTen);
             HttpContext.Session.SetInt32("MaVaiTro", user.MaVaiTro);
 
+            // ✅ Tạo Claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.TenDangNhap),
+                new Claim(ClaimTypes.Role, GetRoleName(user.MaVaiTro)) // ánh xạ role từ mã
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            // ✅ Đăng nhập (ghi cookie)
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
             // Phân quyền redirect
             switch (user.MaVaiTro)
             {
@@ -76,12 +91,29 @@ namespace QuanlyquanNet.Controllers
         {
             return View();
         }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
         [HttpPost]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync(); // xóa cookie xác thực
             HttpContext.Session.Clear(); // Xóa toàn bộ session
             return RedirectToAction("Index", "Home");
+        }
+
+        // ✅ Hàm ánh xạ mã vai trò thành tên role
+        private string GetRoleName(int maVaiTro)
+        {
+            return maVaiTro switch
+            {
+                1 => "Admin",
+                2 => "Employee",
+                3 => "Customer",
+                _ => "Unknown"
+            };
         }
     }
 }
