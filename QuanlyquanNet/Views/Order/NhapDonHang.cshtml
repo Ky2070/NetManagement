@@ -1,0 +1,74 @@
+﻿@model QuanlyquanNet.ViewModel.TaoDonHangViewModel
+@{
+    ViewData["Title"] = "Tạo Đơn Hàng Dịch Vụ";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="NhapDonHang" method="post">
+    <div class="form-group">
+        <label>Khách hàng</label>
+        <select asp-for="MaKhachHang" asp-items="Model.DanhSachKhachHang" class="form-control"></select>
+    </div>
+
+    <label>Chọn dịch vụ</label>
+    <div class="row">
+        @for (int i = 0; i < Model.DanhSachDichVu.Count; i++)
+        {
+            var dv = Model.DanhSachDichVu[i];
+            <div class="col-md-4 mb-3">
+                <label class="card select-card">
+                    <input type="radio" name="MaDichVu" value="@dv.MaDichVu" hidden />
+                    <img src="@dv.HinhAnh" class="card-img-top" alt="@dv.TenDichVu" style="height: 150px; object-fit: cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@dv.TenDichVu</h5>
+                        <p class="card-text">@dv.Gia.ToString("N0") VND</p>
+                    </div>
+                </label>
+            </div>
+        }
+    </div>
+
+    <div class="form-group">
+        <label>Số lượng</label>
+        <input asp-for="SoLuong" class="form-control" type="number" min="1" value="1" />
+    </div>
+
+    <div class="form-group">
+        <label>Ghi chú</label>
+        <input asp-for="GhiChu" class="form-control" placeholder="(vd: ít đá, không cay...)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Tạo Đơn</button>
+</form>
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["success"]</div>
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger mt-3">@TempData["error"]</div>
+}
+
+@section Styles {
+    <style>
+        .select-card {
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+            .select-card input[type="radio"]:checked + img,
+            .select-card input[type="radio"]:checked ~ .card-body {
+                border: 2px solid #007bff;
+                box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+                border-radius: 10px;
+            }
+
+            .select-card:hover {
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+    </style>
+}

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanlyquanNet.Data;
+using QuanlyquanNet.ViewModel;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +39,28 @@ namespace QuanlyquanNet.Controllers
             {
                 return NotFound();
             }
+            var goiNapList = _context.GoiNaps
+            .Select(g => new SelectListItem
+                {
+                    Value = g.MaGoiNap.ToString(),
+                    Text = $"{g.TenGoi} - {g.SoTien:N0}đ"
+                }).ToList();
+
+            ViewBag.GoiNapList = goiNapList;
+
+            var today = DateTime.Today;
+            ViewBag.KhuyenMaiList = _context.KhuyenMais
+                .Where(k => k.NgayBatDau.HasValue && k.NgayKetThuc.HasValue &&
+                       k.NgayBatDau.Value <= today && k.NgayKetThuc.Value >= today)
+                .Select(k => new SelectListItem
+                {
+                    Value = k.MaKhuyenMai.ToString(),
+                    Text = $"{k.TenKhuyenMai} (+{k.PhanTramTang}%)"
+                }).ToList();
+
+            // Nếu cần toàn bộ chi tiết để render JSON:
+            ViewData["AllGoiNap"] = _context.GoiNaps.ToList();
+            ViewData["AllKhuyenMai"] = _context.KhuyenMais.ToList();
             return View(khachHang);
         }
 
@@ -256,6 +281,79 @@ namespace QuanlyquanNet.Controllers
         private bool KhachHangExists(int id)
         {
             return _context.KhachHangs.Any(e => e.MaKhachHang == id);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public IActionResult NapTien(int MaKhachHang, int MaGoiNap)
+        {
+            var khachHang = _context.KhachHangs.FirstOrDefault(k => k.MaKhachHang == MaKhachHang);
+            var goiNap = _context.GoiNaps.Include(g => g.MaKhuyenMaiNavigation).FirstOrDefault(g => g.MaGoiNap == MaGoiNap);
+
+            if (khachHang == null || goiNap == null)
+                return NotFound();
+
+            decimal soTien = goiNap.SoTien;
+            decimal phanTramTang = goiNap.MaKhuyenMaiNavigation?.PhanTramTang ?? 0;
+            decimal soTienThucNhan = soTien + (soTien * phanTramTang / 100);
+
+            khachHang.SoDu = (khachHang.SoDu ?? 0) + soTienThucNhan;
+
+            var lichSu = new LichSuNapTien
+            {
+                MaKhachHang = khachHang.MaKhachHang,
+                TenDangNhap = khachHang.TenDangNhap,
+                HoTen = khachHang.HoTen,
+                MaGoiNap = goiNap.MaGoiNap,
+                SoTien = soTien,
+                SoTienThucNhan = soTienThucNhan,
+                NgayNap = DateTime.Now,
+                TrangThai = "Thành công"
+            };
+
+            _context.LichSuNapTiens.Add(lichSu);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = $"Nạp {soTienThucNhan:N0}đ thành công cho {khachHang.HoTen}";
+            return RedirectToAction("Details", new { id = MaKhachHang });
+        }
+        [HttpGet("Profile")]
+        public IActionResult Profile()
+        {
+            var tenDangNhap = HttpContext.Session.GetString("TenDangNhap");
+
+            var khach = _context.KhachHangs
+                .Include(k => k.KhachHangNhiemVus)
+                    .ThenInclude(khv => khv.MaNhiemVuNavigation)
+                .FirstOrDefault(k => k.TenDangNhap == tenDangNhap);
+
+            if (khach == null)
+            {
+                return NotFound();
+            }
+
+            var tongDiem = khach.KhachHangNhiemVus
+                            .Where(khv => khv.TrangThai == "Hoàn thành")
+                            .Sum(khv => khv.DiemNhanDuoc ?? 0);
+
+            var model = new ProfileViewModel
+            {
+                HoTen = khach.HoTen,
+                TenDangNhap = khach.TenDangNhap,
+                SoDienThoai = khach.SoDienThoai,
+                SoDu = khach.SoDu ?? 0,
+                DiemThuong = tongDiem,
+                NhiemVuHoanThanh = khach.KhachHangNhiemVus
+                    .Where(khv => khv.TrangThai == "Hoàn thành")
+                    .Select(khv => new NhiemVuItem
+                    {
+                        TenNhiemVu = khv.MaNhiemVuNavigation.TenNhiemVu,
+                        DiemNhan = khv.DiemNhanDuoc ?? 0,
+                        NgayHoanThanh = khv.ThoiGianHoanThanh
+                    }).ToList()
+            };
+
+            return View(model);
         }
     }
 }
