@@ -1,4 +1,6 @@
-﻿namespace QuanlyquanNet.ViewModel
+﻿using QuanlyquanNet.Data;
+
+namespace QuanlyquanNet.ViewModel
 {
     public class ProfileViewModel
     {
@@ -9,6 +11,7 @@
         public int DiemThuong { get; set; }
 
         public List<NhiemVuItem> NhiemVuHoanThanh { get; set; } = new();
+        public List<PhuThuong> DanhSachPhuThuong { get; set; }
     }
 
     public class NhiemVuItem
