@@ -65,7 +65,7 @@ namespace QuanlyquanNet.Controllers
 
             // Lấy nhiệm vụ chưa hoàn thành của khách hàng hiện tại
             var unfinishedTasks = _context.KhachHangNhiemVus
-                .Where(x => x.MaKhachHang == khachHangId && x.TrangThai != "Đã hoàn thành")
+                .Where(x => x.MaKhachHang == khachHangId && x.TrangThai != "Hoàn thành")
                 .Include(x => x.MaKhachHangNavigation)
                 .Include(x => x.MaNhiemVuNavigation)
                 .OrderByDescending(x => x.NgayThamGia)
@@ -79,7 +79,8 @@ namespace QuanlyquanNet.Controllers
                         .ToList();
 
             // Bước 2: Mapping sang ViewModel trong C#
-            var assignedTasks = rawData.Select(x =>
+            var assignedTasks = rawData.Where(x => x.TrangThai != "Hoàn thành")
+                .Select(x =>
             {
                 var khachHang = x.MaKhachHangNavigation?.HoTen;
                 var nhiemVu = x.MaNhiemVuNavigation;
@@ -169,7 +170,7 @@ namespace QuanlyquanNet.Controllers
             var gameMissions = GetGameMissions();
 
             var unfinishedTasks = _context.KhachHangNhiemVus
-                .Where(x => x.MaKhachHang == customerId && x.TrangThai != "Đã hoàn thành")
+                .Where(x => x.MaKhachHang == customerId && x.TrangThai != "Hoàn thành")
                 .Include(x => x.MaNhiemVuNavigation)
                 .ToList();
 
@@ -200,13 +201,16 @@ namespace QuanlyquanNet.Controllers
         [HttpPost]
         public IActionResult Complete(int taskId)
         {
-            var task = _context.KhachHangNhiemVus.FirstOrDefault(x => x.MaNhiemVu == taskId);
+            var task = _context.KhachHangNhiemVus
+                .Include(x => x.MaKhachHangNavigation)
+                .FirstOrDefault(x => x.MaNhiemVu == taskId);
+
             if (task != null)
             {
-                task.TrangThai = "Đã hoàn thành";
+                task.TrangThai = "Hoàn thành"; // ✅ sửa cho khớp với constraint
                 task.ThoiGianHoanThanh = DateTime.Now;
                 _context.SaveChanges();
-                TempData["Success"] = $"Đã đánh dấu hoàn thành nhiệm vụ cho {task.MaKhachHangNavigation.HoTen}.";
+                TempData["Success"] = $"Đã đánh dấu hoàn thành nhiệm vụ cho {task.MaKhachHangNavigation?.HoTen}.";
             }
 
             return RedirectToAction("Index");
