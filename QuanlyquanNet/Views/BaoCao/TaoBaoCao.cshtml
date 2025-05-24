@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Tạo báo cáo";
+}
+<h2>Tạo báo cáo thống kê</h2>
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success">@TempData["msg"]</div>
+}
+
+<form method="post" asp-action="TaoBaoCaoSubmit">
+    <button class="btn btn-primary">Tạo và gửi báo cáo</button>
+</form>

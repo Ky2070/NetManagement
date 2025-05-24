@@ -75,9 +75,9 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-       @{
-           var hoTen = Context.Session.GetString("HoTen");
-        }
+      @{
+        var hoTen = Context.Session.GetString("HoTen");
+      }
         @if (string.IsNullOrEmpty(hoTen))
          {
            <!-- Nếu chưa đăng nhập -->
@@ -87,7 +87,9 @@
           {
              <!-- Nếu đã đăng nhập -->
              <div class="d-flex align-items-center gap-2">
-                 <span class="text-white">Xin chào, @hoTen</span>
+                    <a asp-controller="KhachHangs" asp-action="Profile" class="text-white d-flex align-items-center text-decoration-none">
+                        <i class="bi bi-person-circle fs-4 me-1"></i> @hoTen
+                    </a>
                   <form method="post" asp-controller="User" asp-action="Logout" style="display:inline;">
                         <button type="submit" class="btn btn-sm btn-outline-light">Đăng xuất</button>
                   </form>

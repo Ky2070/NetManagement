@@ -1,71 +1,148 @@
-﻿<!-- Services Section -->
+﻿@{
+    var khuVucList = ViewBag.KhuVucList as List<QuanlyquanNet.Data.KhuVuc>;
+}
 <section id="services" class="services section">
-
-    <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
         <h2>Areas</h2>
-        <p>khám phá khu vực ưu chuộng<br></p>
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-5">
-
-            <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
-                <div class="service-item">
-                    <div class="img">
-                        <img src="https://cybercore.vn/wp-content/uploads/2023/11/Asset-140.png" class="img-fluid" alt="">
-                    </div>
-                    <div class="details position-relative">
-                        <div class="icon">
-                            <i class="bi bi-activity"></i>
-                        </div>
-                        <a asp-controller="DichVu" asp-action="Detail" class="stretched-link">
-                            <h3>💑 KHU VỰC COUPLE💑 </h3>
-                        </a>
-                        <p>Khu vực Couple là không gian riêng tư, thoải mái dành cho các cặp đôi cùng nhau chơi game và thư giãn trong không gian yên tĩnh, ấm cúng..</p>
-                    </div>
-                </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
-                <div class="service-item">
-                    <div class="img">
-                        <img src="https://img.redbull.com/images/c_crop,w_1920,h_960,x_0,y_0/c_auto,w_1200,h_600/f_auto,q_auto/redbullcom/2020/4/6/rlst6cmqaffuwq2xknup/red-bull-solo-q" class="img-fluid" alt="">
-                    </div>
-                    <div class="details position-relative">
-                        <div class="icon">
-                            <i class="bi bi-broadcast"></i>
-                        </div>
-                        <a asp-controller="DichVu" asp-action="Detail" class="stretched-link">
-                            <h3>
-                                🖥️ Khu vực Solo
-                            </h3>
-                        </a>
-                        <p>Không gian tiêu chuẩn dành cho khách hàng cá nhân muốn tập trung chơi game, làm việc hoặc lướt web. Máy cấu hình cao, bố trí hợp lý, đảm bảo sự riêng tư.</p>
-                    </div>
-                </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
-                <div class="service-item">
-                    <div class="img">
-                        <img src="https://photo.znews.vn/w660/Uploaded/livospwi/2021_06_16/7.jpg" class="img-fluid" alt="">
-                    </div>
-                    <div class="details position-relative">
-                        <div class="icon">
-                            <i class="bi bi-easel"></i>
-                        </div>
-                        <a asp-controller="DichVu" asp-action="Detail" class="stretched-link">
-                            <h3>🎮 Khu vực Thi Đấu Esports</h3>
-                        </a>
-                        <p>Trang bị máy cấu hình siêu mạnh, ghế gaming chuyên nghiệp, màn hình tần số quét cao – phù hợp cho các game thủ hardcore và thi đấu team.</p>
-                    </div>
-                </div>
-            </div><!-- End Service Item -->
-
-        </div>
-
+        <p>khám phá khu vực ưu chuộng</p>
     </div>
 
-</section><!-- /Services Section -->
+    @if (khuVucList != null)
+    {
+        <div class="container position-relative">
+            <!-- Navigation buttons -->
+            <button class="btn btn-dark position-absolute top-50 start-0 translate-middle-y z-3" onclick="slide(-1)">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="btn btn-dark position-absolute top-50 end-0 translate-middle-y z-3" onclick="slide(1)">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+
+            <!-- Slider wrapper -->
+            <div class="overflow-hidden" style="width: 100%; overflow: hidden;">
+                <div class="d-flex transition" id="sliderRow" style="gap: 20px; transition: transform 0.5s ease;">
+                    @foreach (var item in khuVucList)
+                    {
+                        <div class="flex-shrink-0" style="width: 33.3333%; min-width: 300px;">
+                            <div class="service-item">
+                                <div class="img">
+                                    <img src="@item.HinhAnh" class="img-fluid" alt="">
+                                </div>
+                                <div class="details position-relative">
+                                    <div class="icon">
+                                        <i class="bi bi-activity"></i>
+                                    </div>
+                                    <a asp-controller="DichVu" asp-action="Detail" class="stretched-link">
+                                        <h3>@item.TenKhuVuc</h3>
+                                    </a>
+                                    <p>@item.MoTa</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <!-- KHU VỰC COUPLE -->
+                    <div class="flex-shrink-0" style="width: 33.3333%; min-width: 300px;" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="service-item">
+                            <div class="img">
+                                <img src="https://cybercore.vn/wp-content/uploads/2023/11/Asset-140.png" class="img-fluid" alt="">
+                            </div>
+                            <div class="details position-relative">
+                                <div class="icon"><i class="bi bi-activity"></i></div>
+                                <a asp-controller="DichVu" asp-action="Detail" class="stretched-link">
+                                    <h3>💑 KHU VỰC COUPLE💑</h3>
+                                </a>
+                                <p>Khu vực Couple là không gian riêng tư, thoải mái dành cho các cặp đôi cùng nhau chơi game và thư giãn trong không gian yên tĩnh, ấm cúng..</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KHU VỰC SOLO -->
+                    <div class="flex-shrink-0" style="width: 33.3333%; min-width: 300px;" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="service-item">
+                            <div class="img">
+                                <img src="https://img.redbull.com/images/c_crop,w_1920,h_960,x_0,y_0/c_auto,w_1200,h_600/f_auto,q_auto/redbullcom/2020/4/6/rlst6cmqaffuwq2xknup/red-bull-solo-q" class="img-fluid" alt="">
+                            </div>
+                            <div class="details position-relative">
+                                <div class="icon"><i class="bi bi-broadcast"></i></div>
+                                <a asp-controller="DichVu" asp-action="Detail" class="stretched-link">
+                                    <h3>🖥️ Khu vực Solo</h3>
+                                </a>
+                                <p>Không gian tiêu chuẩn dành cho khách hàng cá nhân muốn tập trung chơi game, làm việc hoặc lướt web. Máy cấu hình cao, bố trí hợp lý, đảm bảo sự riêng tư.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KHU VỰC THI ĐẤU -->
+                    <div class="flex-shrink-0" style="width: 33.3333%; min-width: 300px;" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="service-item">
+                            <div class="img">
+                                <img src="https://photo.znews.vn/w660/Uploaded/livospwi/2021_06_16/7.jpg" class="img-fluid" alt="">
+                            </div>
+                            <div class="details position-relative">
+                                <div class="icon"><i class="bi bi-easel"></i></div>
+                                <a asp-controller="DichVu" asp-action="Detail" class="stretched-link">
+                                    <h3>🎮 Khu vực Thi Đấu Esports</h3>
+                                </a>
+                                <p>Trang bị máy cấu hình siêu mạnh, ghế gaming chuyên nghiệp, màn hình tần số quét cao – phù hợp cho các game thủ hardcore và thi đấu team.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">Hiện chưa có khu vực nào được thêm.</div>
+    }
+</section>
+<!-- Sau thẻ </section> -->
+<script>
+    let currentIndex = 0;
+
+    function slide(direction) {
+        const slider = document.getElementById('sliderRow');
+        const totalItems = slider.children.length;
+        const itemWidth = slider.children[0].offsetWidth + 20; // including gap
+
+        const visibleItems = Math.floor(slider.parentElement.offsetWidth / itemWidth);
+        const maxIndex = totalItems - visibleItems - 1;
+
+        currentIndex += direction;
+        if (currentIndex < 0) currentIndex = 0;
+        if (currentIndex > maxIndex) currentIndex = maxIndex;
+
+        slider.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    }
+</script>
+
+@* <script> *@
+@*     let currentIndex = 0; *@
+
+@*     function slide(direction) { *@
+@*         const slider = document.getElementById('sliderRow'); *@
+@*         const container = slider.parentElement; // Lấy div chứa slider (overflow-hidden) *@
+@*         const containerWidth = container.offsetWidth; *@
+@*         const totalScrollWidth = slider.scrollWidth; *@
+
+@*         const slideStep = containerWidth; // Dịch 1 màn hình mỗi lần *@
+
+@*         let currentTransform = getTranslateX(slider); *@
+@*         let newTransform = currentTransform + direction * slideStep; *@
+
+@*         // Giới hạn không vượt quá slider *@
+@*         if (newTransform < 0) newTransform = 0; *@
+@*         if (newTransform > totalScrollWidth - containerWidth) *@
+@*             newTransform = totalScrollWidth - containerWidth; *@
+
+@*         slider.style.transform = `translateX(-${newTransform}px)`; *@
+@*     } *@
+
+@*     // Hàm lấy giá trị transform hiện tại *@
+@*     function getTranslateX(element) { *@
+@*         const style = window.getComputedStyle(element); *@
+@*         const matrix = new WebKitCSSMatrix(style.transform); *@
+@*         return Math.abs(matrix.m41); // m41 là translateX *@
+@*     } *@
+@* </script> *@

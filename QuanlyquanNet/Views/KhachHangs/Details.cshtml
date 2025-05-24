@@ -1,9 +1,41 @@
-﻿@model QuanlyquanNet.Data.KhachHang
-
+﻿@using Microsoft.EntityFrameworkCore
+@model QuanlyquanNet.Data.KhachHang
 @{
     ViewData["Title"] = "Chi tiết khách hàng";
-}
 
+    var goiNapMap = new Dictionary<int, decimal>();
+    foreach (var goi in ViewBag.GoiNapList as List<SelectListItem>)
+    {
+        var goiNap = (from g in (List<QuanlyquanNet.Data.GoiNap>)ViewData["AllGoiNap"]
+                      where g.MaGoiNap.ToString() == goi.Value
+                      select g).FirstOrDefault();
+
+        if (goiNap != null)
+        {
+            goiNapMap[int.Parse(goi.Value)] = goiNap.SoTien;
+        }
+    }
+
+    var khuyenMaiMap = new Dictionary<int, decimal>();
+    foreach (var km in ViewBag.KhuyenMaiList as List<SelectListItem>)
+    {
+        var kmItem = (from k in (List<QuanlyquanNet.Data.KhuyenMai>)ViewData["AllKhuyenMai"]
+                      where k.MaKhuyenMai.ToString() == km.Value
+                      select k).FirstOrDefault();
+
+        if (kmItem != null)
+        {
+            khuyenMaiMap[int.Parse(km.Value)] = kmItem.PhanTramTang ?? 0;
+        }
+    }
+
+    var goiNapJson = System.Text.Json.JsonSerializer.Serialize(goiNapMap);
+    var khuyenMaiJson = System.Text.Json.JsonSerializer.Serialize(khuyenMaiMap);
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
 <div class="container mt-4">
     <h2>Chi tiết khách hàng</h2>
     <div>
@@ -24,5 +56,60 @@
             <dd class="col-sm-9">@(Model.TenDangNhapNavigation?.TenDangNhap ?? "Không có")</dd>
         </dl>
     </div>
+
+    <hr />
+    <h4>Nạp tiền cho khách hàng</h4>
+
+    <form asp-action="NapTien" method="post" class="mt-3" id="formNapTien">
+        <input type="hidden" name="MaKhachHang" value="@Model.MaKhachHang" />
+
+        <div class="form-group mb-3">
+            <label>Chọn gói nạp</label>
+            <select id="goiNapSelect" name="MaGoiNap" class="form-control" asp-items="ViewBag.GoiNapList"></select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Chọn khuyến mãi</label>
+            <div class="input-group">
+                <select id="khuyenMaiSelect" class="form-control" asp-items="ViewBag.KhuyenMaiList">
+                    <option value="">-- Không áp dụng --</option>
+                </select>
+                <button type="button" class="btn btn-outline-primary" id="btnApDung">
+                    <i class="bi bi-tags-fill"></i> Áp dụng
+                </button>
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Số tiền thực nhận <span class="text-muted">(Sau khuyến mãi)</span></label>
+            <input type="text" id="soTienThucNhan" class="form-control" readonly />
+        </div>
+
+        <button type="submit" class="btn btn-success">Xác nhận nạp tiền</button>
+    </form>
     <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
 </div>
+
+@section Scripts {
+    <script>
+        const goiNapMap = @Html.Raw(goiNapJson);
+        const khuyenMaiMap = @Html.Raw(khuyenMaiJson);
+
+        const goiNapSelect = document.getElementById('goiNapSelect');
+        const khuyenMaiSelect = document.getElementById('khuyenMaiSelect');
+        const soTienThucNhan = document.getElementById('soTienThucNhan');
+        const btnApDung = document.getElementById('btnApDung');
+
+        function capNhatTien() {
+            const maGoi = goiNapSelect.value;
+            const maKM = khuyenMaiSelect.value;
+            const soTien = parseFloat(goiNapMap[maGoi] || 0);
+            const phanTram = parseFloat(khuyenMaiMap[maKM] || 0);
+            const tong = soTien + (soTien * phanTram / 100);
+            soTienThucNhan.value = tong.toLocaleString('vi-VN') + " đ";
+        }
+
+        btnApDung.addEventListener('click', capNhatTien);
+        goiNapSelect.addEventListener('change', capNhatTien);
+    </script>
+}

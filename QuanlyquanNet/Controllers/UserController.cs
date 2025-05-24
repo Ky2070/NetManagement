@@ -56,7 +56,13 @@ namespace QuanlyquanNet.Controllers
             HttpContext.Session.SetInt32("MaNguoiDung", user.MaNguoiDung);
             HttpContext.Session.SetString("HoTen", user.HoTen);
             HttpContext.Session.SetInt32("MaVaiTro", user.MaVaiTro);
+            HttpContext.Session.SetString("TenDangNhap", user.TenDangNhap);
 
+            var khach = _context.KhachHangs.FirstOrDefault(k => k.TenDangNhap == user.TenDangNhap);
+            if (khach != null)
+            {
+                HttpContext.Session.SetInt32("MaKhachHang", khach.MaKhachHang);
+            }
             // ✅ Tạo Claims
             var claims = new List<Claim>
             {
