@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuanlyquanNet.Data;
-
+using Microsoft.AspNetCore.Authentication.Cookies; // Thêm nếu chưa có
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +8,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<QuanLyNetContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("QuanNet")); //Can change connect-string
 });
+// Add authentication with cookie scheme
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/User/Login"; // Trang login nếu chưa đăng nhập
+        options.AccessDeniedPath = "/User/AccessDenied"; // Trang khi không đủ quyền
+    });
 
 // Add authorization policies
 builder.Services.AddAuthorization(options =>
@@ -40,7 +47,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession(); // ✅ Thêm middleware session ở đây
-
+app.UseAuthentication(); // ✅ Phải có dòng này để kích hoạt auth
 app.UseAuthorization();
 
 app.MapControllerRoute(
