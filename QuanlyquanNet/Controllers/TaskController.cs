@@ -54,10 +54,22 @@ namespace QuanlyquanNet.Controllers
             };
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? khachHangId)
         {
             var gameMissions = GetGameMissions();
 
+            var khachHangs = _context.KhachHangs.ToList();
+            ViewBag.Customers = khachHangs;
+
+            int selectedKhachHangId = khachHangId ?? khachHangs.FirstOrDefault()?.MaKhachHang ?? 0;
+
+            // Lấy nhiệm vụ chưa hoàn thành của khách hàng hiện tại
+            var unfinishedTasks = _context.KhachHangNhiemVus
+                .Where(x => x.MaKhachHang == khachHangId && x.TrangThai != "Đã hoàn thành")
+                .Include(x => x.MaKhachHangNavigation)
+                .Include(x => x.MaNhiemVuNavigation)
+                .OrderByDescending(x => x.NgayThamGia)
+                .ToList();
             // Bước 1: Truy vấn dữ liệu từ DB, KHÔNG dùng toán tử null
             var rawData = _context.KhachHangNhiemVus
                         .Include(x => x.MaKhachHangNavigation)
@@ -89,10 +101,11 @@ namespace QuanlyquanNet.Controllers
                     Game = game
                 };
             }).ToList();
-            int khachHangId = 1; // hoặc lấy từ biến, tham số, v.v.
+
             ViewBag.AssignedTasks = assignedTasks;
-            ViewBag.Customers = _context.KhachHangs.ToList();
-            ViewBag.Tasks = _context.NhiemVus.ToList();
+            ViewBag.Tasks = unfinishedTasks.Select(x => x.MaNhiemVuNavigation).Distinct().ToList(); // chỉ lấy nhiệm vụ liên quan
+
+            ViewBag.SelectedCustomerId = selectedKhachHangId;
             return View();
         }
 
@@ -151,17 +164,35 @@ namespace QuanlyquanNet.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetUncompletedTasks(int customerId)
+        public IActionResult GetUncompletedTasks(int customerId)
         {
             var gameMissions = GetGameMissions();
-            var tasks = _context.KhachHangNhiemVus
-                .Where(x => x.MaKhachHang == customerId && x.TrangThai == "Chưa hoàn thành")
-                .Select(x => new {
-                    id = x.MaNhiemVu,
-                    tenNhiemVu = x.MaNhiemVuNavigation.TenNhiemVu,
-                    game = gameMissions
-        })
+
+            var unfinishedTasks = _context.KhachHangNhiemVus
+                .Where(x => x.MaKhachHang == customerId && x.TrangThai != "Đã hoàn thành")
+                .Include(x => x.MaNhiemVuNavigation)
                 .ToList();
+
+            var tasks = unfinishedTasks.Select(x =>
+            {
+                var nhiemVu = x.MaNhiemVuNavigation;
+
+                // Tìm tên game tương ứng
+                var game = gameMissions.FirstOrDefault(g =>
+                    g.Value.Any(m =>
+                        m.TenNhiemVu == nhiemVu.TenNhiemVu &&
+                        m.MoTa == nhiemVu.MoTa &&
+                        m.DiemThuong == nhiemVu.DiemThuong)).Key ?? "Không xác định";
+
+                return new
+                {
+                    id = x.MaNhiemVu,
+                    tenNhiemVu = nhiemVu.TenNhiemVu,
+                    moTa = nhiemVu.MoTa,
+                    diemThuong = nhiemVu.DiemThuong,
+                    game = game
+                };
+            });
 
             return Json(tasks);
         }

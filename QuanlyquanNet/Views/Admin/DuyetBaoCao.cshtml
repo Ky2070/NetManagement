@@ -1,0 +1,22 @@
+﻿@model List<QuanlyquanNet.ViewModel.ReportMetadata>
+@{
+    ViewData["Title"] = "Duyệt báo cáo";
+}
+<h2>Danh sách báo cáo chờ duyệt</h2>
+
+@foreach (var item in Model)
+{
+    <div class="card my-2 p-3">
+        <p><strong>File:</strong> @item.FileName</p>
+        <p><strong>Người tạo:</strong> @item.NguoiTao</p>
+        <p><strong>Ngày tạo:</strong> @item.NgayTao.ToString("dd/MM/yyyy HH:mm")</p>
+        <a class="btn btn-outline-primary" href="~/Reports/Choduyet/@item.FileName" target="_blank">Xem PDF</a>
+
+        <form method="post" asp-action="XuLyBaoCao" class="mt-2">
+            <input type="hidden" name="fileName" value="@item.FileName" />
+            <input type="text" name="lyDo" placeholder="Lý do từ chối (nếu có)" class="form-control my-1" />
+            <button name="hanhDong" value="Duyet" class="btn btn-success">Duyệt</button>
+            <button name="hanhDong" value="TuChoi" class="btn btn-danger">Từ chối</button>
+        </form>
+    </div>
+}

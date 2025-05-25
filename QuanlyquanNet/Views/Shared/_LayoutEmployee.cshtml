@@ -12,7 +12,7 @@
 
     <!-- Orbitron Font for gaming feel -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-
+        @RenderSection("Styles", required: false)
     <style>
         body {
             background-color: #121212;
@@ -183,6 +183,10 @@
                 <li><a href="/ThongKe"><i class="bi bi-bar-chart-line"></i> Thống Kê</a></li>
                 <li><a href="/LichSuDangNhaps"><i class="bi bi-clock-history"></i> Lịch Sử Đăng Nhập</a></li>
                 <li><a asp-controller="Task" asp-action="Index"><i class="bi bi-check2-square"></i> Giao Nhiệm Vụ</a></li>
+                <li><a asp-controller="BaoCao" asp-action="TaoBaoCao"><i class="bi bi-bar-chart-line"></i> Tạo Báo Cáo</a></li>
+                <li><a asp-controller="Order" asp-action="NhapDonHang"><i class="bi bi-cart"></i> Order Dịch Vụ</a></li>
+                <li><a asp-controller="DonHang" asp-action="Index"><i class="bi bi-cart"></i> Thông tin đơn hàng</a></li>
+
             </ul>
         </aside>
 
