@@ -10,14 +10,18 @@ using System.Threading.Tasks;
 
 namespace QuanlyquanNet.Controllers
 {
+    [Authorize(Roles = "Employee")]
     [Route("[controller]")]
     public class KhachHangsController : Controller
     {
         private readonly QuanLyNetContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public KhachHangsController(QuanLyNetContext context)
+        public KhachHangsController(QuanLyNetContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
+
         }
 
         [HttpGet]
@@ -406,7 +410,14 @@ namespace QuanlyquanNet.Controllers
                         NgayNhan = DateTime.Now
                     });
                     _context.SaveChanges();
+
+                    TempData["SuccessMessage"] = $"Đã đổi phần thưởng \"{pt.TenPhuThuong}\" thành công! Điểm thưởng còn lại: {diemConLai - pt.DiemCanDoi}";
                 }
+                else
+                {
+                    TempData["ErrorMessage"] = $"❌ Không đủ điểm để đổi phần thưởng \"{pt.TenPhuThuong}\". Bạn còn {diemConLai} điểm.";
+                }
+
             }
 
             return RedirectToAction("Profile");

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace QuanlyquanNet.Controllers
 {
-    [Authorize(Roles = "Admin,Employee")]
+    [Authorize(Roles = "Employee")]
     public class ManagerController : Controller
     {
         public IActionResult Index()

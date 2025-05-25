@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanlyquanNet.Data;
 using System;
@@ -9,15 +10,17 @@ using System.Threading.Tasks;
 
 namespace QuanlyquanNet.Controllers
 {
+    [Authorize(Roles = "Admin,Employee")]
     [Route("[controller]")]
     public class NhiemVuController : Controller
     {
         private readonly QuanLyNetContext _context;
         private readonly string _imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/nhiemvu");
-
-        public NhiemVuController(QuanLyNetContext context)
+        private readonly IWebHostEnvironment _env;
+        public NhiemVuController(QuanLyNetContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
             // Tạo thư mục lưu hình ảnh nếu chưa tồn tại
             if (!Directory.Exists(_imagePath))
             {
