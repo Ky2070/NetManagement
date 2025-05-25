@@ -11,35 +11,29 @@
         <select asp-for="MaKhachHang" asp-items="Model.DanhSachKhachHang" class="form-control"></select>
     </div>
 
-    <label>Chọn dịch vụ</label>
+    <h4>Chọn dịch vụ và số lượng</h4>
     <div class="row">
         @for (int i = 0; i < Model.DanhSachDichVu.Count; i++)
         {
             var dv = Model.DanhSachDichVu[i];
             <div class="col-md-4 mb-3">
-                <label class="card select-card">
-                    <input type="radio" name="MaDichVu" value="@dv.MaDichVu" hidden />
-                    <img src="@dv.HinhAnh" class="card-img-top" alt="@dv.TenDichVu" style="height: 150px; object-fit: cover;" />
+                <div class="card p-2">
+                    <input type="hidden" name="DonHangChiTiets[@i].MaDichVu" value="@dv.MaDichVu" />
+                    <img src="@dv.HinhAnh" class="card-img-top" style="height: 150px; object-fit: cover;" />
                     <div class="card-body">
-                        <h5 class="card-title">@dv.TenDichVu</h5>
-                        <p class="card-text">@dv.Gia.ToString("N0") VND</p>
+                        <h5>@dv.TenDichVu</h5>
+                        <p>@dv.Gia.ToString("N0") VND</p>
+                        <label>Số lượng:</label>
+                        <input type="number" name="DonHangChiTiets[@i].SoLuong" value="0" min="0" class="form-control" />
+                        <label>Ghi chú:</label>
+                        <input type="text" name="DonHangChiTiets[@i].GhiChu" class="form-control" />
                     </div>
-                </label>
+                </div>
             </div>
         }
     </div>
 
-    <div class="form-group">
-        <label>Số lượng</label>
-        <input asp-for="SoLuong" class="form-control" type="number" min="1" value="1" />
-    </div>
-
-    <div class="form-group">
-        <label>Ghi chú</label>
-        <input asp-for="GhiChu" class="form-control" placeholder="(vd: ít đá, không cay...)" />
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Tạo Đơn</button>
+    <button type="submit" class="btn btn-primary mt-3">Tạo Đơn Hàng</button>
 </form>
 
 @if (TempData["success"] != null)

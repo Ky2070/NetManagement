@@ -18,6 +18,7 @@
             <th>@Html.DisplayNameFor(model => model.MaDichVuNavigation.TenDichVu)</th>
             <th>@Html.DisplayNameFor(model => model.SoLuong)</th>
             <th>@Html.DisplayNameFor(model => model.TongTien)</th>
+            <th>@Html.DisplayNameFor(model => model.TrangThai)</th>
             <th>Thao tác</th>
         </tr>
     </thead>
@@ -30,6 +31,7 @@
                 <td>@item.MaDichVuNavigation.TenDichVu</td>
                 <td>@item.SoLuong</td>
                 <td>@item.TongTien</td>
+                <td>@item.TrangThai</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.MaDonHang">🔍 Xem</a> |
                     <a asp-action="Edit" asp-route-id="@item.MaDonHang">✏️ Sửa</a> |
