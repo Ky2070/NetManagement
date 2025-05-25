@@ -43,48 +43,59 @@ namespace QuanlyquanNet.Controllers
         {
             var khach = _context.KhachHangs.Include(k => k.PhienChois)
                 .FirstOrDefault(k => k.MaKhachHang == model.MaKhachHang);
-            var dichVu = _context.DichVus.Find(model.MaDichVu);
 
-            if (khach == null || dichVu == null)
+            if (khach == null)
             {
-                TempData["error"] = "Không tìm thấy thông tin khách hoặc dịch vụ.";
+                TempData["error"] = "Không tìm thấy khách hàng.";
                 return RedirectToAction("NhapDonHang");
             }
 
-            var mayTinhId = khach.PhienChois
-                            .OrderByDescending(p => p.ThoiGianBatDau)
-                            .FirstOrDefault()?.MaMayTinh;
+            var mayTinhId = khach.PhienChois.OrderByDescending(p => p.ThoiGianBatDau)
+                                             .FirstOrDefault()?.MaMayTinh;
 
-            if (mayTinhId == null || !_context.MayTinhs.Any(m => m.MaMayTinh == mayTinhId))
+            if (mayTinhId == null)
             {
-                TempData["error"] = "Khách hàng chưa có phiên chơi hoặc không rõ vị trí máy tính.";
+                TempData["error"] = "Không xác định được vị trí máy tính.";
                 return RedirectToAction("NhapDonHang");
             }
 
-            var donHang = new DonHang
+            foreach (var item in model.DonHangChiTiets)
             {
-                MaKhachHang = khach.MaKhachHang,
-                MaDichVu = dichVu.MaDichVu,
-                SoLuong = model.SoLuong,
-                MaMayTinh = (int)mayTinhId,
-                ThongTinViTri = $"Máy số {mayTinhId}" + (string.IsNullOrWhiteSpace(model.GhiChu) ? "" : $" - {model.GhiChu}"),
-                TongTien = dichVu.Gia * model.SoLuong,
-                NgayDat = DateTime.Now,
-                TrangThai = "Chờ giao"
-            };
+                if (item.SoLuong <= 0) continue;
 
-            // Nếu cấu hình trừ tiền tự động:
-            if (khach.SoDu >= donHang.TongTien)
-            {
-                khach.SoDu -= donHang.TongTien;
-                donHang.TrangThai = "Đã giao"; // Nếu muốn tự động giao luôn
+                var dichVu = _context.DichVus.Find(item.MaDichVu);
+                if (dichVu == null) continue;
+
+                var tongTien = item.SoLuong * dichVu.Gia;
+
+                var donHang = new DonHang
+                {
+                    MaKhachHang = khach.MaKhachHang,
+                    MaDichVu = dichVu.MaDichVu,
+                    SoLuong = item.SoLuong,
+                    MaMayTinh = (int)mayTinhId,
+                    ThongTinViTri = $"Máy số {mayTinhId}" + (string.IsNullOrWhiteSpace(item.GhiChu) ? "" : $" - {item.GhiChu}"),
+                    TongTien = tongTien,
+                    NgayDat = DateTime.Now,
+                };
+
+                if (khach.SoDu >= tongTien)
+                {
+                    khach.SoDu -= tongTien;
+                    donHang.TrangThai = "Đã giao";
+                }
+                else
+                {
+                    donHang.TrangThai = "Trả tiền mặt";
+                }
+
+                _context.DonHangs.Add(donHang);
             }
 
-            _context.DonHangs.Add(donHang);
             _context.SaveChanges();
-
-            TempData["success"] = "✅ Đơn hàng đã được tạo thành công.";
+            TempData["success"] = "✅ Đã tạo đơn hàng thành công.";
             return RedirectToAction("NhapDonHang");
         }
+
     }
 }
