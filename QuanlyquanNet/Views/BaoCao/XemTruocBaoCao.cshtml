@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Xem trước báo cáo";
+    var fileName = ViewBag.FileName as string;
+}
+
+<h2>Xem trước báo cáo PDF</h2>
+
+@if (!string.IsNullOrEmpty(fileName))
+{
+    <iframe src="~/Reports/Preview/@fileName" width="100%" height="600px" style="border: 1px solid #ccc;"></iframe>
+
+    <form method="post" asp-action="GuiBaoCaoChoAdmin">
+        <input type="hidden" name="fileName" value="@fileName" />
+        <button class="btn btn-success mt-3">Gửi báo cáo này cho admin duyệt</button>
+    </form>
+}
+else
+{
+    <p>Không tìm thấy báo cáo.</p>
+}
