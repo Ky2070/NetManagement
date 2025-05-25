@@ -49,11 +49,15 @@ namespace QuanlyquanNet.Controllers
             var ngayTao = DateTime.Now;
             var fileName = $"baocao_{ngayTao:yyyyMMdd_HHmmss}.pdf";
 
-            var folderPath = Path.Combine(_env.WebRootPath, "Reports", "Preview");
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
+            var folderPreview = Path.Combine(_env.WebRootPath, "Reports", "Preview");
+            if (!Directory.Exists(folderPreview))
+                Directory.CreateDirectory(folderPreview);
 
-            var filePath = Path.Combine(folderPath, fileName);
+            var filePath = Path.Combine(folderPreview, fileName);
+
+            var folderChoDuyet = Path.Combine(_env.WebRootPath, "Reports", "ChoDuyet");
+            if (!Directory.Exists(folderChoDuyet))
+                Directory.CreateDirectory(folderChoDuyet);
 
             // Tạo PDF
             var document = new PdfSharpCore.Pdf.PdfDocument();
@@ -107,6 +111,33 @@ namespace QuanlyquanNet.Controllers
 
             document.Save(filePath);
             document.Close();
+
+            var metaFilePath = Path.Combine(_env.WebRootPath, "Reports", "metadata.json");
+            var metadataList = new List<ReportMetadata>();
+
+            // Đọc metadata hiện có (nếu có)
+            if (System.IO.File.Exists(metaFilePath))
+            {
+                var existingJson = System.IO.File.ReadAllText(metaFilePath);
+                metadataList = JsonSerializer.Deserialize<List<ReportMetadata>>(existingJson) ?? new List<ReportMetadata>();
+            }
+
+            // Thêm bản ghi mới
+            metadataList.Add(new ReportMetadata
+            {
+                FileName = fileName,
+                NguoiTao = hoTen,
+                NgayTao = ngayTao,
+                TrangThai = "MoiTao",
+                LyDoTuChoi = null
+            });
+
+            // Ghi lại toàn bộ danh sách
+            var metadataJson = JsonSerializer.Serialize(metadataList, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            System.IO.File.WriteAllText(metaFilePath, metadataJson);
 
             // Gửi sang trang preview để xem PDF
             return RedirectToAction("XemTruocBaoCao", new { fileName = fileName });

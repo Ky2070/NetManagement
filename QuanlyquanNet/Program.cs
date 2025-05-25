@@ -21,6 +21,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Employee", policy => policy.RequireRole("Employee"));
+
+    // Thêm policy cho cả hai role
+    options.AddPolicy("AdminOrEmployee", policy =>
+        policy.RequireRole("Admin", "Employee"));
 });
 
 // ✅ Thêm session

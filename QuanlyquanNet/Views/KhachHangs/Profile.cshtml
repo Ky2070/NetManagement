@@ -191,7 +191,27 @@
             }
         </div>
     </div>
+    @if (TempData["SuccessMessage"] != null || TempData["ErrorMessage"] != null)
+    {
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+            <div class="toast align-items-center text-white @(
+                TempData["SuccessMessage"] != null ? "bg-success" : "bg-danger"
+            ) border-0 show" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @TempData["SuccessMessage"] ?? TempData["ErrorMessage"]
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        </div>
 
+        <script>
+            const toastEl = document.querySelector('.toast');
+            const bsToast = new bootstrap.Toast(toastEl, { delay: 5000 });
+            bsToast.show();
+        </script>
+    }
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
