@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 
 namespace QuanlyquanNet.Controllers
 {
-    [Authorize(Roles = "Employee")]
-    [Authorize(Policy = "AdminOrEmployee")]
+    [Authorize(Roles = "Admin,Employee")]
     [Route("[controller]")]
     public class PhanThuongDaNhanController : Controller
     {
