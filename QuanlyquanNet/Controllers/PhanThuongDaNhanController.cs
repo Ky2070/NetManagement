@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanlyquanNet.Data;
@@ -8,14 +9,18 @@ using System.Threading.Tasks;
 
 namespace QuanlyquanNet.Controllers
 {
+    [Authorize(Roles = "Employee")]
+    [Authorize(Policy = "AdminOrEmployee")]
     [Route("[controller]")]
     public class PhanThuongDaNhanController : Controller
     {
         private readonly QuanLyNetContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public PhanThuongDaNhanController(QuanLyNetContext context)
+        public PhanThuongDaNhanController(QuanLyNetContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         [HttpGet]

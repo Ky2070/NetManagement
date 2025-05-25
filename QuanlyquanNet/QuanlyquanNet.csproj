@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Reports\Choduyet\" />
+    <Folder Include="wwwroot\Reports\" />
   </ItemGroup>
 
 </Project>

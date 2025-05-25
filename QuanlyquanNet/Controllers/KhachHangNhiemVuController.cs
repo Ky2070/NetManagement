@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanlyquanNet.Data;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace QuanlyquanNet.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles = "Admin,Employee")]
     public class KhachHangNhiemVuController : Controller
     {
         private readonly QuanLyNetContext _context;
