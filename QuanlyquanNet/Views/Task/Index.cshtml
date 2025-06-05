@@ -1,19 +1,20 @@
 ﻿@model dynamic
+
 @{
+    Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
+
     ViewData["Title"] = "Quản lý nhiệm vụ";
     var assignedTasks = ViewBag.AssignedTasks as List<QuanlyquanNet.ViewModel.AssignedTaskViewModel>;
     var customers = ViewBag.Customers as List<QuanlyquanNet.Data.KhachHang>;
     var tasks = ViewBag.Tasks as List<QuanlyquanNet.Data.NhiemVu>;
 }
 
-@* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" /> *@
-
 <div class="mt-4">
     <h2 class="mb-4 text-center">🎮 Quản Lý Nhiệm Vụ Game</h2>
 
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success">@TempData["Success"]</div>
+        <div class="alert alert-success" id="successAlert">@TempData["Success"]</div>
     }
 
     <div class="row">
@@ -84,68 +85,144 @@
             </div>
         </div>
 
-    <!-- Bảng danh sách nhiệm vụ -->
-    <div class="mt-5">
-        <h4 class="mb-3">📋 Nhiệm Vụ Gần Đây</h4>
-        <table class="table table-bordered table-hover table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Khách Hàng</th>
-                    <th>Game</th>
-                    <th>Nhiệm Vụ</th>
-                    <th>Mô Tả</th>
-                    <th>Điểm Thưởng</th>
-                    <th>Ngày Giao</th>
-                    <th>Trạng Thái</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (assignedTasks != null && assignedTasks.Any())
-                {
-                    foreach (var task in assignedTasks)
+        <!-- Bảng danh sách nhiệm vụ -->
+        <div class="mt-5">
+            <h4 class="mb-3">📋 Nhiệm Vụ Gần Đây</h4>
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Khách Hàng</th>
+                        <th>Game</th>
+                        <th>Nhiệm Vụ</th>
+                        <th>Mô Tả</th>
+                        <th>Điểm Thưởng</th>
+                        <th>Ngày Giao</th>
+                        <th>Trạng Thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (assignedTasks != null && assignedTasks.Any())
+                    {
+                        foreach (var task in assignedTasks)
+                        {
+                            <tr>
+                                <td>@task.KhachHang</td>
+                                <td>@task.Game</td>
+                                <td>@task.TenNhiemVu</td>
+                                <td>@task.MoTa</td>
+                                <td>@task.DiemThuong</td>
+                                <td>@(task.NgayThamGia?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</td>
+                                <td>
+                                    <span class="badge @(task.TrangThai == "Đã hoàn thành" ? "bg-success" : "bg-warning text-dark")">
+                                        @task.TrangThai
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@task.KhachHang</td>
-                            <td>@task.Game</td>
-                            <td>@task.TenNhiemVu</td>
-                            <td>@task.MoTa</td>
-                            <td>@task.DiemThuong</td>
-                            <td>@(task.NgayThamGia?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa xác định")</td>
-                            <td>
-                                <span class="badge @(task.TrangThai == "Đã hoàn thành" ? "bg-success" : "bg-warning text-dark")">
-                                    @task.TrangThai
-                                </span>
-                            </td>
+                            <td colspan="7" class="text-center">Chưa có nhiệm vụ nào.</td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="7" class="text-center">Chưa có nhiệm vụ nào.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+
+    <!-- Modal hiển thị ảnh minh chứng -->
+    <div class="modal fade" id="proofModal" tabindex="-1" aria-labelledby="proofModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="proofModalLabel">Minh Chứng Hoàn Thành</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="proofImage" src="" alt="Ảnh minh chứng" style="max-width: 100%; height: auto;" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @section Scripts {
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
         <script>
-            $('#customerIdComplete').on('change', function () {
-                var customerId = $(this).val();
-                $('#taskId').html('<option>Đang tải...</option>');
-                if (customerId) {
-                    $.get('/Task/GetUncompletedTasks?customerId=' + customerId, function (data) {
-                        var options = '<option value="">-- Chọn nhiệm vụ --</option>';
-                        data.forEach(function (task) {
-                            options += `<option value="${task.id}">${task.tenNhiemVu} (${task.game})</option>`;
+            $(document).ready(function () {
+
+                // 1. Load nhiệm vụ theo khách hàng khi chọn
+                $('#customerIdComplete').on('change', function () {
+                    var customerId = $(this).val();
+                    $('#taskId').html('<option>Đang tải...</option>');
+                    if (customerId) {
+                        $.get('/Task/GetUncompletedTasks?customerId=' + customerId, function (data) {
+                            var options = '<option value="">-- Chọn nhiệm vụ --</option>';
+                            data.forEach(function (task) {
+                                options += `<option value="${task.id}">${task.tenNhiemVu} (${task.game})</option>`;
+                            });
+                            $('#taskId').html(options);
                         });
-                        $('#taskId').html(options);
+                    } else {
+                        $('#taskId').html('<option value="">-- Chọn nhiệm vụ --</option>');
+                    }
+                });
+
+                // 2. Hiển thị ảnh minh chứng nếu có
+            @if (TempData["ProofImage"] != null)
+            {
+                <text>
+                                $('#proofImage').attr('src', '@TempData["ProofImage"]');
+                                var proofModal = new bootstrap.Modal(document.getElementById('proofModal'));
+                                proofModal.show();
+                </text>
+            }
+
+                // 3. Ẩn preloader sau khi trang tải xong
+                $(window).on('load', function () {
+                    $('#preloader').fadeOut('slow', function () {
+                        $(this).remove();
                     });
-                } else {
-                    $('#taskId').html('<option value="">-- Chọn nhiệm vụ --</option>');
-                }
+                });
+
+                // 4. Debug modal đóng (nếu cần)
+                $('#proofModal').on('hidden.bs.modal', function () {
+                    console.log('Modal has been closed');
+                });
+
+                // 5. Đảm bảo nút đóng hoạt động
+                $('.btn-close, .btn-secondary[data-bs-dismiss="modal"]').on('click', function () {
+                    console.log('Close button clicked');
+                    $('#proofModal').modal('hide');
+                });
             });
         </script>
+
+        <style>
+            /* 6. Đảm bảo modal hiển thị đúng lớp */
+            .modal {
+                z-index: 1055 !important;
+            }
+
+            .modal-backdrop {
+                z-index: 1050 !important;
+            }
+
+            /* Preloader nếu cần thêm hiệu ứng fade */
+            #preloader {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: #fff;
+                z-index: 9999;
+            }
+        </style>
     }
+

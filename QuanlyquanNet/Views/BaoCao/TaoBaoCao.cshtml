@@ -1,13 +1,30 @@
 ﻿@{
     ViewData["Title"] = "Tạo báo cáo";
 }
-<h2>Tạo báo cáo thống kê</h2>
 
-@if (TempData["msg"] != null)
-{
-    <div class="alert alert-success">@TempData["msg"]</div>
-}
+<h2>Tạo báo cáo thống kê</h2>
 
 <form method="post" asp-action="TaoBaoCaoSubmit">
     <button class="btn btn-primary">Tạo báo cáo gần nhất và xem trước</button>
 </form>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["msg"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'ĐÃ GỬI THÀNH CÔNG LÊN HỆ THỐNG ADMIN',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'btn btn-success'
+                },
+                buttonsStyling: false
+            }).then(() => {
+                // Có thể redirect hoặc thao tác thêm nếu cần
+            });
+        </script>
+    }
+}

@@ -21,7 +21,6 @@ namespace QuanlyquanNet.Controllers
         {
             _context = context;
             _env = env;
-
         }
 
         [HttpGet]
@@ -241,46 +240,71 @@ namespace QuanlyquanNet.Controllers
             try
             {
                 if (khachHang.DonHangs.Any())
-                {
                     _context.DonHangs.RemoveRange(khachHang.DonHangs);
-                }
+
                 if (khachHang.KhachHangNhiemVus.Any())
-                {
                     _context.KhachHangNhiemVus.RemoveRange(khachHang.KhachHangNhiemVus);
-                }
+
                 if (khachHang.LichSuNapTienMaKhachHangNavigations.Any())
-                {
                     _context.LichSuNapTiens.RemoveRange(khachHang.LichSuNapTienMaKhachHangNavigations);
-                }
+
                 if (khachHang.LichSuNapTienTenDangNhapNavigations.Any())
-                {
                     _context.LichSuNapTiens.RemoveRange(khachHang.LichSuNapTienTenDangNhapNavigations);
-                }
+
                 if (khachHang.PhanThuongDaNhans.Any())
-                {
                     _context.PhanThuongDaNhans.RemoveRange(khachHang.PhanThuongDaNhans);
-                }
+
                 if (khachHang.PhienChois.Any())
-                {
                     _context.PhienChois.RemoveRange(khachHang.PhienChois);
-                }
+
                 if (khachHang.ThongBaos.Any())
-                {
                     _context.ThongBaos.RemoveRange(khachHang.ThongBaos);
+
+                // Xóa khách hàng
+                _context.KhachHangs.Remove(khachHang);
+
+                // Tìm tài khoản người dùng liên quan
+                var nguoiDung = await _context.NguoiDungs
+                    .FirstOrDefaultAsync(nd => nd.TenDangNhap == khachHang.TenDangNhap);
+
+                if (nguoiDung != null)
+                {
+                    // Kiểm tra xem tài khoản này còn được dùng ở nơi khác không
+                    bool isUsedByOtherKhachHang = await _context.KhachHangs
+                        .AnyAsync(kh => kh.TenDangNhap == nguoiDung.TenDangNhap && kh.MaKhachHang != khachHang.MaKhachHang);
+
+                    bool isUsedByNhanVien = await _context.NhanViens
+                        .AnyAsync(nv => nv.MaNguoiDung == nguoiDung.MaNguoiDung);
+
+                    if (!isUsedByOtherKhachHang && !isUsedByNhanVien)
+                    {
+                        // Xóa lịch sử đăng nhập liên quan đến người dùng
+                        var lichSuDangNhaps = await _context.LichSuDangNhaps
+                            .Where(ls => ls.MaNguoiDung == nguoiDung.MaNguoiDung)
+                            .ToListAsync();
+
+                        if (lichSuDangNhaps.Any())
+                        {
+                            _context.LichSuDangNhaps.RemoveRange(lichSuDangNhaps);
+                        }
+
+                        // Xóa người dùng
+                        _context.NguoiDungs.Remove(nguoiDung);
+                    }
                 }
 
-                _context.KhachHangs.Remove(khachHang);
                 await _context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Xóa khách hàng thành công!";
             }
             catch (DbUpdateException ex)
             {
-                TempData["ErrorMessage"] = "Lỗi khi xóa dữ liệu: " + ex.InnerException?.Message ?? ex.Message;
+                TempData["ErrorMessage"] = "Lỗi khi xóa dữ liệu: " + (ex.InnerException?.Message ?? ex.Message);
             }
 
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool KhachHangExists(int id)
         {
@@ -321,109 +345,7 @@ namespace QuanlyquanNet.Controllers
             TempData["SuccessMessage"] = $"Nạp {soTienThucNhan:N0}đ thành công cho {khachHang.HoTen}";
             return RedirectToAction("Details", new { id = MaKhachHang });
         }
-        [HttpGet("Profile")]
-        public IActionResult Profile()
-        {
-            var tenDangNhap = HttpContext.Session.GetString("TenDangNhap");
-
-            var khach = _context.KhachHangs
-                .Include(k => k.KhachHangNhiemVus)
-                    .ThenInclude(khv => khv.MaNhiemVuNavigation)
-                .FirstOrDefault(k => k.TenDangNhap == tenDangNhap);
-
-            if (khach == null)
-            {
-                return NotFound();
-            }
-
-            // 1. Tính tổng điểm nhiệm vụ đã hoàn thành
-            var tongDiem = khach.KhachHangNhiemVus
-                .Where(khv => khv.TrangThai == "Hoàn thành")
-                .Sum(khv => khv.DiemNhanDuoc ?? 0);
-
-            // 2. Lấy tổng điểm đã dùng để đổi phần thưởng
-            var tongDiemDaDoi = _context.PhanThuongDaNhans
-                .Where(p => p.MaKhachHang == khach.MaKhachHang)
-                .Join(
-                    _context.PhuThuongs,
-                    p => p.MaPhuThuong,
-                    pt => pt.MaPhuThuong,
-                    (p, pt) => pt.DiemCanDoi
-                ).Sum();
-
-            // 3. Tính điểm còn lại
-            var diemThuongConLai = tongDiem - tongDiemDaDoi;
-
-            // 4. Lấy danh sách phần thưởng
-            var danhSachPhuThuong = _context.PhuThuongs.ToList();
-
-            // 5. Tạo ViewModel
-            var model = new ProfileViewModel
-            {
-                HoTen = khach.HoTen,
-                TenDangNhap = khach.TenDangNhap,
-                SoDienThoai = khach.SoDienThoai,
-                SoDu = khach.SoDu ?? 0,
-                DiemThuong = diemThuongConLai,
-                NhiemVuHoanThanh = khach.KhachHangNhiemVus
-                    .Where(khv => khv.TrangThai == "Hoàn thành")
-                    .Select(khv => new NhiemVuItem
-                    {
-                        TenNhiemVu = khv.MaNhiemVuNavigation.TenNhiemVu,
-                        DiemNhan = khv.DiemNhanDuoc ?? 0,
-                        NgayHoanThanh = khv.ThoiGianHoanThanh
-                    }).ToList(),
-                DanhSachPhuThuong = danhSachPhuThuong
-            };
-
-            return View(model);
-        }
-
-        [HttpPost("DoiPhanThuong")]
-        public IActionResult DoiPhanThuong(string Loai, int Id)
-        {
-            var khachHang = GetLoggedInKhachHang();
-            if (khachHang == null) return RedirectToAction("Login", "Account");
-
-            // Tính tổng điểm thưởng từ nhiệm vụ đã hoàn thành
-            var diemThuong = _context.KhachHangNhiemVus
-                .Where(khv => khv.MaKhachHang == khachHang.MaKhachHang && khv.TrangThai == "Hoàn thành")
-                .Sum(khv => khv.DiemNhanDuoc ?? 0);
-
-            // Lấy tổng điểm đã dùng để đổi quà trước đây
-            var tongDiemDaDoi = _context.PhanThuongDaNhans
-                .Where(p => p.MaKhachHang == khachHang.MaKhachHang)
-                .Join(_context.PhuThuongs, p => p.MaPhuThuong, pt => pt.MaPhuThuong, (p, pt) => pt.DiemCanDoi)
-                .Sum();
-
-            var diemConLai = diemThuong - tongDiemDaDoi;
-
-            if (Loai == "PhuThuong")
-            {
-                var pt = _context.PhuThuongs.Find(Id);
-                if (pt != null && diemConLai >= pt.DiemCanDoi)
-                {
-                    _context.PhanThuongDaNhans.Add(new PhanThuongDaNhan
-                    {
-                        MaKhachHang = khachHang.MaKhachHang,
-                        MaPhuThuong = pt.MaPhuThuong,
-                        NgayNhan = DateTime.Now
-                    });
-                    _context.SaveChanges();
-
-                    TempData["SuccessMessage"] = $"Đã đổi phần thưởng \"{pt.TenPhuThuong}\" thành công! Điểm thưởng còn lại: {diemConLai - pt.DiemCanDoi}";
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = $"❌ Không đủ điểm để đổi phần thưởng \"{pt.TenPhuThuong}\". Bạn còn {diemConLai} điểm.";
-                }
-
-            }
-
-            return RedirectToAction("Profile");
-        }
-
-
+        
         private KhachHang? GetLoggedInKhachHang()
         {
             var tenDangNhap = HttpContext.Session.GetString("TenDangNhap");
