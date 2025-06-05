@@ -174,22 +174,41 @@ namespace QuanlyquanNet.Controllers
                 var nhanVien = _context.NhanViens.FirstOrDefault(nv => nv.MaNguoiDungNavigation.TenDangNhap == username);
                 var hoTen = nhanVien?.HoTen ?? username;
 
-                metadataList.Add(new ReportMetadata
+                // ❗️Kiểm tra nếu đã có thì cập nhật, chưa có thì thêm
+                var existing = metadataList.FirstOrDefault(x => x.FileName == fileName);
+                if (existing != null)
                 {
-                    FileName = fileName,
-                    NguoiTao = hoTen,
-                    NgayTao = DateTime.Now,
-                    TrangThai = "ChoDuyet",
-                    LyDoTuChoi = null
-                });
+                    existing.TrangThai = "ChoDuyet";
+                    existing.NgayTao = DateTime.Now;
+                    existing.NguoiTao = hoTen;
+                    existing.LyDoTuChoi = null;
+                }
+                else
+                {
+                    metadataList.Add(new ReportMetadata
+                    {
+                        FileName = fileName,
+                        NguoiTao = hoTen,
+                        NgayTao = DateTime.Now,
+                        TrangThai = "ChoDuyet",
+                        LyDoTuChoi = null
+                    });
+                }
 
-                System.IO.File.WriteAllText(metaFilePath, JsonSerializer.Serialize(metadataList));
+                // ❗️Lọc metadataList giữ bản ghi mới nhất cho mỗi FileName
+                metadataList = metadataList
+                    .GroupBy(x => x.FileName)
+                    .Select(g => g.OrderByDescending(x => x.NgayTao).First())
+                    .ToList();
+
+                System.IO.File.WriteAllText(metaFilePath, JsonSerializer.Serialize(metadataList, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                }));
             }
 
             TempData["msg"] = "✅ Gửi báo cáo thành công.";
             return RedirectToAction("TaoBaoCao");
         }
-
-
     }
 }

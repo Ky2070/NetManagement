@@ -154,22 +154,34 @@ namespace QuanlyquanNet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var nguoiDung = await _context.NguoiDungs.FindAsync(id);
-            if (nguoiDung != null)
+            var nguoiDung = await _context.NguoiDungs
+                .Include(nd => nd.LichSuDangNhaps)
+                .FirstOrDefaultAsync(nd => nd.MaNguoiDung == id);
+
+            if (nguoiDung == null)
+                return RedirectToAction(nameof(Index));
+
+            try
             {
-                try
+                if (nguoiDung.LichSuDangNhaps.Any())
                 {
-                    _context.NguoiDungs.Remove(nguoiDung);
-                    await _context.SaveChangesAsync();
+                    _context.LichSuDangNhaps.RemoveRange(nguoiDung.LichSuDangNhaps);
+                    await _context.SaveChangesAsync(); // BẮT BUỘC gọi SaveChanges trước
                 }
-                catch (DbUpdateException ex)
-                {
-                    ModelState.AddModelError("", "Lỗi khi xóa dữ liệu: " + ex.InnerException?.Message ?? ex.Message);
-                    return View(nguoiDung);
-                }
+
+                _context.NguoiDungs.Remove(nguoiDung);
+                await _context.SaveChangesAsync();
             }
+            catch (DbUpdateException ex)
+            {
+                ModelState.AddModelError("", "Lỗi khi xóa dữ liệu: " + (ex.InnerException?.Message ?? ex.Message));
+                return View(nguoiDung);
+            }
+
             return RedirectToAction(nameof(Index));
         }
+
+
 
         private bool NguoiDungExists(int id)
         {

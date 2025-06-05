@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuanlyquanNet.Data;
-using Microsoft.AspNetCore.Authentication.Cookies; // Thêm nếu chưa có
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

@@ -9,10 +9,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-
-    <!-- Orbitron Font for gaming feel -->
+    <!-- Orbitron Font -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-        @RenderSection("Styles", required: false)
+
+    @RenderSection("Styles", required: false)
+
     <style>
         body {
             background-color: #121212;
@@ -45,6 +46,8 @@
             background-color: #1a1a1a;
             padding: 20px;
             border-right: 1px solid #2c2c2c;
+            position: relative;
+            z-index: 1;
         }
 
             .sidebar h4 {
@@ -72,7 +75,6 @@
                         display: flex;
                         align-items: center;
                         transition: all 0.3s ease;
-                        position: relative;
                     }
 
                         .sidebar ul li a i {
@@ -91,7 +93,7 @@
             flex: 1;
             padding: 30px;
             position: relative;
-            z-index: 1;
+            z-index: 0;
         }
 
             .main-content::before {
@@ -103,7 +105,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                z-index: -1;
+                z-index: -1; /* đảm bảo không che modal */
             }
 
         .container-flex {
@@ -130,11 +132,18 @@
                 background-color: #00e5ff;
                 color: #000;
             }
-    </style>
 
+        /* Fix z-index modal */
+        .modal {
+            z-index: 1055;
+        }
+
+        .modal-backdrop {
+            z-index: 1050;
+        }
+    </style>
 </head>
 <body>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container-fluid">
@@ -187,7 +196,6 @@
                 <li><a asp-controller="BaoCao" asp-action="TaoBaoCao"><i class="bi bi-bar-chart-line"></i> Tạo Báo Cáo</a></li>
                 <li><a asp-controller="Order" asp-action="NhapDonHang"><i class="bi bi-cart"></i> Order Dịch Vụ</a></li>
                 <li><a asp-controller="DonHang" asp-action="Index"><i class="bi bi-cart"></i> Thông tin đơn hàng</a></li>
-
             </ul>
         </aside>
 
